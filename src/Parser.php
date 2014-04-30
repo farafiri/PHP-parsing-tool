@@ -1,29 +1,4 @@
 <?php
-/**
- * Tests
- * cd ../../xampp/php
- * phpunit --bootstrap ../htdocs/autoloader.php ../htdocs/parserGenerator/tests
- */
-
-/**
- * TODO:
- * -error track
- * -comments in grammar
- * -think about GrammarExtensionComment
- * -whitespaces support : (string) $parser->parse(' x y z ') should result in ' x y z ' not 'xyz'
- * -template nodes: sequence<x, n> :=> ?n x sequence<x, n-1>
- *                                 :=> !n ''
- *    where x is a node and n and integer
- * -think about lookbehind
- * -predefined node: text
- * -(!! after modifications) in context of one rule back references should work eg: [:=> /./+ /./* $1] schould easy get text abacab as ['ab', 'ac', 'ab']
- * -varibles: gnNode (grammarNode) astNode(abstract syntax tree node)
- * -add namespace
- *
- * DONE:
- * -case insensitive: option for parser. with this "x" matches "X"
- * -lookaround: !"abcd" "abc"
- */
 
 namespace ParserGenerator;
 
@@ -61,7 +36,6 @@ require_once 'GrammarNode/AnyText.php';
 require_once 'GrammarNode/ItemRestrictions.php';
 require_once 'GrammarNode/ErrorTrackDecorator.php';
 require_once 'RegexUtil.php';
-require_once 'GrammarStringGenerator.php';
 require_once 'GrammarParser.php';
 
 namespace ParserGenerator;
