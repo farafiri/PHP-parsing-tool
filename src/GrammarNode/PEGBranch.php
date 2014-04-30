@@ -9,7 +9,7 @@ class PEGBranch extends \ParserGenerator\GrammarNode\Branch
         $cacheStr = $fromIndex . '-' . $this->nodeName;
 
         if (!isset($this->parser->cache[$cacheStr])) {
-			foreach ($this->getRoute(substr($string, $fromIndex, 1)) as $_optionIndex => $option) {
+			foreach ($this->node as $_optionIndex => $option) {
 				$index = $fromIndex;
 				$subnodes = array();
 				

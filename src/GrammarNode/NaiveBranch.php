@@ -13,8 +13,7 @@ class NaiveBranch extends \ParserGenerator\GrammarNode\Branch
         }
 		$this->parser->cache[$cacheStr] = false;
 
-        //$this->getRoute(substr($string, $fromIndex, 1));
-        foreach ($this->getRoute(substr($string, $fromIndex, 1)) as $_optionIndex => $option) {
+        foreach ($this->node as $_optionIndex => $option) {
             $subnodes = array();
             $optionIndex = 0;
             $indexes = array(-1 => $fromIndex);
