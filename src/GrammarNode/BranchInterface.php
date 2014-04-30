@@ -13,8 +13,4 @@ interface BranchInterface extends \ParserGenerator\GrammarNode\NodeInterface
     public function getNode();
 
     public function getNodeName();
-
-    public function _setCanBeEmptyCache($value);
-
-    public function _setStartCharsCache($value);
 }

@@ -14,23 +14,6 @@ class Text extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGener
         $this->str = $str;
     }
 
-    public function canBeEmpty()
-    {
-        return strlen($this->str) === 0;
-    }
-
-    public function startChars()
-    {
-        if (strlen($this->str)) {
-            $r = array();
-            $r[substr($this->str, 0, 1)] = true;
-
-            return $r;
-        } else {
-            return array();
-        }
-    }
-
     public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
     {
         if (substr($string, $fromIndex, strlen($this->str)) == $this->str) {

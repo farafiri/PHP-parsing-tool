@@ -29,16 +29,6 @@ class BranchDecorator extends \ParserGenerator\GrammarNode\Decorator implements 
         return $this->node->getNodeName();
     }
 
-    public function _setCanBeEmptyCache($value)
-    {
-        return $this->node->_setCanBeEmptyCache($value);
-    }
-
-    public function _setStartCharsCache($value)
-    {
-        return $this->node->_setStartCharsCache($value);
-    }
-
     public function __toString()
     {
         return $this->getNodeName();

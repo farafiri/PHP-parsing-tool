@@ -17,29 +17,6 @@ class Numeric extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
     protected $formatBin = false;
     protected $eatWhiteChars = false;
 
-    static protected $startChars = array(
-        '0' => true,
-        '1' => true,
-        '2' => true,
-        '3' => true,
-        '4' => true,
-        '5' => true,
-        '6' => true,
-        '7' => true,
-        '8' => true,
-        '9' => true,
-        '-' => true);
-
-    public function canBeEmpty()
-    {
-        return false;
-    }
-
-    public function startChars()
-    {
-        return self::$startChars;
-    }
-
     public function __construct($options = array())
     {
         foreach ($options as $key => $value) {

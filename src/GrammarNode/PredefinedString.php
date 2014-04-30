@@ -16,18 +16,6 @@ class PredefinedString extends \ParserGenerator\GrammarNode\BaseNode Implements 
         $this->startCharacters = $startCharacters;
     }
 
-    public function canBeEmpty()
-    {
-        return false;
-    }
-
-    public function startChars()
-    {
-	    //TODO:
-        //return $this->startCharacters;
-		return array("'" => true, '"' => true);
-    }
-
     public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
     {
         $stChar = substr($string, $fromIndex, 1);

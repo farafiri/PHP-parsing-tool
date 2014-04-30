@@ -11,16 +11,6 @@ class Decorator implements \ParserGenerator\GrammarNode\NodeInterface
         $this->node = $node;
     }
 
-    public function canBeEmpty()
-    {
-        return $this->node->canBeEmpty();
-    }
-
-    public function startChars()
-    {
-        return $this->node->startChars();
-    }
-
     public function rparse($string, $fromIndex, $restrictedEnd)
     {
         return $this->node->rparse($string, $fromIndex, $restrictedEnd);

@@ -16,18 +16,6 @@ class PredefinedSimpleString extends \ParserGenerator\GrammarNode\BaseNode Imple
         $this->eatWhiteChars = $eatWhiteChars;
     }
 
-    public function canBeEmpty()
-    {
-        return false;
-    }
-
-    public function startChars()
-    {
-        //TODO:
-        //return $this->startCharacters;
-		return array("'" => true, '"' => true);
-    }
-
     public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
     {
         if (preg_match($this->regex, $string, $match, 0, $fromIndex)) {

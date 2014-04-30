@@ -12,33 +12,6 @@ class Regex extends \ParserGenerator\GrammarNode\BaseNode Implements \ParserGene
     protected $eatWhiteChars;
     protected $caseInsensitive;
 
-    public function canBeEmpty()
-    {
-        switch ($this->givenRegex) {
-            case '/if\s*\(/':
-            case '/foreach\s*\(/':
-            case '/for\s*\(/':
-            case '/while\s*\(/':
-            case '/(return|break|continue|throw|include|include_once|require|require_once|echo)\s+/':
-            case '/(return|break|continue)(\s*;)?/':
-            case '/(protected|public|private|static)\s+/':
-            case '/\(\s*\)/':
-            case '/\((array|object|integer|int|boolean|bool|b|binary|string|real|float|double)\)/':
-            case '/array\s*\(/':
-            case '/:/':
-            case '/::/':
-            case '/[A-Za-z_][A-Za-z_0-9]*/':
-            case '/\$[A-Za-z_][A-Za-z_0-9]*/':
-            case '/-?\d+/':
-            case '/-?\d+(\.\d+)?/':
-            case '/(true|false)/':
-            case '/(\/\*(.|\n)*\*\/|\/\/.*\n|)/':
-                return false;
-            default:
-                return true;
-        }
-    }
-
     public function startChars()
     {
         switch ($this->givenRegex) {
