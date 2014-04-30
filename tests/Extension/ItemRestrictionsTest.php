@@ -257,12 +257,10 @@ class ItemRestrictionsTest extends \PHPUnit_Framework_TestCase
 	
 	public function testIsWithNot()
 	{
-	    $x = new Parser('start :=> /\w/+ not is ("forbidden"|"words").');
-		return 0;
-		//TODO
+	    $x = new Parser('start :=> text not is ("forbidden"|"words").');
+
 		$this->assertObject($x->parse("asdf"));
 		$this->assertObject($x->parse("keywords"));
-		$this->assertFalse($x->parse("key words"));
 		$this->assertObject($x->parse("word"));
 		$this->assertObject($x->parse("xforbidden"));
 		$this->assertFalse($x->parse("words"));

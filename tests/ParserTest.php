@@ -604,7 +604,6 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
     public function testErrorTrack()
     {
-	    //TODO
         $x = new Parser('start :=> "(" num+"," ")" ("a" | "b").
                          num   :=> /\d+/.');
 
@@ -666,54 +665,5 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
         $x = new Parser('start :=> "a" /** "b" */ "c" **/ /** "d" /* "e" */ "f" **/');
         $this->assertArrayElementsEquals(array('Branch[start]', 'Text["a"]'), $nodeDump($x));
-
-        //$x3 = new Parser('start :=> /** "commented" /c**/ ***/ "a"');
-    }
-
-    public function testLC()
-    {
-        $x = new Parser('start  :=> start "+" start
-                                :=> "a".');
-
-        //var_dump($x->parse('a+a+a+a+a+a+a+a'));
-    }
-
-    public function testGeneralizeErrors()
-    {
-        return 0;
-
-        $x = new Parser('start  :=> "a" starta
-                                :=> "b" startb.
-                         startb :=> "B"
-                                :=> "b".
-                         starta :=> "A"
-                                :=> "a".');
-
-        $x->parse('aB');
-        $errors = $x->getError();
-        var_dump($errors);
-        var_dump($x->generalizeErrors($errors['expected']));
-    }
-
-    public function testX()
-    {
-        $x = new Parser('start  :=> z.
-                         z      :=> x z
-                                :=> "".
-                         x      :=> "zz"
-                                :=> "z".', array('defaultBranchType' => 'full'));
-
-        //echo $x->parse('zzzz')->dump();
-    }
-
-    public function onlyForComentClosing()
-    {
-        /*$x = new Parser('start :=> (/\d+/+","|"empty").');
-        $x->parse('23,34d');
-        var_dump($x->getError());
-        //var_dump(array_keys($x->grammar));*/
-
-        $q = <<<'EOD'
-EOD;
     }
 }
