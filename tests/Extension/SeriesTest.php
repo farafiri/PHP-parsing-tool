@@ -107,7 +107,7 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
         /* this parses letters separated by coma
          * $x = new Parser('start :=> /[abc]/+",".');
          *
-         * but this schould parse letters ended with coma
+         * but this should parse letters ended with coma
          * $x = new Parser('start :=> /[abc]/+ ",".');
          */
 
@@ -151,5 +151,12 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
 	                 num   :=> /\d+/.');
 
         $this->assertObject($x->parse('2,3b'));
+    }
+
+    public function testSeriesInPegAreAlwaysGreedy()
+    {
+        $x = new Parser('start :=> "a"+', array('defaultBranchType' => 'PEG'));
+
+        $this->assertObject($x->parse('aaa'));
     }
 }

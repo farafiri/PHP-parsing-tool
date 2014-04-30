@@ -2,6 +2,8 @@
 
 namespace ParserGenerator\Extension;
 
+use ParserGenerator\GrammarNode\BranchFactory;
+
 class Series extends \ParserGenerator\Extension\SequenceItem
 {
     protected function getGrammarGrammarSequence()
@@ -26,14 +28,15 @@ class Series extends \ParserGenerator\Extension\SequenceItem
         } else {
             $separator = null;
         }
-
+        $forceGreedy = isset($options['defaultBranchType']) && $options['defaultBranchType'] == BranchFactory::PEG;
         $operator = (string)$sequenceItem->getSubnode(2);
         switch ($operator) {
             case '++':
             case '**':
             case '+':
             case '*':
-                $node = new \ParserGenerator\GrammarNode\Series($main, $separator, in_array($operator, array('*', '**')), in_array($operator, array('**', '++')));
+                $greedy = in_array($operator, array('**', '++')) || $forceGreedy;
+                $node = new \ParserGenerator\GrammarNode\Series($main, $separator, in_array($operator, array('*', '**')), $greedy);
                 if (isset($options['parser'])) {
                     $node->setParser($options['parser']);
                 }
@@ -42,7 +45,7 @@ class Series extends \ParserGenerator\Extension\SequenceItem
 			case '??':
 			case '?':
 			    $empty = new \ParserGenerator\GrammarNode\Text('');
-				$choices = $operator == '??' ? array($main, $empty) : array($empty, $main);
+				$choices = ($operator == '??' || $forceGreedy) ? array($main, $empty) : array($empty, $main);
 			    $node = new \ParserGenerator\GrammarNode\Choice($choices);
 				
 				if (isset($options['parser'])) {
