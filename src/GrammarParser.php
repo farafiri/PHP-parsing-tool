@@ -232,6 +232,7 @@ require_once('Extension/WhiteCharactersContext.php');
 require_once('Extension/Integer.php');
 require_once('Extension/RuleCondition.php');
 require_once('Extension/Lookahead.php');
+require_once('Extension/Time.php');
 require_once('Extension/Series.php');
 require_once('Extension/Choice.php');
 require_once('Extension/Text.php');
