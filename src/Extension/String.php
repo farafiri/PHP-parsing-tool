@@ -7,8 +7,8 @@ class String extends \ParserGenerator\Extension\SequenceItem
     protected function getGrammarGrammarSequence()
     {
         return array(
-            array('STRING'),
-            array('STRING/', ':/(apostrophe|simple|quotation|default)/')
+            array('string'),
+            array('string/', ':/(apostrophe|simple|quotation|default)/')
         );
     }
 

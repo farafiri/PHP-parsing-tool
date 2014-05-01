@@ -22,7 +22,7 @@ class CSVParser extends \ParserGenerator\Parser
             start:        => line*lineSeparator.
             lineSeparator:=> /(\r\n|\n\r|\r|\n)/.
             line:         => value*",".
-            value:        => /[ \t]*/ STRING/simple /[ \t]*/
+            value:        => /[ \t]*/ string/simple /[ \t]*/
                          :=> /[^\r\n,"]*/.
         ';
     }

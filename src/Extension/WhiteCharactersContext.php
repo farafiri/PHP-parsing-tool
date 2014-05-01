@@ -6,7 +6,7 @@ class WhiteCharactersContext extends \ParserGenerator\Extension\SequenceItem
 {
     protected function getGrammarGrammarSequence()
     {
-        return array(':/(\\\\s|WHITESPACE|\\\\space|SPACE|\\\\n|NEWLINE|\\\\newline|\\\\t|\\\\tab|TAB)/');
+        return array(':/(\\\\s|whiteSpace|\\\\space|space|\\\\n|newLine|\\\\newline|\\\\t|\\\\tab|tab)/');
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)
@@ -21,21 +21,21 @@ class WhiteCharactersContext extends \ParserGenerator\Extension\SequenceItem
 
         switch ($selector) {
             case '\s':
-            case 'WHITESPACE':
+            case 'whiteSpace':
                 $char = null;
                 break;
             case '\n':
-            case '\newline':
-            case 'NEWLINE':
+            case '\newLine':
+            case 'newLine':
                 $char = "\n";
                 break;
             case '\space':
-            case 'SPACE':
+            case 'space':
                 $char = ' ';
                 break;
             case '\t':
             case '\tab':
-            case 'TAB':
+            case 'tab':
                 $char = "\t";
                 break;
         }

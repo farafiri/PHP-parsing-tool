@@ -12,26 +12,26 @@ class StringTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testSimple() {
-        $x = new Parser('start :=> STRING.');
+        $x = new Parser('start :=> string.');
 
         $this->assertObject($x->parse('"asd\\" "'));
         $this->assertObject($x->parse("'asd\\' '"));
         $this->assertFalse($x->parse('"asd"" "'));
 
-        $x = new Parser('start :=> STRING/apostrophe.');
+        $x = new Parser('start :=> string/apostrophe.');
 
         $this->assertObject($x->parse("'asd\\' '"));
         $this->assertFalse($x->parse('"asd\\" "'));
         $this->assertObject($x->parse("'asd\\' '"));
         $this->assertFalse($x->parse('"asd"" "'));
 
-        $x = new Parser('start :=> STRING/quotation.');
+        $x = new Parser('start :=> string/quotation.');
 
         $this->assertObject($x->parse('"asd\\" "'));
         $this->assertFalse($x->parse("'asd\\' '"));
         $this->assertFalse($x->parse('"asd"" "'));
 
-        $x = new Parser('start :=> STRING/simple.');
+        $x = new Parser('start :=> string/simple.');
 
         $this->assertFalse($x->parse('"asd\\" "'));
         $this->assertFalse($x->parse("'asd\\' '"));

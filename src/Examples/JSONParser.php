@@ -12,11 +12,11 @@ class JSONParser extends \ParserGenerator\Parser
         return '
         start:       => value.
         value:bool   => ("true"|"false")
-             :string => STRING
+             :string => string
              :number => -inf..inf
              :array  => "[" value*"," "]"
              :object => "{" objValue*"," "}".
-        objValue:    => STRING ":" value.
+        objValue:    => string ":" value.
         ';
     }
 

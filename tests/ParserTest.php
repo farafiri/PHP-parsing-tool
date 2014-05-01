@@ -434,7 +434,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
     public function testStringGrammarPredefinedBranches()
     {
-        $x = new Parser('start :=> STRING.');
+        $x = new Parser('start :=> string.');
         $this->assertFalse($x->parse('abc'));
         $this->assertObject($x->parse('""'));
         $this->assertObject($x->parse('"abcd"'));
@@ -487,8 +487,8 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($off->parse(' abc '));
 
 
-        $on = new Parser('start :=> STRING.', array('ignoreWhitespaces' => true));
-        $off = new Parser('start :=> STRING.', array('ignoreWhitespaces' => false));
+        $on = new Parser('start :=> string.', array('ignoreWhitespaces' => true));
+        $off = new Parser('start :=> string.', array('ignoreWhitespaces' => false));
         $this->assertObject($on->parse('"a"'));
         $this->assertObject($off->parse('"a"'));
         $this->assertObject($on->parse(' "a" '));
@@ -530,7 +530,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("ab", $x->parse("a   b")->toString());
         $this->assertEquals("a   \nb", $x->parse("a   \nb")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
 
-        $x = new Parser('start :=> STRING .', array('ignoreWhitespaces' => true));
+        $x = new Parser('start :=> string .', array('ignoreWhitespaces' => true));
         $this->assertEquals("'abc'", $x->parse("'abc'  ")->toString());
         $this->assertEquals("'abc'  ", $x->parse("'abc'  ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
 
@@ -552,7 +552,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->assertObject($x->parse("a\nb"));
         $this->assertObject($x->parse("a   b"));
 
-        $x = new Parser('start :=> "a" SPACE "b" .', array('ignoreWhitespaces' => true));
+        $x = new Parser('start :=> "a" space "b" .', array('ignoreWhitespaces' => true));
         $this->assertFalse($x->parse('ab'));
         $this->assertFalse($x->parse('ab '));
         $this->assertFalse($x->parse(' ab'));
@@ -560,7 +560,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($x->parse("a\nb"));
         $this->assertObject($x->parse("a  \nb"));
 
-        $x = new Parser('start :=> "a" !SPACE "b" .', array('ignoreWhitespaces' => true));
+        $x = new Parser('start :=> "a" !space "b" .', array('ignoreWhitespaces' => true));
         $this->assertObject($x->parse('ab'));
         $this->assertObject($x->parse('ab '));
         $this->assertObject($x->parse(' ab'));
