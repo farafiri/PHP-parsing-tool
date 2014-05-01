@@ -9,7 +9,7 @@
 ## Example
 Let say you have string with dates in format d.m.y or y-m-d separated by comma.
 
-'''php
+```php
   $dates = '2012-03-04,2013-02-08,23.06.2012';
 
   $parser = new \ParserGenerator\Parser('start     :=> datesList.
@@ -34,14 +34,14 @@ Let say you have string with dates in format d.m.y or y-m-d separated by comma.
       echo $date->findFirst('month');
     }
   }
-'''
+```
 
 ## Branch types
 
 You could declare previous grammar as PEG, it would improve speed x10. You can declare grammar as PEG by adding
 However not every grammar can be parsed with PEG packrat algorithm.
 
-'''php
+```php
   // by adding 'defaultBranchType' with 'PEG' value into options we declare grammar as PEG
   $parser = new \ParserGenerator\Parser('start :=> start "x"
                                                :=> "x".', array('defaultBranchType' => 'PEG'));
@@ -54,7 +54,7 @@ However not every grammar can be parsed with PEG packrat algorithm.
   //2-nd: use default branch type
   $parser = new \ParserGenerator\Parser('start :=> start "x"
                                                :=> "x".');
-'''
+```
 
 ## Symbols
 #### "text"
@@ -69,6 +69,7 @@ will match defined symbol
 * symbol? : symbol is optional
 * symbol* : will try to match symbol several times (symbol is optional)
 * ?symbol : lookahead
+    extra
 * !symbol : negative lookahead
 * symbol1+symbol2 : several symbol1 ocurences separated by symbol2 (similar symbol1*symbol2)
 * (symbol1 | symbol2) : choice, match symbol1 or symbol2
