@@ -5,7 +5,7 @@ namespace ParserGenerator\Examples;
 class JSONFormater extends \ParserGenerator\Parser
 {
     public function __construct() {
-        parent::__construct($this->getJSONDefinition(), array('ignoreWhitespaces' => true));
+        parent::__construct($this->getJSONDefinition(), array('ignoreWhitespaces' => true, 'defaultBranchType' => 'PEG'));
     }
 
     protected function getJSONDefinition() {

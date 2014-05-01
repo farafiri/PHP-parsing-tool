@@ -19,8 +19,11 @@ use ParserGenerator\Extension\ItemRestrictions\Is;
 class ItemRestrictions extends \ParserGenerator\Extension\SequenceItem
 {
     const _NAMESPACE = 'ItemRestrictionsPlugin';
-	
-	protected $itemBuilderCallback = null;
+
+    /**
+     * @var callable
+     */
+    protected $itemBuilderCallback = null;
 
     public function extendGrammar($grammarGrammar)
     {
