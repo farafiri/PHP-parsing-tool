@@ -43,7 +43,7 @@ class ItemRestrictions extends \ParserGenerator\Extension\SequenceItem
 		);
 		
 		$grammarGrammar[$this->getNS('simpleCondition', false)] = array(
-		    'bracket' => array('(', $this->getNS('condition'), ')'),
+		    'bracket' => array('(', $this->getNS('condition'), ':comments', ')'),
 			'not' => array('not', $this->getNS('simpleCondition')),
 			'contain' => array('contain', ':sequenceItem'),
 			'is' => array('is', ':sequenceItem')

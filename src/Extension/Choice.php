@@ -18,7 +18,7 @@ class Choice extends \ParserGenerator\Extension\SequenceItem
 
     protected function getGrammarGrammarSequence()
     {
-        return array('(', (':' . $this->seqName), ')');
+        return array('(', (':' . $this->seqName), ':comments', ')');
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)
