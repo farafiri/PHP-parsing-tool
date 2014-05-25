@@ -6,11 +6,13 @@ use ParserGenerator\Parser;
 
 class TimeTest extends \PHPUnit_Framework_TestCase
 {
-    public function testO()
+    public function setUp()
     {
-        $p = new \DateTime('2012-02-31');
-        $q = date_parse_from_format('Y-m-d', '2013-03');
-        //var_dump($q);
+        try {
+            date_default_timezone_get();
+        } catch (\Exception $e) {
+            date_default_timezone_set('UTC');
+        }
     }
 
     public function testDataWithStdFormat()

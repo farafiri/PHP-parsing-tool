@@ -55,8 +55,7 @@ class Parser
     {
         $this->grammar = $grammar;
         $this->options = $options;
-		
-        $branchNodes = array();
+
         foreach ($this->grammar as $name => $node) {
                 $grammarNode = new \ParserGenerator\GrammarNode\BranchDecorator(new \ParserGenerator\GrammarNode\Branch($name));
                 $this->grammar[$name] = $grammarNode;
@@ -158,9 +157,9 @@ class Parser
         $this->cache = array();
         $restrictedEnd = array();
         if (!empty($this->options['ignoreWhitespaces'])) {
-            $trimedString = ltrim($string);
-            $beforeContent = substr($string, 0, strlen($string) - strlen($trimedString));
-            $string = $trimedString;
+            $trimmedString = ltrim($string);
+            $beforeContent = substr($string, 0, strlen($string) - strlen($trimmedString));
+            $string = $trimmedString;
         } else {
             $beforeContent = '';
         }

@@ -5,8 +5,6 @@ use ParserGenerator\SyntaxTreeNode\Branch;
 use ParserGenerator\SyntaxTreeNode\Root;
 use ParserGenerator\SyntaxTreeNode\Leaf;
 
-require_once('/../src/Parser.php');
-
 class ParserTest extends PHPUnit_Framework_TestCase
 {
     protected function assertObject($a)
