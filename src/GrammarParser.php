@@ -141,7 +141,7 @@ class GrammarParser
             'grammarBranches' => array('notLast' => array(':grammarBranch', ':comments', ':/\./', ':grammarBranches'),
                 'last' => array(':grammarBranch', ':comments', ':/\.?/', ":comments")),
             'grammarBranch' => array('standard' => array(':comments', ':branchName', ':branchType', ':rules')),
-			'branchType' => array(array(''), array('(full)'), array('(naive)'), array('(PEG)')),
+			'branchType' => array(array(''), array('(full)'),  array('(naive)'), array('(PEG)')),
             'rules' => array('last' => array(':rule'),
                 'notLast' => array(':rule', ':rules')),
             'rule' => array('standard' => array(':comments', ':/:/', ':ruleName', ':/=>|:=/', ':sequence')),
@@ -233,6 +233,7 @@ require_once('Extension/Integer.php');
 require_once('Extension/RuleCondition.php');
 require_once('Extension/Lookahead.php');
 require_once('Extension/Time.php');
+require_once('Extension/Unorder.php');
 require_once('Extension/Series.php');
 require_once('Extension/Choice.php');
 require_once('Extension/Text.php');

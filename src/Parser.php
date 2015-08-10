@@ -199,7 +199,20 @@ class Parser
 
                     $match[] = $node;
                 };
-            }
+            } /*elseif (isset($node->lastMatch)) {
+                if ($maxMatch < $node->lastMatch) {
+                    $maxMatch = $node->lastMatch;
+                    $match = array();
+                }
+
+                if ($maxMatch === $node->lastMatch) {
+                    if ($node instanceof GrammarNode\Series) {
+                        $node = $node->getMainNode();
+                    }
+
+                    $match[] = $node;
+                };
+            }*/
         });
 
         if ($maxMatch === -1) {
@@ -222,6 +235,22 @@ class Parser
             'line' => count($lines),
             'char' => strlen($lines[count($lines) - 1]) + 1
         );
+    }
+
+    public function getErrorString($str)
+    {
+        $error = $this->getError();
+
+        $posData = self::getLineAndCharacterFromOffset($str, $error['index']);
+
+        $expected = implode(' or ', $this->generalizeErrors($error['expected']));
+        $foundLength = 20;
+        $found = substr($str, $error['index']);
+        if (strlen($found) > $foundLength) {
+            $found = substr($found, 0, $foundLength) . '...';
+        }
+
+        return "line: " . $posData['line'] . ', character: ' . $posData['char'] . "\nexpected: " . $expected . "\nfound: " . $found;
     }
 
     public function generate($length, $node = 'start')

@@ -15,6 +15,21 @@ class TimeTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    protected function assertObject($a)
+    {
+        $this->assertTrue(is_object($a));
+    }
+
+    public function testBase()
+    {
+        $x = new Parser('start :=> time(Y-m-d).');
+
+        $this->assertObject($x->parse('2024-10-11'));
+        $this->assertObject($x->parse('2004-05-06'));
+        $this->assertFalse($x->parse('2004-05-06a'));
+        $this->assertFalse($x->parse('2004-05'));
+    }
+
     public function testDataWithStdFormat()
     {
         $x = new Parser('start :=> "q" time(Y-m-d) text.');
