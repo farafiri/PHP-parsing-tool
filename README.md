@@ -218,6 +218,36 @@ $parser->parse('post'); //false
 $parser->parse('doSomething'); // syntax tree object
 ```
 
+##### unorder(separator, choice1, choice2...)
+unorder should be used when you expect several elements in any order
+```
+x :=> unorder(s, A, B, C).
+/* is equivalent to */
+x :=> A s B s C
+  :=> A s C s B
+  :=> B s A s C
+  :=> B s C s A
+  :=> C s A s B
+  :=> C s B s A.
+```
+
+By default each element is expected exactly once but you can change it:
+```
+x :=> unorder(s, ?A, *B, +C).
+A is optional
+B may be used multiple (or zero) times
+C may be used multiple (at least once) times
+```
+
+At least one element is required:
+```php
+$parser = new \ParserGenerator\Parser('start   :=> unorder("", ?"a", ?"b").');
+
+$parser->parse('a'); //syntax tree object
+$parser->parse('b'); //syntax tree object
+$parser->parse(''); //false
+```
+
 
 
 
