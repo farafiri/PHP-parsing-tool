@@ -1,5 +1,5 @@
 {
-    "name": "farafiri/PHP-parsing-tool",
+    "name": "farafiri/php-parsing-tool",
     "description": "library for parsing",
     "license": "MIT",
     "require" : {
