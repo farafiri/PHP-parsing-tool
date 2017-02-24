@@ -227,7 +227,7 @@ require_once('Extension/SequenceItem.php');
 require_once('Extension/ItemRestrictions.php');
 require_once('Extension/TextNode.php');
 require_once('Extension/Regex.php');
-require_once('Extension/String.php');
+require_once('Extension/StringObject.php');
 require_once('Extension/WhiteCharactersContext.php');
 require_once('Extension/Integer.php');
 require_once('Extension/RuleCondition.php');

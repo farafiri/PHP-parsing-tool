@@ -2,7 +2,7 @@
 
 namespace ParserGenerator\Extension;
 
-class String extends \ParserGenerator\Extension\SequenceItem
+class StringObject extends \ParserGenerator\Extension\SequenceItem
 {
     protected function getGrammarGrammarSequence()
     {
@@ -32,4 +32,4 @@ class String extends \ParserGenerator\Extension\SequenceItem
     }
 }
 
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new String();
+\ParserGenerator\GrammarParser::$defaultPlugins[] = new StringObject();
