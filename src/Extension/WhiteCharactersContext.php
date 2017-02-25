@@ -40,10 +40,29 @@ class WhiteCharactersContext extends \ParserGenerator\Extension\SequenceItem
                 break;
         }
 
-        if ($negative) {
-            return new \ParserGenerator\GrammarNode\WhitespaceNegativeContextCheck($char);
+        if (empty($options['ignoreWhitespaces'])) {
+            $node = null;
+            switch ($char) {
+                case "\n":
+                    $node = new \ParserGenerator\GrammarNode\Regex('/\r\n|\n\r|\n|\r/');
+                    break;
+                case null:
+                    $node = new \ParserGenerator\GrammarNode\Regex('/\r\n|\n\r|\n|\r|\s|\t/');
+                    break;
+                default:
+                    $node = new \ParserGenerator\GrammarNode\Text($char);
+            }
+            if ($negative) {
+                return new \ParserGenerator\GrammarNode\Lookahead($node, null, true, false);
+            }
+
+            return $node;
         } else {
-            return new \ParserGenerator\GrammarNode\WhitespaceContextCheck($char);
+            if ($negative) {
+                return new \ParserGenerator\GrammarNode\WhitespaceNegativeContextCheck($char);
+            } else {
+                return new \ParserGenerator\GrammarNode\WhitespaceContextCheck($char);
+            }
         }
     }
 }
