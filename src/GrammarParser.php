@@ -51,6 +51,7 @@ class GrammarParser
 			}
             throw new \Exception("Given grammar is incorrect:\nline: " . $posData['line'] . ', character: ' . $posData['char'] . "\nexpected: " . $expected . "\nfound: " . $found);
         }
+        $parsedGrammar->refreshOwners();
 
         $grammarBranches = $parsedGrammar->findAll('grammarBranch');
 		
@@ -97,7 +98,7 @@ class GrammarParser
 
         if (isset($options['parser'])) {
             foreach ($grammar as $node) {
-                if (method_exists($node, 'setParser')) {
+                if ($node instanceof \ParserGenerator\ParserAwareInterface) {
                     $node->setParser($options['parser']);
                 }
             }
@@ -176,7 +177,6 @@ class GrammarParser
                 }
                 $sequence[] = $sequenceItemNode;
             }
-
             return $sequence;
         } else {
             $newSequence = null;
@@ -197,23 +197,23 @@ class GrammarParser
 
     public function buildSequenceItem(&$grammar, $sequenceItem, $options)
     {
-        if ($sequenceItem->getDetailType() === 'branch') {
-            $branchName = (string)$sequenceItem;
-            if (empty($grammar[$branchName])) {
-                throw new \Exception("Grammar definition error: Undefined branch [$branchName]");
+        $newSequenceItem = null;
+        foreach ($this->plugins as $plugin) {
+            if ($newSequenceItem = $plugin->buildSequenceItem($grammar, $sequenceItem, $this, $options)) {
+                break;
             }
+        }
 
-            return $grammar[$branchName];
+        if ($newSequenceItem) {
+            return $newSequenceItem;
         } else {
-            $newSequenceItem = null;
-            foreach ($this->plugins as $plugin) {
-                if ($newSequenceItem = $plugin->buildSequenceItem($grammar, $sequenceItem, $this, $options)) {
-                    break;
+            if ($sequenceItem->getDetailType() === 'branch') {
+                $branchName = (string)$sequenceItem;
+                if (empty($grammar[$branchName])) {
+                    throw new \Exception("Grammar definition error: Undefined branch [$branchName]");
                 }
-            }
 
-            if ($newSequenceItem) {
-                return $newSequenceItem;
+                return $grammar[$branchName];
             } else {
                 throw new \Exception('Sequence item type [' . $sequenceItem->getDetailType() . '] added but not supported');
             }
@@ -237,4 +237,5 @@ require_once('Extension/Unorder.php');
 require_once('Extension/Series.php');
 require_once('Extension/Choice.php');
 require_once('Extension/Text.php');
+require_once('Extension/ParametrizedNode.php');
 

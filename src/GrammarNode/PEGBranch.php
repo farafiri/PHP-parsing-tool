@@ -23,7 +23,7 @@ class PEGBranch extends \ParserGenerator\GrammarNode\Branch
 					}
 				}
 
-				$node = new \ParserGenerator\SyntaxTreeNode\Branch($this->nodeName, $_optionIndex, $subnodes);
+				$node = new \ParserGenerator\SyntaxTreeNode\Branch($this->nodeShortName, $_optionIndex, $subnodes);
 				$r = array('node' => $node, 'offset' => $index);
 				$this->parser->cache[$cacheStr] = $r;
 				return isset($restrictedEnd[$index]) ? false : $r;

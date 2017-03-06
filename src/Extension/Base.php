@@ -33,4 +33,11 @@ class Base implements \ParserGenerator\Extension\ExtensionInterface
     {
         return false;
     }
+
+    function insert($sequence, $search, $value, $offset = 1)
+    {
+        $index = array_search($search, $sequence) + $offset;
+        array_splice($sequence, $index, 0, $value);
+        return $sequence;
+    }
 }

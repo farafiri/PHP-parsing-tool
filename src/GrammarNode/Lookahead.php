@@ -77,4 +77,12 @@ class Lookahead extends \ParserGenerator\GrammarNode\BaseNode
             return $this->mainNode . ' ' . $lookaheadStr;
         }
     }
+
+    public function copy($copyCallback)
+    {
+        $copy = clone $this;
+        $copy->lookaheadNode = $copyCallback($this->lookaheadNode);
+        $copy->mainNode = $copyCallback($this->mainNode);
+        return $copy;
+    }
 }

@@ -9,12 +9,14 @@ class Branch extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGen
 
     protected $parser;
     protected $nodeName;
+    protected $nodeShortName;
     protected $node;
     public $startCharsCache;
 
     public function __construct($nodeName)
     {
         $this->nodeName = $nodeName;
+        $this->nodeShortName = $nodeName;
     }
 
     public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
@@ -58,7 +60,7 @@ class Branch extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGen
             }
             // match
             $index = $indexes[$optionCount - 1];
-            $node = new \ParserGenerator\SyntaxTreeNode\Branch($this->nodeName, $_optionIndex, $subnodes);
+            $node = new \ParserGenerator\SyntaxTreeNode\Branch($this->nodeShortName, $_optionIndex, $subnodes);
             $r = array('node' => $node, 'offset' => $index);
             $this->parser->cache[$cacheStr] = $r;
             if ($r != $lastResult) {
@@ -70,7 +72,7 @@ class Branch extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGen
         return false;
     }
 
-    public function setParser($parser)
+    public function setParser(\ParserGenerator\Parser $parser)
     {
         $this->parser = $parser;
     }
@@ -98,5 +100,13 @@ class Branch extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGen
     public function __toString()
     {
         return $this->getNodeName();
+    }
+
+    public function copy($copyCallback)
+    {
+        $copy = clone $this;
+        $copy->setNode($copyCallback($this->node));
+        $copy->nodeName = $this->nodeName . '&' . spl_object_hash($copy);
+        return $copy;
     }
 }

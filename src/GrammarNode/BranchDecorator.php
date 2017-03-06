@@ -4,7 +4,7 @@ namespace ParserGenerator\GrammarNode;
 
 class BranchDecorator extends \ParserGenerator\GrammarNode\Decorator implements \ParserGenerator\GrammarNode\BranchInterface
 {
-    public function setParser($parser)
+    public function setParser(\ParserGenerator\Parser $parser)
     {
         return $this->node->setParser($parser);
     }

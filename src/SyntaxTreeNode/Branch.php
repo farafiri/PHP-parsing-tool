@@ -301,6 +301,17 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
 		}
 	}
 
+    public function nearestOwner($type)
+    {
+        $owner = $this;
+        while(isset($owner->owner)) {
+            $owner = $owner->owner;
+            if ($owner->is($type)) {
+                return $owner;
+            }
+        }
+    }
+
     public function iterateWith($anotherNode, $callback)
     {
         $callback($this, $anotherNode);

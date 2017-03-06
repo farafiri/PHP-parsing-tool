@@ -2,12 +2,8 @@
 
 namespace ParserGenerator\GrammarNode;
 
-interface BranchInterface extends \ParserGenerator\GrammarNode\NodeInterface
+interface BranchInterface extends \ParserGenerator\GrammarNode\NodeInterface, \ParserGenerator\ParserAwareInterface
 {
-    public function setParser($parser);
-
-    public function getParser();
-
     public function setNode($node);
 
     public function getNode();

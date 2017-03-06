@@ -11,7 +11,6 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
     protected $separator;
     protected $from0;
     protected $greedy;
-    protected $parser;
 
     public function __construct($mainNode, $separator, $from0, $greedy)
     {
@@ -98,5 +97,12 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
     public function __toString() {
         $op = array(array('+', '++'), array('*', '**'));
         return $this->mainNode . $op[$this->from0][$this->greedy] . ($this->separator ?: '');
+    }
+
+    public function copy($copyCallback)
+    {
+        $copy = new static($copyCallback($this->mainNode), $copyCallback($this->separator), $this->from0, $this->greedy);
+        $copy->setParser($this->getParser());
+        return $copy;
     }
 }

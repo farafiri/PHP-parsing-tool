@@ -37,7 +37,7 @@ class Choice extends \ParserGenerator\Extension\SequenceItem
             $node->setParser($options['parser']);
         }
 
-        $grammar[$node->getTmpNodeName()] = $node;
+        //$grammar[$node->getTmpNodeName()] = $node;
 
         return $node;
     }

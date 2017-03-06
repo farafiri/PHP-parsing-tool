@@ -31,4 +31,11 @@ class ErrorTrackDecorator extends Decorator
     public function reset() {
         $this->maxCheck = -1;
     }
+
+    public function copy($copyCallback)
+    {
+        $result = parent::copy($copyCallback);
+        $result->maxCheck = -1;
+        return $result;
+    }
 } 

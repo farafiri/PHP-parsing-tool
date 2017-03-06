@@ -2,7 +2,7 @@
 
 namespace ParserGenerator\GrammarNode;
 
-class Unorder extends \ParserGenerator\GrammarNode\BaseNode
+class Unorder extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGenerator\ParserAwareInterface
 {
     const MAX = 1000000;
 
@@ -16,6 +16,11 @@ class Unorder extends \ParserGenerator\GrammarNode\BaseNode
     {
         $this->separator = $separator;
         $this->resultType = $resultType;
+        $this->setTmpNodeName();
+    }
+
+    protected function setTmpNodeName()
+    {
         $this->tmpNodeName = '&unorder/' . spl_object_hash($this);
     }
 
@@ -89,18 +94,32 @@ class Unorder extends \ParserGenerator\GrammarNode\BaseNode
         return $this->tmpNodeName;
     }
 
-    public function setParser($parser)
+    public function setParser(\ParserGenerator\Parser $parser)
     {
         $this->parser = $parser;
         foreach($this->choices as $choice) {
-            if (method_exists($choice, 'setParser')) {
+            if ($choice instanceof \ParserGenerator\ParserAwareInterface) {
                 $choice->setParser($parser);
             }
         }
     }
 
+    public function getParser()
+    {
+        return $this->parser;
+    }
+
     public function __toString() {
         return "unorder";
         return '(' . implode(' | ', $this->choices) . ')';
+    }
+
+    public function copy($copyCallback)
+    {
+        $result = clone $this;
+        $result->separator = $copyCallback($this->separator);
+        $result->choices = $copyCallback($this->choices);
+        $result->setTmpNodeName();
+        return $result;
     }
 }

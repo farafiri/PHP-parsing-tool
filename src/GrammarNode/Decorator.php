@@ -31,4 +31,16 @@ class Decorator implements \ParserGenerator\GrammarNode\NodeInterface
     public function getDecoratedNode() {
         return $this->node;
     }
+
+    public function copy($copyCallback)
+    {
+        $copy = clone $this;
+        $copy->node = $copyCallback($this->node);
+        return $copy;
+    }
+
+    public function getNodeName()
+    {
+        return $this->node->getNodeName();
+    }
 }

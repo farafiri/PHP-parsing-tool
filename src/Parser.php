@@ -139,12 +139,12 @@ class Parser
             $this->buildFromString($grammar, $options);
         }
 		
-		$that = $this;
+		/*$that = $this;
 		$this->iterateOverNodes(function($node) use ($that) {
 		    if ($node instanceof \ParserGenerator\GrammarNode\BranchInterface && empty($that->grammar[$node->getNodeName()])) {
 		        $that->grammar[$node->getNodeName()] = $node;
 		    }
-		});
+		});*/
     }
 
     public function parse($string, $nodeToParseName = 'start')

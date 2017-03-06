@@ -2,7 +2,7 @@
 
 namespace ParserGenerator\GrammarNode;
 
-class WhitespaceNegativeContextCheck extends \ParserGenerator\GrammarNode\BaseNode
+class WhitespaceNegativeContextCheck extends \ParserGenerator\GrammarNode\BaseNode implements LeafInterface
 {
     protected $char;
 

@@ -52,13 +52,25 @@ class Choice extends \ParserGenerator\GrammarNode\BaseNode
         return $this->grammarNode->getNode();
     }
 
-    public function setParser($parser)
+    public function setParser(\ParserGenerator\Parser $parser)
     {
         $this->parser = $parser;
         $this->grammarNode->setParser($parser);
     }
 
     public function __toString() {
-        return '(' . implode(' | ', $this->choices) . ')';
+        $result = '';
+        foreach($this->choices as $choice) {
+            $result .= ($result ? '|' : '') . (is_array($choice) ? implode(" ", $choice) : $choice);
+        }
+
+        return '(' . $result . ')';
+    }
+
+    public function copy($copyCallback)
+    {
+        $copy = new static($copyCallback($this->choices));
+        $copy->setParser($this->parser);
+        return $copy;
     }
 }
