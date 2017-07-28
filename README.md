@@ -76,10 +76,10 @@ digit  :=> /\d/.
 ```
 will match any pair of letter followed by digit.
 
-##### whitespace, space, newLine, tab
-whitespace matches space, tabulator or new line character
+##### whiteSpace, space, newLine, tab
+whiteSpace matches space, tabulator or new line character
 If ignoreWhitespaces mode is off these symbols work same as /\s/, " ", /\t/, /\n/.
-When ignoreWhitespaces mode is on then /\s/, " ", "\t", "\n" won't work and you must whitespace, space etc symbols.
+When ignoreWhitespaces mode is on then /\s/, " ", "\t", "\n" won't work and you must use whiteSpace, space, etc symbols.
 In ignoreWhitespaces mode these symbols check context and not consuming characters from input.
 For example sequence: 'a' newLine space space 'b' will match characters 'a' and 'b' separated by at least one space and at least one new line symbol
 
