@@ -27,11 +27,16 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
             new \ParserGenerator\SyntaxTreeNode\Series('list', 'str', array(
-                new \ParserGenerator\SyntaxTreeNode\Branch('str', 0, array(new \ParserGenerator\SyntaxTreeNode\Leaf('a'))),
-                new \ParserGenerator\SyntaxTreeNode\Branch('str', 1, array(new \ParserGenerator\SyntaxTreeNode\Leaf('b'))),
-                new \ParserGenerator\SyntaxTreeNode\Branch('str', 0, array(new \ParserGenerator\SyntaxTreeNode\Leaf('a'))),
-                new \ParserGenerator\SyntaxTreeNode\Branch('str', 2, array(new \ParserGenerator\SyntaxTreeNode\Leaf('c'))),
-                new \ParserGenerator\SyntaxTreeNode\Branch('str', 0, array(new \ParserGenerator\SyntaxTreeNode\Leaf('a'))),
+                new \ParserGenerator\SyntaxTreeNode\Branch('str', 0,
+                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('a'))),
+                new \ParserGenerator\SyntaxTreeNode\Branch('str', 1,
+                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('b'))),
+                new \ParserGenerator\SyntaxTreeNode\Branch('str', 0,
+                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('a'))),
+                new \ParserGenerator\SyntaxTreeNode\Branch('str', 2,
+                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('c'))),
+                new \ParserGenerator\SyntaxTreeNode\Branch('str', 0,
+                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('a'))),
             ), false)
         )), $x->parse("abaca"));
     }
@@ -69,11 +74,16 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
             new \ParserGenerator\SyntaxTreeNode\Series('list', 'str', array(
-                new \ParserGenerator\SyntaxTreeNode\Branch('str', 0, array(new \ParserGenerator\SyntaxTreeNode\Leaf('a'))),
-                new \ParserGenerator\SyntaxTreeNode\Branch('coma', 0, array(new \ParserGenerator\SyntaxTreeNode\Leaf(','))),
-                new \ParserGenerator\SyntaxTreeNode\Branch('str', 2, array(new \ParserGenerator\SyntaxTreeNode\Leaf('c'))),
-                new \ParserGenerator\SyntaxTreeNode\Branch('coma', 0, array(new \ParserGenerator\SyntaxTreeNode\Leaf(','))),
-                new \ParserGenerator\SyntaxTreeNode\Branch('str', 1, array(new \ParserGenerator\SyntaxTreeNode\Leaf('b'))),
+                new \ParserGenerator\SyntaxTreeNode\Branch('str', 0,
+                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('a'))),
+                new \ParserGenerator\SyntaxTreeNode\Branch('coma', 0,
+                    array(new \ParserGenerator\SyntaxTreeNode\Leaf(','))),
+                new \ParserGenerator\SyntaxTreeNode\Branch('str', 2,
+                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('c'))),
+                new \ParserGenerator\SyntaxTreeNode\Branch('coma', 0,
+                    array(new \ParserGenerator\SyntaxTreeNode\Leaf(','))),
+                new \ParserGenerator\SyntaxTreeNode\Branch('str', 1,
+                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('b'))),
             ), true)
         )), $x->parse("a,c,b"));
     }

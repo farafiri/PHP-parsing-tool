@@ -1,9 +1,6 @@
 <?php
 
 use ParserGenerator\Parser;
-use ParserGenerator\SyntaxTreeNode\Branch;
-use ParserGenerator\SyntaxTreeNode\Root;
-use ParserGenerator\SyntaxTreeNode\Leaf;
 
 class ParametrizedNodeTest extends PHPUnit_Framework_TestCase
 {
@@ -156,7 +153,7 @@ class ParametrizedNodeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array("1010", "11"), $toList("101011"));
         $this->assertEquals(array("10110101", "0010"), $toList("101101010010"));
         $this->assertEquals(array("1001001111", "11011", "1011100"), $toList("1001001111110111011100"));
-        $this->assertEquals(array("11111101111010"),     $toList("11111101111010"));
+        $this->assertEquals(array("11111101111010"), $toList("11111101111010"));
         $this->assertEquals(array("1111110111", "1110"), $toList("11111101111110"));
 
         $this->assertFalse($x->parse("0000000000000"));

@@ -8,7 +8,8 @@ class ParserNodeTest extends PHPUnit_Framework_TestCase
             new \ParserGenerator\SyntaxTreeNode\Branch('q', 'w', array(
                 new \ParserGenerator\SyntaxTreeNode\Leaf('l1')
             )),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('l2')));
+            new \ParserGenerator\SyntaxTreeNode\Leaf('l2')
+        ));
 
         $b = clone $a;
 
@@ -25,7 +26,8 @@ class ParserNodeTest extends PHPUnit_Framework_TestCase
             new \ParserGenerator\SyntaxTreeNode\Branch('q', 'w', array(
                 new \ParserGenerator\SyntaxTreeNode\Leaf('l1')
             )),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('l2')));
+            new \ParserGenerator\SyntaxTreeNode\Leaf('l2')
+        ));
 
         $this->assertEquals('l1l2', (string)$a);
 
@@ -48,7 +50,8 @@ class ParserNodeTest extends PHPUnit_Framework_TestCase
             new \ParserGenerator\SyntaxTreeNode\Branch('q', 'w', array(
                 new \ParserGenerator\SyntaxTreeNode\Leaf('l1')
             )),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('l2')));
+            new \ParserGenerator\SyntaxTreeNode\Leaf('l2')
+        ));
 
         $b = clone $a;
 
@@ -57,25 +60,29 @@ class ParserNodeTest extends PHPUnit_Framework_TestCase
         $b->getSubnode(0)->setType('qq');
 
         $this->assertFalse($a->compare($b));
-        $this->assertTrue($a->compare($b, \ParserGenerator\SyntaxTreeNode\Base::COMPARE_DEFAULT xor \ParserGenerator\SyntaxTreeNode\Base::COMPARE_CHILDREN_NORMAL));
+        $this->assertTrue($a->compare($b,
+            \ParserGenerator\SyntaxTreeNode\Base::COMPARE_DEFAULT xor \ParserGenerator\SyntaxTreeNode\Base::COMPARE_CHILDREN_NORMAL));
 
         $b = clone $a;
         $b->setDetailType('');
 
         $this->assertFalse($a->compare($b));
-        $this->assertTrue($a->compare($b, \ParserGenerator\SyntaxTreeNode\Base::COMPARE_DEFAULT xor \ParserGenerator\SyntaxTreeNode\Base::COMPARE_SUBTYPE));
+        $this->assertTrue($a->compare($b,
+            \ParserGenerator\SyntaxTreeNode\Base::COMPARE_DEFAULT xor \ParserGenerator\SyntaxTreeNode\Base::COMPARE_SUBTYPE));
 
         $b = clone $a;
         $b->setType('');
 
         $this->assertFalse($a->compare($b));
-        $this->assertTrue($a->compare($b, \ParserGenerator\SyntaxTreeNode\Base::COMPARE_DEFAULT xor \ParserGenerator\SyntaxTreeNode\Base::COMPARE_TYPE));
+        $this->assertTrue($a->compare($b,
+            \ParserGenerator\SyntaxTreeNode\Base::COMPARE_DEFAULT xor \ParserGenerator\SyntaxTreeNode\Base::COMPARE_TYPE));
 
         $b = clone $a;
         $b->getSubnode(0)->getSubnode(0)->setContent('lx');
 
         $this->assertFalse($a->compare($b));
-        $this->assertTrue($a->compare($b, \ParserGenerator\SyntaxTreeNode\Base::COMPARE_DEFAULT xor \ParserGenerator\SyntaxTreeNode\Base::COMPARE_LEAF));
+        $this->assertTrue($a->compare($b,
+            \ParserGenerator\SyntaxTreeNode\Base::COMPARE_DEFAULT xor \ParserGenerator\SyntaxTreeNode\Base::COMPARE_LEAF));
     }
 
     protected function getTestNode1()

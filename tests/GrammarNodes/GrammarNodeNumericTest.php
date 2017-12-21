@@ -33,7 +33,12 @@ class GrammarNodeNumericTest extends PHPUnit_Framework_TestCase
 
     public function testMinMax()
     {
-        $x = new \ParserGenerator\GrammarNode\Numeric(array('formatHex' => true, 'formatBin' => true, 'min' => 7, 'max' => 250));
+        $x = new \ParserGenerator\GrammarNode\Numeric(array(
+            'formatHex' => true,
+            'formatBin' => true,
+            'min' => 7,
+            'max' => 250
+        ));
 
         $this->assertFalse($x->rparse('-8', 0, array()));
         $this->assertFalse($x->rparse('6', 0, array()));

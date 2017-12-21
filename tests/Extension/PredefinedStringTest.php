@@ -4,14 +4,16 @@ namespace ParserGenerator\Tests\Extension;
 
 use ParserGenerator\Parser;
 
-class StringTest extends \PHPUnit_Framework_TestCase {
+class StringTest extends \PHPUnit_Framework_TestCase
+{
 
     protected function assertObject($a)
     {
         $this->assertTrue(is_object($a));
     }
 
-    public function testSimple() {
+    public function testSimple()
+    {
         $x = new Parser('start :=> string.');
 
         $this->assertObject($x->parse('"asd\\" "'));

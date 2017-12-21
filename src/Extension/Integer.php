@@ -8,23 +8,37 @@ class Integer extends \ParserGenerator\Extension\SequenceItem
 
     public function extendGrammar($grammarGrammar)
     {
-        $grammarGrammar[$this->getNS(null, false)] = array(array(
-            $this->getNS('LowBound'),
-            new \ParserGenerator\GrammarNode\Text('..'),
-            $this->getNS('HiBound'),
-            $this->getNs('modifiers'),
-            ''
-        ));
+        $grammarGrammar[$this->getNS(null, false)] = array(
+            array(
+                $this->getNS('LowBound'),
+                new \ParserGenerator\GrammarNode\Text('..'),
+                $this->getNS('HiBound'),
+                $this->getNs('modifiers'),
+                ''
+            )
+        );
 
         $grammarGrammar[$this->getNS('LowBound', false)] = array(
             array(new \ParserGenerator\GrammarNode\Text('-inf')),
             array(new \ParserGenerator\GrammarNode\Text('-infinity')),
-            'int' => array(new \ParserGenerator\GrammarNode\Numeric(array('formatHex' => true, 'formatBin' => true, 'allowFixedCharacters' => true)))
+            'int' => array(
+                new \ParserGenerator\GrammarNode\Numeric(array(
+                    'formatHex' => true,
+                    'formatBin' => true,
+                    'allowFixedCharacters' => true
+                ))
+            )
         );
         $grammarGrammar[$this->getNS('HiBound', false)] = array(
             array(new \ParserGenerator\GrammarNode\Text('inf')),
             array(new \ParserGenerator\GrammarNode\Text('infinity')),
-            'int' => array(new \ParserGenerator\GrammarNode\Numeric(array('formatHex' => true, 'formatBin' => true, 'allowFixedCharacters' => true)))
+            'int' => array(
+                new \ParserGenerator\GrammarNode\Numeric(array(
+                    'formatHex' => true,
+                    'formatBin' => true,
+                    'allowFixedCharacters' => true
+                ))
+            )
         );
 
         $grammarGrammar[$this->getNS('modifiers', false)] = array(

@@ -18,7 +18,8 @@ class BranchStringCondition extends \ParserGenerator\GrammarNode\BranchExtraCond
         $this->_functions = array();
 
         foreach ($conditionStrings as $detailType => $conditionString) {
-            $this->_functions[$detailType] = create_function('$string,$fromIndex,$toIndex,$node,$s', 'return ' . $conditionString . ';');
+            $this->_functions[$detailType] = create_function('$string,$fromIndex,$toIndex,$node,$s',
+                'return ' . $conditionString . ';');
         }
     }
 

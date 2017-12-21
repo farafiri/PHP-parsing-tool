@@ -36,7 +36,8 @@ class PredefinedString extends \ParserGenerator\GrammarNode\BaseNode Implements 
 
                         return false;
                     } else {
-                        $node = new \ParserGenerator\SyntaxTreeNode\PredefinedString($val, $this->eatWhiteChars ? $match[0] : '');
+                        $node = new \ParserGenerator\SyntaxTreeNode\PredefinedString($val,
+                            $this->eatWhiteChars ? $match[0] : '');
 
                         return array('node' => $node, 'offset' => $nextPos + 1);
                     }

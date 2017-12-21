@@ -33,13 +33,13 @@ class CSVParser extends \ParserGenerator\Parser
 
         if ($csvRaw) {
             $data = array();
-            foreach($csvRaw->getSubnode(0)->getMainNodes() as $csvLine) {
+            foreach ($csvRaw->getSubnode(0)->getMainNodes() as $csvLine) {
                 $line = array();
-                foreach($csvLine->getSubnode(0)->getMainNodes() as $csvValue) {
+                foreach ($csvLine->getSubnode(0)->getMainNodes() as $csvValue) {
                     if ($csvValue->getDetailType() == 0) {
                         $line[] = $csvValue->getSubnode(1)->getValue();
                     } else {
-                        $line[] = (string) $csvValue;
+                        $line[] = (string)$csvValue;
                     }
                 }
 

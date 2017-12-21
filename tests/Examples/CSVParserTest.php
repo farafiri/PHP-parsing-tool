@@ -2,7 +2,8 @@
 
 class CSVParserTest extends PHPUnit_Framework_TestCase
 {
-    public function testBase() {
+    public function testBase()
+    {
         $parser = new \ParserGenerator\Examples\CSVParser();
 
         $expected = array(
@@ -13,7 +14,8 @@ class CSVParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $parser->parseCSV("r1c1,r1c2\nr2c1,r2c2"));
     }
 
-    public function testQuoted() {
+    public function testQuoted()
+    {
         $parser = new \ParserGenerator\Examples\CSVParser();
 
         $expected = array(
@@ -24,7 +26,8 @@ class CSVParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $parser->parseCSV("\"r1c1\" , \"r1c2\"\n\"r2c1\",\"r2c2\""));
     }
 
-    public function testPreserveSpaces() {
+    public function testPreserveSpaces()
+    {
         $parser = new \ParserGenerator\Examples\CSVParser();
 
         $expected = array(
@@ -34,7 +37,8 @@ class CSVParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $parser->parseCSV("  c1  , c2 "));
     }
 
-    public function testProperEscaping() {
+    public function testProperEscaping()
+    {
         $parser = new \ParserGenerator\Examples\CSVParser();
 
         $expected = array(

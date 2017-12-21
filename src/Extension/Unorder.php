@@ -29,7 +29,7 @@ class Unorder extends \ParserGenerator\Extension\SequenceItem
 
         while ($sequenceNode) {
             $n = $this->buildInternalSequence($grammar, $sequenceNode->getSubnode(1), $grammarParser, $options);
-            $node->addChoice($n, (string) $sequenceNode->getSubnode(0));
+            $node->addChoice($n, (string)$sequenceNode->getSubnode(0));
             $sequenceNode = ($sequenceNode->getDetailType() == 'last') ? null : $sequenceNode->getSubnode(3);
         }
 
@@ -47,8 +47,7 @@ class Unorder extends \ParserGenerator\Extension\SequenceItem
     {
         $choice = array();
 
-        foreach($sequence->findAll('sequenceItem') as $sequenceItem)
-        {
+        foreach ($sequence->findAll('sequenceItem') as $sequenceItem) {
             $choice[] = $grammarParser->buildSequenceItem($grammar, $sequenceItem, $options);
         }
 

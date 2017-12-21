@@ -29,9 +29,13 @@ class WhitespaceContextCheck extends BaseNode implements LeafInterface
             $offset = 1;
         }
 
-        if (($this->char === null) ? in_array($stringChar, self::$whiteCharacters, true) : ($this->char === $stringChar)) {
+        if (($this->char === null) ? in_array($stringChar, self::$whiteCharacters,
+            true) : ($this->char === $stringChar)) {
             if (!isset($restrictedEnd[$fromIndex + $offset])) {
-                return array('node' => new \ParserGenerator\SyntaxTreeNode\Leaf($substring), 'offset' => $fromIndex + $offset);
+                return array(
+                    'node' => new \ParserGenerator\SyntaxTreeNode\Leaf($substring),
+                    'offset' => $fromIndex + $offset
+                );
             }
         }
 

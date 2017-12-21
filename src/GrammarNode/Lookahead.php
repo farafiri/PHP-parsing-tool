@@ -67,7 +67,8 @@ class Lookahead extends \ParserGenerator\GrammarNode\BaseNode
         return $result;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         $lookaheadStr = ($this->positive ? '?' : '!') . $this->lookaheadNode;
         if ($this->mainNode === null) {
             return $lookaheadStr;

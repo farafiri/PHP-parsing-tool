@@ -2,5 +2,6 @@
 
 namespace ParserGenerator\GrammarNode;
 
-interface LeafInterface {
+interface LeafInterface
+{
 }

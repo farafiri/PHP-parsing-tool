@@ -9,15 +9,18 @@
 namespace ParserGenerator;
 
 
-class GrammarNodeCopier {
-    public static function copy($node, $callback) {
-        $_copy = function($node) use ($callback, &$_copy) {
+class GrammarNodeCopier
+{
+    public static function copy($node, $callback)
+    {
+        $_copy = function ($node) use ($callback, &$_copy) {
             static $i;
             if ($node === null) {
                 return null;
-            } if (is_array($node)) {
+            }
+            if (is_array($node)) {
                 $result = array();
-                foreach($node as $index => $subnode) {
+                foreach ($node as $index => $subnode) {
                     $result[$index] = $_copy($subnode);
                 }
                 return $result;
@@ -35,4 +38,4 @@ class GrammarNodeCopier {
 
         return $node->copy($_copy);
     }
-} 
+}

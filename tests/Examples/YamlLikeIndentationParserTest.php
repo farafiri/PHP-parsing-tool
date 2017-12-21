@@ -1,6 +1,7 @@
 <?php
 
-class YamlLikeIndentationParserTest extends PHPUnit_Framework_TestCase {
+class YamlLikeIndentationParserTest extends PHPUnit_Framework_TestCase
+{
     public function testBase()
     {
         $parser = new \ParserGenerator\Examples\YamlLikeIndentationParser();
@@ -8,7 +9,8 @@ class YamlLikeIndentationParserTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(array("a" => "x"), $parser->getValue("a:x"));
         $this->assertEquals(array(
             "a" => "x",
-            "b" => "y"), $parser->getValue("
+            "b" => "y"
+        ), $parser->getValue("
             a:x
             b:y"));
     }
@@ -19,7 +21,9 @@ class YamlLikeIndentationParserTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals(array(
             "a" => array(
-                "b" => "x")), $parser->getValue("
+                "b" => "x"
+            )
+        ), $parser->getValue("
             a:
              b:x"));
     }
@@ -30,7 +34,9 @@ class YamlLikeIndentationParserTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals(array(
             "a" => array(
-                "b" => "x")), $parser->getValue("
+                "b" => "x"
+            )
+        ), $parser->getValue("
             a:
                          b:x"));
     }
@@ -45,7 +51,11 @@ class YamlLikeIndentationParserTest extends PHPUnit_Framework_TestCase {
                     "c" => array(
                         "d" => array(
                             "e" => "x"
-            ))))), $parser->getValue("
+                        )
+                    )
+                )
+            )
+        ), $parser->getValue("
             a:
               b:
                 c:
@@ -62,7 +72,9 @@ class YamlLikeIndentationParserTest extends PHPUnit_Framework_TestCase {
                 "b" => array(
                     "c" => "x",
                     "d" => "y"
-                ))), $parser->getValue("
+                )
+            )
+        ), $parser->getValue("
             a:
               b:
                 c:x
@@ -72,9 +84,10 @@ class YamlLikeIndentationParserTest extends PHPUnit_Framework_TestCase {
             "a" => array(
                 "b" => array(
                     "c" => "x"
-                    ),
+                ),
                 "d" => "y"
-            )), $parser->getValue("
+            )
+        ), $parser->getValue("
             a:
               b:
                 c:x
@@ -84,9 +97,10 @@ class YamlLikeIndentationParserTest extends PHPUnit_Framework_TestCase {
             "a" => array(
                 "b" => array(
                     "c" => "x"
-                )),
+                )
+            ),
             "d" => "y"
-            ), $parser->getValue("
+        ), $parser->getValue("
             a:
               b:
                 c:x
@@ -121,18 +135,20 @@ class YamlLikeIndentationParserTest extends PHPUnit_Framework_TestCase {
                     "f" => array(
                         "g" => "3",
                         "h" => "4"
-                    )),
+                    )
+                ),
                 "i" => "5",
                 "j" => "6",
                 "k" => array(
                     "l" => array(
                         "m" => "7"
-                        ),
+                    ),
                     "n" => "8",
                     "o" => "9"
-                    ),
+                ),
                 "p" => "10"
-                )), $parser->getValue("
+            )
+        ), $parser->getValue("
             a:
               b:
                 c:1
@@ -150,4 +166,4 @@ class YamlLikeIndentationParserTest extends PHPUnit_Framework_TestCase {
                 o:9
               p:10"));
     }
-} 
+}

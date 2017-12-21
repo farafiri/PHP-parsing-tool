@@ -15,29 +15,35 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
         $this->subnodes = $subnodes;
     }
 
-    public function getType() {
+    public function getType()
+    {
         return $this->type;
     }
 
-    public function setType($newValue) {
+    public function setType($newValue)
+    {
         $this->type = $newValue;
         return $this;
     }
 
-    public function getDetailType() {
+    public function getDetailType()
+    {
         return $this->detailType;
     }
 
-    public function setDetailType($newValue) {
+    public function setDetailType($newValue)
+    {
         $this->detailType = $newValue;
         return $this;
     }
 
-    public function getSubnode($index) {
+    public function getSubnode($index)
+    {
         return isset($this->subnodes[$index]) ? $this->subnodes[$index] : null;
     }
 
-    public function getNestedSubnode($param1) {
+    public function getNestedSubnode($param1)
+    {
         if (is_array($param1)) {
             $args = $param1;
         } else {
@@ -56,7 +62,8 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
         }
     }
 
-    public function setSubnode($index, $newValue) {
+    public function setSubnode($index, $newValue)
+    {
         if ($index === null) {
             $this->subnodes[] = $newValue;
         } else {
@@ -65,16 +72,19 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
         return $this;
     }
 
-    public function getSubnodes() {
+    public function getSubnodes()
+    {
         return $this->subnodes;
     }
 
-    public function setSubnodes($subnodes) {
+    public function setSubnodes($subnodes)
+    {
         $this->subnodes = $subnodes;
         return $this;
     }
 
-    public function dump($maxNestLevel = -1, $offset = '') {
+    public function dump($maxNestLevel = -1, $offset = '')
+    {
         $result = $this->type . ':' . $this->detailType;
         if ($maxNestLevel == 0) {
             return $result;
@@ -84,7 +94,7 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
         }
 
         $result .= " (\n";
-        foreach($this->subnodes as $i => $subnode) {
+        foreach ($this->subnodes as $i => $subnode) {
             $result .= $offset . '  ' . $i . ' = ' . $subnode->dump($maxNestLevel - 1, $offset . '  ') . "\n";
         }
         return $result . $offset . ')';
@@ -232,7 +242,7 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
     public function compare($anotherNode, $compareOptions = \ParserGenerator\SyntaxTreeNode\Base::COMPARE_DEFAULT)
     {
 
-        if (!($anotherNode instanceof  \ParserGenerator\SyntaxTreeNode\Branch)) {
+        if (!($anotherNode instanceof \ParserGenerator\SyntaxTreeNode\Branch)) {
             return false;
         }
 
@@ -290,21 +300,21 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
     {
         return $this->subnodes[count($this->subnodes) - 1]->getRightLeaf();
     }
-	
-	public function refreshOwners($recursive = true)
-	{
-	    foreach($this->subnodes as $subnode) {
-		    $subnode->owner = $this;
-			if ($subnode instanceof Branch && $recursive) {
-			    $subnode->refreshOwners($recursive);
-			}
-		}
-	}
+
+    public function refreshOwners($recursive = true)
+    {
+        foreach ($this->subnodes as $subnode) {
+            $subnode->owner = $this;
+            if ($subnode instanceof Branch && $recursive) {
+                $subnode->refreshOwners($recursive);
+            }
+        }
+    }
 
     public function nearestOwner($type)
     {
         $owner = $this;
-        while(isset($owner->owner)) {
+        while (isset($owner->owner)) {
             $owner = $owner->owner;
             if ($owner->is($type)) {
                 return $owner;
@@ -317,10 +327,10 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
         $callback($this, $anotherNode);
 
         if (!($anotherNode instanceof self)) {
-            return ;
+            return;
         }
 
-        foreach($this->subnodes as $i => $subnode) {
+        foreach ($this->subnodes as $i => $subnode) {
             $subnode->iterateWith(isset($anotherNode->subnodes[$i]) ? $anotherNode->subnodes[$i] : null, $callback);
         }
     }
@@ -333,7 +343,7 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
         }
         $copy->owner = null;
 
-        $this->iterateWith($copy, function($that, $copy) {
+        $this->iterateWith($copy, function ($that, $copy) {
             $copy->origin = isset($that->origin) ? $that->origin : $that;
         });
 

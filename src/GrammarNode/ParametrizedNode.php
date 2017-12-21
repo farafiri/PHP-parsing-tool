@@ -30,7 +30,7 @@ class ParametrizedNode extends BaseNode implements \ParserGenerator\ParserAwareI
     {
         $params = $this->params;
         $parser = $this->parser;
-        return GrammarNodeCopier::copy($this->abstractNode, function($node) use ($params, $parser) {
+        return GrammarNodeCopier::copy($this->abstractNode, function ($node) use ($params, $parser) {
             if ($node instanceof ErrorTrackDecorator) {
                 $node = $node->getDecoratedNode();
             }

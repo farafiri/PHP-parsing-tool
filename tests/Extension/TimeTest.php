@@ -59,6 +59,7 @@ class TimeTest extends \PHPUnit_Framework_TestCase
         $x = new Parser('start :=> time(Y-m-d) text.', array('ignoreWhitespaces' => true));
 
         $timeNode = $x->parse('2014-03-08  lorem ipsum')->getSubnode(0);
-        $this->assertEquals('2014-03-08  ', $timeNode->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+        $this->assertEquals('2014-03-08  ',
+            $timeNode->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
     }
-} 
+}

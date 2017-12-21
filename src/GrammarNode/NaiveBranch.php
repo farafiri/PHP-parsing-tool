@@ -11,7 +11,7 @@ class NaiveBranch extends \ParserGenerator\GrammarNode\Branch
         if (isset($this->parser->cache[$cacheStr])) {
             return $this->parser->cache[$cacheStr];
         }
-		$this->parser->cache[$cacheStr] = false;
+        $this->parser->cache[$cacheStr] = false;
 
         foreach ($this->node as $_optionIndex => $option) {
             $subnodes = array();
@@ -22,7 +22,8 @@ class NaiveBranch extends \ParserGenerator\GrammarNode\Branch
             $restrictedEnds = array(array(), array(), array(), array(), array(), array(), array(), array());
             $restrictedEnds[$optionCount - 1] = $restrictedEnd;
             while (true) {
-                $subNode = $option[$optionIndex]->rparse($string, $indexes[$optionIndex - 1], $restrictedEnds[$optionIndex]);
+                $subNode = $option[$optionIndex]->rparse($string, $indexes[$optionIndex - 1],
+                    $restrictedEnds[$optionIndex]);
                 if ($subNode) {
                     $subNodeOffset = $subNode['offset'];
                     $subnodes[$optionIndex] = $subNode['node'];

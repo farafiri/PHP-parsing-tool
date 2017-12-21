@@ -8,11 +8,13 @@ namespace ParserGenerator\Examples;
  */
 class YamlLikeIndentationParser extends \ParserGenerator\Parser
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct($this->getYamlDefinition());
     }
 
-    protected function getYamlDefinition() {
+    protected function getYamlDefinition()
+    {
         return '
         start            :       => value<""> nl?.
         value<indent>    :string => space* simpleString
@@ -26,7 +28,8 @@ class YamlLikeIndentationParser extends \ParserGenerator\Parser
         ';
     }
 
-    public function getValue($yamlString) {
+    public function getValue($yamlString)
+    {
         $yamlTree = $this->parse($yamlString);
 
         if (!$yamlTree) {
@@ -36,15 +39,16 @@ class YamlLikeIndentationParser extends \ParserGenerator\Parser
         return $this->getValueOfNode($yamlTree->getSubnode(0));
     }
 
-    protected function getValueOfNode(\ParserGenerator\SyntaxTreeNode\Branch $node) {
+    protected function getValueOfNode(\ParserGenerator\SyntaxTreeNode\Branch $node)
+    {
         if ($node->getType() == 'value' && $node->getDetailType() == 'string') {
-            return (string) $node->getSubnode(1);
+            return (string)$node->getSubnode(1);
         } elseif ($node->getType() == 'value' && $node->getDetailType() == 'object') {
             return $this->getValueOfNode($node->getSubnode(0));
         } elseif ($node->getType() == 'objValues' && $node->getDetailType() == 'values') {
             $result = array();
-            foreach($node->getSubnode(0)->getMainNodes() as $objValue) {
-                $result[(string) $objValue->getSubnode(2)] = $this->getValueOfNode($objValue->getSubnode(5));
+            foreach ($node->getSubnode(0)->getMainNodes() as $objValue) {
+                $result[(string)$objValue->getSubnode(2)] = $this->getValueOfNode($objValue->getSubnode(5));
             }
             return $result;
         } elseif ($node->getType() == 'objValues' && $node->getDetailType() == 'indent') {
