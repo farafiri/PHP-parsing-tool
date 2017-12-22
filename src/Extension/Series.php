@@ -36,19 +36,20 @@ class Series extends \ParserGenerator\Extension\SequenceItem
             case '+':
             case '*':
                 $greedy = in_array($operator, array('**', '++')) || $forceGreedy;
-                $node = new \ParserGenerator\GrammarNode\Series($main, $separator, in_array($operator, array('*', '**')), $greedy);
+                $node = new \ParserGenerator\GrammarNode\Series($main, $separator,
+                    in_array($operator, array('*', '**')), $greedy);
                 if (isset($options['parser'])) {
                     $node->setParser($options['parser']);
                 }
 
                 return $node;
-			case '??':
-			case '?':
-			    $empty = new \ParserGenerator\GrammarNode\Text('');
-				$choices = ($operator == '??' || $forceGreedy) ? array($main, $empty) : array($empty, $main);
-			    $node = new \ParserGenerator\GrammarNode\Choice($choices);
-				
-				if (isset($options['parser'])) {
+            case '??':
+            case '?':
+                $empty = new \ParserGenerator\GrammarNode\Text('');
+                $choices = ($operator == '??' || $forceGreedy) ? array($main, $empty) : array($empty, $main);
+                $node = new \ParserGenerator\GrammarNode\Choice($choices);
+
+                if (isset($options['parser'])) {
                     $node->setParser($options['parser']);
                 }
 

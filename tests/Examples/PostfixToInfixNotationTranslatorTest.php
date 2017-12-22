@@ -18,13 +18,16 @@ class PostfixToInfixNotationTranslatorTest extends PHPUnit_Framework_TestCase
         $tree = $parser->parse($str);
 
         $tree->inPlaceTranslate('start', function ($node, $parent) {
-            if ($node->getDetailType() == 1) return;
+            if ($node->getDetailType() == 1) {
+                return;
+            }
 
             $temp = $node->getSubnode(1);
             $node->setSubnode(1, $node->getSubnode(2));
             $node->setSubnode(2, $temp);
 
-            if ($parent && in_array((string)$node->getSubnode(1), array('+', '-')) && in_array((string)$parent->getSubnode(2), array('*', '/'))) {
+            if ($parent && in_array((string)$node->getSubnode(1),
+                    array('+', '-')) && in_array((string)$parent->getSubnode(2), array('*', '/'))) {
                 return '(' . $node . ')';
             }
         });

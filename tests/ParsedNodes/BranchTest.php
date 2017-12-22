@@ -6,11 +6,10 @@
  * Time: 12:32
  */
 
-use ParserGenerator\Parser;
 use ParserGenerator\SyntaxTreeNode\Branch;
-use ParserGenerator\SyntaxTreeNode\Root;
-use ParserGenerator\SyntaxTreeNode\Numeric;
 use ParserGenerator\SyntaxTreeNode\Leaf;
+use ParserGenerator\SyntaxTreeNode\Numeric;
+use ParserGenerator\SyntaxTreeNode\Root;
 
 class BranchTest extends PHPUnit_Framework_TestCase
 {

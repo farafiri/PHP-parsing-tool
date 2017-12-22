@@ -41,18 +41,17 @@ class Choice extends \ParserGenerator\Extension\SequenceItem
 
         return $node;
     }
-	
-	private function buildInternalSequence(&$grammar, $sequence, $grammarParser, $options)
-	{
-	    $choice = array();
-		
-		foreach($sequence->findAll('sequenceItem') as $sequenceItem)
-		{
-		    $choice[] = $grammarParser->buildSequenceItem($grammar, $sequenceItem, $options);
-		}
-		
-		return (count($choice) === 1) ? $choice[0] : $choice;
-	}
+
+    private function buildInternalSequence(&$grammar, $sequence, $grammarParser, $options)
+    {
+        $choice = array();
+
+        foreach ($sequence->findAll('sequenceItem') as $sequenceItem) {
+            $choice[] = $grammarParser->buildSequenceItem($grammar, $sequenceItem, $options);
+        }
+
+        return (count($choice) === 1) ? $choice[0] : $choice;
+    }
 }
 
 \ParserGenerator\GrammarParser::$defaultPlugins[] = new Choice();

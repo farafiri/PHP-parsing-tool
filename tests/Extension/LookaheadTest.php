@@ -113,27 +113,28 @@ class LookaheadTest extends \PHPUnit_Framework_TestCase
         )), $x->parse("abce"));
     }
 
-    
-    public function testAnBnCnGrammar() {
+
+    public function testAnBnCnGrammar()
+    {
         $x = new Parser('start :=> ?(A "c") "a"++ B.
                          A     :=> "a" A? "b".
                          B     :=> "b" B? "c".');
-						 
-	    $this->assertObject($x->parse('abc'));
-		$this->assertObject($x->parse('aabbcc'));
-		$this->assertObject($x->parse('aaabbbccc'));
-		
-		$this->assertFalse($x->parse('aabb'));
-		$this->assertFalse($x->parse('aacc'));
-		$this->assertFalse($x->parse('bbcc'));
-		
-		$this->assertFalse($x->parse('aabbc'));
-		$this->assertFalse($x->parse('aabcc'));
-		$this->assertFalse($x->parse('abbcc'));
-		
-		$this->assertFalse($x->parse('aabbccc'));
-		$this->assertFalse($x->parse('aabbbcc'));
-		$this->assertFalse($x->parse('aaabbcc'));
+
+        $this->assertObject($x->parse('abc'));
+        $this->assertObject($x->parse('aabbcc'));
+        $this->assertObject($x->parse('aaabbbccc'));
+
+        $this->assertFalse($x->parse('aabb'));
+        $this->assertFalse($x->parse('aacc'));
+        $this->assertFalse($x->parse('bbcc'));
+
+        $this->assertFalse($x->parse('aabbc'));
+        $this->assertFalse($x->parse('aabcc'));
+        $this->assertFalse($x->parse('abbcc'));
+
+        $this->assertFalse($x->parse('aabbccc'));
+        $this->assertFalse($x->parse('aabbbcc'));
+        $this->assertFalse($x->parse('aaabbcc'));
     }
 
     public function testErrorTrack()

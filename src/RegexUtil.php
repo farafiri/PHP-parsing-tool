@@ -34,7 +34,12 @@ class RegexUtil
             'regexModifiers' => array(':/[imsxeADSUXJu]*/'),
             'regex' => array(array(':regexLine', '|', ':regex'), ':regexLine'),
             'regexLine' => array(array(':regexToken', ':regexLine'), ''),
-            'regexToken' => array(':startMatcher', ':endMatcher', ':lookAround', array(':singleStatement', ':repetition', ':nonGreedy')),
+            'regexToken' => array(
+                ':startMatcher',
+                ':endMatcher',
+                ':lookAround',
+                array(':singleStatement', ':repetition', ':nonGreedy')
+            ),
             'lookAround' => array(array('(?', ':lookArroundType', ':regex', ')')),
             'lookArroundType' => array('=', '!', '<=', '<!'),
             'singleStatement' => array(
@@ -43,11 +48,23 @@ class RegexUtil
                 array('[', ':characterSet', ']'),
                 array('[^', ':characterSet', ']'),
                 array('.'),
-                array(':character')),
-            'characterSet' => array(array(':simpleCharacter', '-', ':simpleCharacter', ':characterSet'), array(':character', ':characterSet'), ''),
+                array(':character')
+            ),
+            'characterSet' => array(
+                array(':simpleCharacter', '-', ':simpleCharacter', ':characterSet'),
+                array(':character', ':characterSet'),
+                ''
+            ),
             'character' => array(array(':/\\\\./'), ':simpleCharacter'),
             'simpleCharacter' => array(':/[^\\\\\\]\\[\\+\\*\\?\\|\\(\\)\\$\\^\\/]/'),
-            'repetition' => array('?', '+', '*', array('{', ':/\d+/', '}'), array('{', ':/\d+/', ',', ':/\d*/', '}'), ''),
+            'repetition' => array(
+                '?',
+                '+',
+                '*',
+                array('{', ':/\d+/', '}'),
+                array('{', ':/\d+/', ',', ':/\d*/', '}'),
+                ''
+            ),
             'nonGreedy' => array('?', ''),
             'startMatcher' => array('^'),
             'endMatcher' => array('$'),
@@ -212,7 +229,8 @@ class RegexUtil
                         if (!$node->getSubnode(2)) {
                             print_r($node);
                         };
-                        return $this->getCharacterRange((string)$node->getSubnode(0), (string)$node->getSubnode(2)) + $this->_getStartCharacters($node->getSubnode(3));
+                        return $this->getCharacterRange((string)$node->getSubnode(0),
+                                (string)$node->getSubnode(2)) + $this->_getStartCharacters($node->getSubnode(3));
                     case 1:
                         return $this->_getStartCharacters($node->getSubnode(0)) + $this->_getStartCharacters($node->getSubnode(1));
                     case 2:
@@ -293,7 +311,8 @@ class RegexUtil
         switch ($node->getType()) {
             case 'regex':
                 if ($node->getDetailType() === 0) {
-                    return rand(0, 1) ? $this->_generateString($node->getSubnode(0)) : $this->_generateString($node->getSubnode(2));
+                    return rand(0,
+                        1) ? $this->_generateString($node->getSubnode(0)) : $this->_generateString($node->getSubnode(2));
                 } else {
                     return $this->_generateString($node->getSubnode(0));
                 }

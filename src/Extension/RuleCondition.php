@@ -18,7 +18,7 @@ class RuleCondition extends \ParserGenerator\Extension\Base
         foreach ($parsedGrammar->findAll('grammarBranch') as $grammarBranch) {
             $functions = array();
             foreach ($grammarBranch->findAll('rule') as $ruleIndex => $rule) {
-                $ruleName = (string)$rule->findFirst('ruleName') ? : $ruleIndex;
+                $ruleName = (string)$rule->findFirst('ruleName') ?: $ruleIndex;
                 if ($condition = $rule->findFirst('ruleCondition')) {
                     $functions[$ruleName] = (string)$condition->getSubnode(1);
                 }
@@ -26,7 +26,8 @@ class RuleCondition extends \ParserGenerator\Extension\Base
 
             if (count($functions)) {
                 $branchName = (string)$grammarBranch->findFirst('branchName');
-                $grammar[$branchName] = new \ParserGenerator\GrammarNode\BranchStringCondition($grammar[$branchName], $functions);
+                $grammar[$branchName] = new \ParserGenerator\GrammarNode\BranchStringCondition($grammar[$branchName],
+                    $functions);
             }
         }
 

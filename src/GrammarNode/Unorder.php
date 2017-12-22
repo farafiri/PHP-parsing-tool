@@ -24,24 +24,28 @@ class Unorder extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
         $this->tmpNodeName = '&unorder/' . spl_object_hash($this);
     }
 
-    public function addChoice($choice, $mod) {
+    public function addChoice($choice, $mod)
+    {
         $this->choices[] = $choice;
         $this->mod[] = $mod;
     }
 
-    protected function internalParse($string, $fromIndex, $restrictedEnd, $required, $left) {
-        foreach($this->choices as $key => $choice) {
+    protected function internalParse($string, $fromIndex, $restrictedEnd, $required, $left)
+    {
+        foreach ($this->choices as $key => $choice) {
             if ($left[$key] > 0) {
                 $choiceRestrictedEnd = array();
                 $isRequired = !empty($required[$key]);
                 unset($required[$key]);
                 $left[$key]--;
-                while($choiceResult = $choice->rparse($string, $fromIndex, $choiceRestrictedEnd)) {
+                while ($choiceResult = $choice->rparse($string, $fromIndex, $choiceRestrictedEnd)) {
                     $afterChoiceIndex = $choiceResult['offset'];
                     $separatorRestrictedEnd = array();
-                    while($separatorResult = $this->separator->rparse($string, $afterChoiceIndex, $separatorRestrictedEnd)) {
+                    while ($separatorResult = $this->separator->rparse($string, $afterChoiceIndex,
+                        $separatorRestrictedEnd)) {
                         $afterSeparatorIndex = $separatorResult['offset'];
-                        if ($next = $this->internalParse($string, $afterSeparatorIndex, $restrictedEnd, $required, $left)) {
+                        if ($next = $this->internalParse($string, $afterSeparatorIndex, $restrictedEnd, $required,
+                            $left)) {
                             array_push($next['nodes'], $separatorResult['node'], $choiceResult['node']);
                             return $next;
                         }
@@ -73,7 +77,7 @@ class Unorder extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
     public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
     {
         $required = array();
-        foreach($this->choices as $key => $choice) {
+        foreach ($this->choices as $key => $choice) {
             $mod = $this->mod[$key];
             $left[$key] = ($mod == '*' || $mod == '+') ? static::MAX : 1;
             if ($mod == '' || $mod == '1' || $mod == '+') {
@@ -82,7 +86,8 @@ class Unorder extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
         }
 
         if ($result = $this->internalParse($string, $fromIndex, $restrictedEnd, $required, $left)) {
-            $node = new \ParserGenerator\SyntaxTreeNode\Series($this->resultType, '', array_reverse($result['nodes']), true);
+            $node = new \ParserGenerator\SyntaxTreeNode\Series($this->resultType, '', array_reverse($result['nodes']),
+                true);
             return array('node' => $node, 'offset' => $result['offset']);
         }
 
@@ -97,7 +102,7 @@ class Unorder extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
     public function setParser(\ParserGenerator\Parser $parser)
     {
         $this->parser = $parser;
-        foreach($this->choices as $choice) {
+        foreach ($this->choices as $choice) {
             if ($choice instanceof \ParserGenerator\ParserAwareInterface) {
                 $choice->setParser($parser);
             }
@@ -109,7 +114,8 @@ class Unorder extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
         return $this->parser;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return "unorder";
         return '(' . implode(' | ', $this->choices) . ')';
     }

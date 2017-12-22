@@ -38,31 +38,32 @@ class GrammarParser
     {
         $grammar = array();
         $parsedGrammar = $this->getParser()->parse($grammarStr);
-		
+
         if ($parsedGrammar === false) {
             $error = $this->getParser()->getError();
             $posData = \ParserGenerator\Parser::getLineAndCharacterFromOffset($grammarStr, $error['index']);
 
             $expected = implode(' or ', $this->getParser()->generalizeErrors($error['expected']));
-			$foundLength = 20;
-			$found = substr($grammarStr, $error['index']);
-			if (strlen($found) > $foundLength) {
-			    $found = substr($found, 0, $foundLength) . '...';
-			}
+            $foundLength = 20;
+            $found = substr($grammarStr, $error['index']);
+            if (strlen($found) > $foundLength) {
+                $found = substr($found, 0, $foundLength) . '...';
+            }
             throw new \Exception("Given grammar is incorrect:\nline: " . $posData['line'] . ', character: ' . $posData['char'] . "\nexpected: " . $expected . "\nfound: " . $found);
         }
         $parsedGrammar->refreshOwners();
 
         $grammarBranches = $parsedGrammar->findAll('grammarBranch');
-		
-		$defaultBranchType = empty($options['defaultBranchType']) ? \ParserGenerator\GrammarNode\BranchFactory::FULL : $options['defaultBranchType']; 
+
+        $defaultBranchType = empty($options['defaultBranchType']) ? \ParserGenerator\GrammarNode\BranchFactory::FULL : $options['defaultBranchType'];
 
         foreach ($grammarBranches as $grammarBranch) {
             if ($grammarBranch->getDetailType() === 'standard') {
                 $branchName = (string)$grammarBranch->findFirst('branchName');
-				$branchTypeNodeStr = (string)$grammarBranch->findFirst('branchType');
+                $branchTypeNodeStr = (string)$grammarBranch->findFirst('branchType');
                 $branchType = $branchTypeNodeStr ? substr($branchTypeNodeStr, 1, -1) : $defaultBranchType;
-                $grammar[$branchName] = \ParserGenerator\GrammarNode\BranchFactory::createBranch($branchType, $branchName);
+                $grammar[$branchName] = \ParserGenerator\GrammarNode\BranchFactory::createBranch($branchType,
+                    $branchName);
             } else {
                 foreach ($this->plugins as $plugin) {
                     $grammar = $plugin->createGrammarBranch($grammar, $grammarBranch, $this, $options);
@@ -80,7 +81,7 @@ class GrammarParser
                 $rules = array();
                 foreach ($grammarBranch->findAll('rule') as $rule) {
                     $buildRule = $this->buildRule($grammar, $rule, $options);
-                    $ruleName = (string) $rule->findFirst('ruleName');
+                    $ruleName = (string)$rule->findFirst('ruleName');
                     if ($ruleName) {
                         $rules[$ruleName] = $buildRule;
                     } else {
@@ -116,39 +117,45 @@ class GrammarParser
 
         return $this->parser;
     }
-	
-	protected function buildBranchNameNode()
-	{
-	    $restrictedWords = array('or', 'and', 'contain', 'is', 'text', 'string');
-		
-		$restrictedWordsGrammarNode = array();
-		foreach($restrictedWords as $restrictedWord) {
-		    $restrictedWordsGrammarNode[] = new \ParserGenerator\Extension\ItemRestrictions\Is(new \ParserGenerator\GrammarNode\TextS($restrictedWord));
-		}
-		
-		$q = new \ParserGenerator\GrammarNode\ItemRestrictions(
-		    new \ParserGenerator\GrammarNode\Regex('/[A-Za-z_][0-9A-Za-z_]*/', true),
-		    new \ParserGenerator\Extension\ItemRestrictions\ItemRestrictionNot(
-		        new \ParserGenerator\Extension\ItemRestrictions\ItemRestrictionOr($restrictedWordsGrammarNode)
-	    ));
-		
-		return $q;
-	}
+
+    protected function buildBranchNameNode()
+    {
+        $restrictedWords = array('or', 'and', 'contain', 'is', 'text', 'string');
+
+        $restrictedWordsGrammarNode = array();
+        foreach ($restrictedWords as $restrictedWord) {
+            $restrictedWordsGrammarNode[] = new \ParserGenerator\Extension\ItemRestrictions\Is(new \ParserGenerator\GrammarNode\TextS($restrictedWord));
+        }
+
+        $q = new \ParserGenerator\GrammarNode\ItemRestrictions(
+            new \ParserGenerator\GrammarNode\Regex('/[A-Za-z_][0-9A-Za-z_]*/', true),
+            new \ParserGenerator\Extension\ItemRestrictions\ItemRestrictionNot(
+                new \ParserGenerator\Extension\ItemRestrictions\ItemRestrictionOr($restrictedWordsGrammarNode)
+            ));
+
+        return $q;
+    }
 
     protected function generateNewParser()
     {
         $stdGrammarGrammar = array(
             'start' => array(array(':grammarBranches')),
-            'grammarBranches' => array('notLast' => array(':grammarBranch', ':comments', ':/\./', ':grammarBranches'),
-                'last' => array(':grammarBranch', ':comments', ':/\.?/', ":comments")),
+            'grammarBranches' => array(
+                'notLast' => array(':grammarBranch', ':comments', ':/\./', ':grammarBranches'),
+                'last' => array(':grammarBranch', ':comments', ':/\.?/', ":comments")
+            ),
             'grammarBranch' => array('standard' => array(':comments', ':branchName', ':branchType', ':rules')),
-			'branchType' => array(array(''), array('(full)'),  array('(naive)'), array('(PEG)')),
-            'rules' => array('last' => array(':rule'),
-                'notLast' => array(':rule', ':rules')),
+            'branchType' => array(array(''), array('(full)'), array('(naive)'), array('(PEG)')),
+            'rules' => array(
+                'last' => array(':rule'),
+                'notLast' => array(':rule', ':rules')
+            ),
             'rule' => array('standard' => array(':comments', ':/:/', ':ruleName', ':/=>|:=/', ':sequence')),
             'ruleName' => array(array(':/([A-Za-z_][0-9A-Za-z_]*)?/')),
-            'sequence' => array('last' => array(':commentSequenceItem'),
-                'notLast' => array(':commentSequenceItem', ':sequence')),
+            'sequence' => array(
+                'last' => array(':commentSequenceItem'),
+                'notLast' => array(':commentSequenceItem', ':sequence')
+            ),
             'comments' => array(array(':comment', ':comments'), array('')),
             'comment' => array(array(':/\/(\*+)[^*](\s|.)*?\2\//')),
             'commentSequenceItem' => array(array(':comments', ':sequenceItem')),
@@ -160,7 +167,7 @@ class GrammarParser
             $grammarGrammar = $plugin->extendGrammar($grammarGrammar);
         }
 
-		$grammarGrammar['branchName'] = array(array($this->buildBranchNameNode()));
+        $grammarGrammar['branchName'] = array(array($this->buildBranchNameNode()));
         $grammarGrammar['sequenceItem']['branch'] = ':branchName';
 
         $this->parser = new \ParserGenerator\Parser($grammarGrammar);

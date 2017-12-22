@@ -16,19 +16,22 @@ class Decorator implements \ParserGenerator\GrammarNode\NodeInterface
         return $this->node->rparse($string, $fromIndex, $restrictedEnd);
     }
 
-    public static function undecorate($node) {
-        while($node instanceof self) {
+    public static function undecorate($node)
+    {
+        while ($node instanceof self) {
             $node = $node->node;
         }
 
         return $node;
     }
 
-    public function __toString() {
-        return (string) $this->node;
+    public function __toString()
+    {
+        return (string)$this->node;
     }
 
-    public function getDecoratedNode() {
+    public function getDecoratedNode()
+    {
         return $this->node;
     }
 

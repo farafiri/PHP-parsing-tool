@@ -35,7 +35,8 @@ class Regex extends \ParserGenerator\GrammarNode\BaseNode Implements \ParserGene
             if (isset($match[1])) {
                 $offset = strlen($match[$this->eatWhiteChars ? 0 : 1]) + $fromIndex;
                 if (!isset($restrictedEnd[$offset])) {
-                    $node = new \ParserGenerator\SyntaxTreeNode\Leaf($match[1], $this->eatWhiteChars ? substr($match[0], strlen($match[1])) : '');
+                    $node = new \ParserGenerator\SyntaxTreeNode\Leaf($match[1],
+                        $this->eatWhiteChars ? substr($match[0], strlen($match[1])) : '');
 
                     if ($this->lastMatch < $fromIndex) {
                         $this->lastMatch = $fromIndex;

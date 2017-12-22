@@ -49,7 +49,11 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
     public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
     {
         if ($this->from0 && !$this->greedy && !isset($restrictedEnd[$fromIndex])) {
-            return array('node' => new \ParserGenerator\SyntaxTreeNode\Series($this->resultType, $this->resultDetailType, array(), (bool) $this->separator), 'offset' => $fromIndex);
+            return array(
+                'node' => new \ParserGenerator\SyntaxTreeNode\Series($this->resultType, $this->resultDetailType,
+                    array(), (bool)$this->separator),
+                'offset' => $fromIndex
+            );
         }
 
         if ($rparseResult = $this->node->rparse($string, $fromIndex, $restrictedEnd)) {
@@ -58,7 +62,11 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
         }
 
         if ($this->from0 && !isset($restrictedEnd[$fromIndex])) {
-            return array('node' => new \ParserGenerator\SyntaxTreeNode\Series($this->resultType, $this->resultDetailType, array(), (bool) $this->separator), 'offset' => $fromIndex);
+            return array(
+                'node' => new \ParserGenerator\SyntaxTreeNode\Series($this->resultType, $this->resultDetailType,
+                    array(), (bool)$this->separator),
+                'offset' => $fromIndex
+            );
         }
 
         return false;
@@ -78,30 +86,34 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
         }
         $astSubnodes[] = $ast->getSubnode(0);
 
-        return new \ParserGenerator\SyntaxTreeNode\Series($this->resultType, $this->resultDetailType, $astSubnodes, (bool) $this->separator);
+        return new \ParserGenerator\SyntaxTreeNode\Series($this->resultType, $this->resultDetailType, $astSubnodes,
+            (bool)$this->separator);
     }
-	
-	public function getNode()
-	{
-       $node = $this->separator ? array(array($this->mainNode, $this->separator)) : array(array($this->mainNode));
-       if ($this->from0) {
-           $node[] = array();
-       }
-	   return $node;
-	}
 
-    public function getMainNode() {
+    public function getNode()
+    {
+        $node = $this->separator ? array(array($this->mainNode, $this->separator)) : array(array($this->mainNode));
+        if ($this->from0) {
+            $node[] = array();
+        }
+        return $node;
+    }
+
+    public function getMainNode()
+    {
         return $this->mainNode;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         $op = array(array('+', '++'), array('*', '**'));
         return $this->mainNode . $op[$this->from0][$this->greedy] . ($this->separator ?: '');
     }
 
     public function copy($copyCallback)
     {
-        $copy = new static($copyCallback($this->mainNode), $copyCallback($this->separator), $this->from0, $this->greedy);
+        $copy = new static($copyCallback($this->mainNode), $copyCallback($this->separator), $this->from0,
+            $this->greedy);
         $copy->setParser($this->getParser());
         return $copy;
     }

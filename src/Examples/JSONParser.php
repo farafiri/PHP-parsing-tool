@@ -4,11 +4,13 @@ namespace ParserGenerator\Examples;
 
 class JSONParser extends \ParserGenerator\Parser
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct($this->getJSONDefinition(), array('ignoreWhitespaces' => true));
     }
 
-    protected function getJSONDefinition() {
+    protected function getJSONDefinition()
+    {
         return '
         start:       => value.
         value:bool   => ("true"|"false")
@@ -20,7 +22,8 @@ class JSONParser extends \ParserGenerator\Parser
         ';
     }
 
-    public function getValue($jsonString) {
+    public function getValue($jsonString)
+    {
         $jsonTree = $this->parse($jsonString);
 
         if (!$jsonTree) {
@@ -30,17 +33,18 @@ class JSONParser extends \ParserGenerator\Parser
         return $this->getValueOfNode($jsonTree->getSubnode(0));
     }
 
-    protected function getValueOfNode(\ParserGenerator\SyntaxTreeNode\Branch $node) {
+    protected function getValueOfNode(\ParserGenerator\SyntaxTreeNode\Branch $node)
+    {
         switch ($node->getDetailType()) {
             case "bool":
-                return (string) $node === "true";
+                return (string)$node === "true";
             case "string":
             case "number":
                 return $node->getSubnode(0)->getValue();
             case "array":
                 $result = array();
 
-                foreach($node->getSubnode(1)->getMainNodes() as $valueNode) {
+                foreach ($node->getSubnode(1)->getMainNodes() as $valueNode) {
                     $result[] = $this->getValueOfNode($valueNode);
                 }
 
@@ -48,7 +52,7 @@ class JSONParser extends \ParserGenerator\Parser
             case "object":
                 $result = array();
 
-                foreach($node->getSubnode(1)->getMainNodes() as $objValueNode) {
+                foreach ($node->getSubnode(1)->getMainNodes() as $objValueNode) {
                     $result[$objValueNode->getSubnode(0)->getValue()] = $this->getValueOfNode($objValueNode->getSubnode(2));
                 }
 

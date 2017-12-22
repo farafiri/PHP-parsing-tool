@@ -75,7 +75,8 @@ class RegexUtilTest extends PHPUnit_Framework_TestCase
         $this->assertCanStart(array('['), '/\\[/');
         $this->assertCanStart(array("\n", "\r", " ", "\t"), '/\\s/');
         $this->assertCanStart(array("\n", "\r", " ", "\t", "j"), '/[\\sj]/');
-        $this->assertEquals(255, count(\ParserGenerator\RegexUtil::getInstance()->getStartCharacters('/./'))); //256 - 1 cause \n is out
+        $this->assertEquals(255,
+            count(\ParserGenerator\RegexUtil::getInstance()->getStartCharacters('/./'))); //256 - 1 cause \n is out
     }
 
     protected function checkStringGenerate($regex, $results, $maxLength = 10)

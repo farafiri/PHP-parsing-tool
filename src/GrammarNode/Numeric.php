@@ -25,7 +25,9 @@ class Numeric extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
                     $this->$key = $value;
                 }
             }
-            if (in_array($key, array('formatDec', 'formatHex', 'formatOct', 'formatBin', 'eatWhiteChars', 'allowFixedCharacters'), true)) {
+            if (in_array($key,
+                array('formatDec', 'formatHex', 'formatOct', 'formatBin', 'eatWhiteChars', 'allowFixedCharacters'),
+                true)) {
                 if (is_bool($value)) {
                     $this->$key = $value;
                 }
@@ -108,13 +110,14 @@ class Numeric extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
         return false;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         $modifiers = $this->requireFixedCharacters ? $this->requireFixedCharacters : '';
         $modifiers .= $this->formatBin ? 'b' : '';
         $modifiers .= $this->formatHex ? 'h' : '';
         $modifiers .= $this->formatOct ? 'o' : '';
         $modifiers .= $this->formatDec ? 'd' : '';
         $modifiers = $modifiers == 'd' ? '' : ('/' . $modifiers);
-        return (($this->min === null) ? '-inf' : $this->min) . '..' .  (($this->max === null) ? 'inf' : $this->max) . $modifiers;
+        return (($this->min === null) ? '-inf' : $this->min) . '..' . (($this->max === null) ? 'inf' : $this->max) . $modifiers;
     }
 }

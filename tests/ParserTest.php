@@ -2,8 +2,8 @@
 
 use ParserGenerator\Parser;
 use ParserGenerator\SyntaxTreeNode\Branch;
-use ParserGenerator\SyntaxTreeNode\Root;
 use ParserGenerator\SyntaxTreeNode\Leaf;
+use ParserGenerator\SyntaxTreeNode\Root;
 
 class ParserTest extends PHPUnit_Framework_TestCase
 {
@@ -507,36 +507,48 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $x = new Parser('start :=> "ab" "cd" .', array('ignoreWhitespaces' => true));
 
         $this->assertEquals("abcd", $x->parse("ab   cd")->toString());
-        $this->assertEquals("ab   cd", $x->parse("ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
-        $this->assertEquals("ab cd", $x->parse("ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
+        $this->assertEquals("ab   cd",
+            $x->parse("ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+        $this->assertEquals("ab cd",
+            $x->parse("ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
 
         $this->assertEquals("abcd", $x->parse("ab \n cd ")->toString());
-        $this->assertEquals("ab \n cd ", $x->parse("ab \n cd ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
-        $this->assertEquals("ab\ncd", $x->parse("ab \n cd ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
+        $this->assertEquals("ab \n cd ",
+            $x->parse("ab \n cd ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+        $this->assertEquals("ab\ncd",
+            $x->parse("ab \n cd ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
 
         $x = new Parser('start :=> /ab/ /cd/ .', array('ignoreWhitespaces' => true));
 
         $this->assertEquals("abcd", $x->parse("ab   cd")->toString());
-        $this->assertEquals("ab   cd", $x->parse("ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
-        $this->assertEquals("ab cd", $x->parse("ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
+        $this->assertEquals("ab   cd",
+            $x->parse("ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+        $this->assertEquals("ab cd",
+            $x->parse("ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
 
         $this->assertEquals("abcd", $x->parse("ab \n cd ")->toString());
-        $this->assertEquals("ab \n cd ", $x->parse("ab \n cd ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
-        $this->assertEquals("ab\ncd", $x->parse("ab \n cd ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
+        $this->assertEquals("ab \n cd ",
+            $x->parse("ab \n cd ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+        $this->assertEquals("ab\ncd",
+            $x->parse("ab \n cd ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
 
         $x = new Parser('start :=> /a/ /b/ .', array('ignoreWhitespaces' => true));
         $this->assertEquals("ab", $x->parse("a   b")->toString());
-        $this->assertEquals("a   \nb", $x->parse("a   \nb")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+        $this->assertEquals("a   \nb",
+            $x->parse("a   \nb")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
 
         $x = new Parser('start :=> string .', array('ignoreWhitespaces' => true));
         $this->assertEquals("'abc'", $x->parse("'abc'  ")->toString());
-        $this->assertEquals("'abc'  ", $x->parse("'abc'  ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+        $this->assertEquals("'abc'  ",
+            $x->parse("'abc'  ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
 
         $x = new Parser('start :=> /ab/ /cd/ .', array('ignoreWhitespaces' => true));
 
         $this->assertEquals("abcd", $x->parse(" ab   cd")->toString());
-        $this->assertEquals(" ab   cd", $x->parse(" ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
-        $this->assertEquals("ab cd", $x->parse(" ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
+        $this->assertEquals(" ab   cd",
+            $x->parse(" ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+        $this->assertEquals("ab cd",
+            $x->parse(" ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
     }
 
     public function testStringGrammarWhitespaceCharacters()
@@ -629,7 +641,8 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $nodeDump = function ($parser) {
             $result = array();
             $parser->iterateOverNodes(function ($node) use (&$result) {
-                $explodedClassName = explode('\\', get_class(\ParserGenerator\GrammarNode\Decorator::undecorate($node)));
+                $explodedClassName = explode('\\',
+                    get_class(\ParserGenerator\GrammarNode\Decorator::undecorate($node)));
                 $className = $explodedClassName[count($explodedClassName) - 1];
                 $result[] = $className . '[' . $node . ']';
             });

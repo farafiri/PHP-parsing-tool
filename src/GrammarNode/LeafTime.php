@@ -25,7 +25,9 @@ class LeafTime extends \ParserGenerator\GrammarNode\BaseNode implements \ParserG
         $data = date_parse_from_format($this->format, $s);
 
         if (!empty($data['errors'])) {
-            foreach($data['errors'] as $key => $_) break;
+            foreach ($data['errors'] as $key => $_) {
+                break;
+            }
             $s = substr($s, 0, $key);
             $data = date_parse_from_format($this->format, $s);
             if (!empty($data['errors'])) {

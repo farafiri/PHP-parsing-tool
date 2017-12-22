@@ -13,16 +13,19 @@ class Leaf extends \ParserGenerator\SyntaxTreeNode\Base
         $this->afterContent = $afterContent;
     }
 
-    public function getContent() {
+    public function getContent()
+    {
         return $this->content;
     }
 
-    public function setContent($newValue) {
+    public function setContent($newValue)
+    {
         $this->content = $newValue;
         return $this;
     }
 
-    public function dump($maxNestLevel = -1) {
+    public function dump($maxNestLevel = -1)
+    {
         return $this->content;
     }
 

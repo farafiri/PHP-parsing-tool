@@ -24,11 +24,13 @@ class ErrorTrackDecorator extends Decorator
         return $result;
     }
 
-    public function getMaxCheck() {
+    public function getMaxCheck()
+    {
         return $this->maxCheck === -1 ? null : $this->maxCheck;
     }
 
-    public function reset() {
+    public function reset()
+    {
         $this->maxCheck = -1;
     }
 

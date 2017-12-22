@@ -2,7 +2,8 @@
 
 namespace ParserGenerator\SyntaxTreeNode;
 
-class Series extends \ParserGenerator\SyntaxTreeNode\Branch {
+class Series extends \ParserGenerator\SyntaxTreeNode\Branch
+{
     protected $isWithSeparator;
 
     public function __construct($type, $detailType, $subnodes = array(), $isWithSeparator = false)
@@ -20,14 +21,15 @@ class Series extends \ParserGenerator\SyntaxTreeNode\Branch {
         $subnodesCount = count($this->subnodes);
         $result = array();
 
-        for($i = 0; $i < $subnodesCount; $i += 2) {
+        for ($i = 0; $i < $subnodesCount; $i += 2) {
             $result[] = $this->subnodes[$i];
         }
 
         return $result;
     }
 
-    public function getSeparators() {
+    public function getSeparators()
+    {
         if (!$this->isWithSeparator) {
             return array();
         }
@@ -35,7 +37,7 @@ class Series extends \ParserGenerator\SyntaxTreeNode\Branch {
         $subnodesCount = count($this->subnodes);
         $result = array();
 
-        for($i = 1; $i < $subnodesCount; $i += 2) {
+        for ($i = 1; $i < $subnodesCount; $i += 2) {
             $result[] = $this->subnodes[$i];
         }
 
@@ -52,26 +54,27 @@ class Series extends \ParserGenerator\SyntaxTreeNode\Branch {
         if (is_string($callback)) {
             $compareBy = $callback;
             $callback = function ($a, $b) use ($compareBy) {
-                return strnatcmp((string) $a->findFirst($compareBy), (string) $b->findFirst($compareBy));
+                return strnatcmp((string)$a->findFirst($compareBy), (string)$b->findFirst($compareBy));
             };
         } elseif ($callback === null) {
             $callback = function ($a, $b) {
-                return strnatcmp((string) $a, (string) $b);
+                return strnatcmp((string)$a, (string)$b);
             };
         }
 
         $mainNodes = $this->getMainNodes();
         usort($mainNodes, $callback);
 
-        foreach($mainNodes as $index => $node) {
+        foreach ($mainNodes as $index => $node) {
             $this->subnodes[$index * 2] = $node;
         }
     }
 
-    public function findFirstInMainNodes($type, $addNullValues = false) {
+    public function findFirstInMainNodes($type, $addNullValues = false)
+    {
         $result = array();
 
-        foreach($this->getMainNodes() as $node) {
+        foreach ($this->getMainNodes() as $node) {
             if ($node instanceof \ParserGenerator\SyntaxTreeNode\Branch) {
                 $value = $node->findFirst($type);
             } else {

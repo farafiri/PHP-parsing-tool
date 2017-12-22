@@ -6,7 +6,7 @@ class Choice extends \ParserGenerator\GrammarNode\BaseNode
 {
     protected $choices;
     protected $tmpNodeName;
-	protected $reduce = array();
+    protected $reduce = array();
 
     public function __construct($choices)
     {
@@ -17,13 +17,13 @@ class Choice extends \ParserGenerator\GrammarNode\BaseNode
 
         $node = array();
         foreach ($choices as $choice) {
-		    if (is_array($choice)) {
-			    $node[] = $choice;
-				$this->reduce[] = false;
-			} else {
+            if (is_array($choice)) {
+                $node[] = $choice;
+                $this->reduce[] = false;
+            } else {
                 $node[] = array($choice);
-				$this->reduce[] = true;
-		    }
+                $this->reduce[] = true;
+            }
         };
 
         $this->grammarNode->setNode($node);
@@ -32,11 +32,11 @@ class Choice extends \ParserGenerator\GrammarNode\BaseNode
     public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
     {
         if ($rparseResult = $this->grammarNode->rparse($string, $fromIndex, $restrictedEnd)) {
-		    if ($this->reduce[$rparseResult['node']->getDetailType()]) {
+            if ($this->reduce[$rparseResult['node']->getDetailType()]) {
                 $rparseResult['node'] = $rparseResult['node']->getSubnode(0);
-			}
-			
-			return $rparseResult;
+            }
+
+            return $rparseResult;
         }
 
         return false;
@@ -58,9 +58,10 @@ class Choice extends \ParserGenerator\GrammarNode\BaseNode
         $this->grammarNode->setParser($parser);
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         $result = '';
-        foreach($this->choices as $choice) {
+        foreach ($this->choices as $choice) {
             $result .= ($result ? '|' : '') . (is_array($choice) ? implode(" ", $choice) : $choice);
         }
 

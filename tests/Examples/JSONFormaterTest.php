@@ -1,7 +1,9 @@
 <?php
 
-class JSONFormaterTest extends PHPUnit_Framework_TestCase {
-    public function testSetIndention() {
+class JSONFormaterTest extends PHPUnit_Framework_TestCase
+{
+    public function testSetIndention()
+    {
         $formater = new \ParserGenerator\Examples\JSONFormater();
 
         $jsonTree = $formater->parse('{"a":23,"b":false}');
@@ -9,9 +11,9 @@ class JSONFormaterTest extends PHPUnit_Framework_TestCase {
 
         $nl = "\n";
         $expected = '{' . $nl .
-        '    "a": 23,'. $nl .
-        '    "b": false'. $nl .
-        '}';
+            '    "a": 23,' . $nl .
+            '    "b": false' . $nl .
+            '}';
 
         $this->assertEquals($expected, $jsonTree->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
 
@@ -19,13 +21,13 @@ class JSONFormaterTest extends PHPUnit_Framework_TestCase {
         $formater->setIndention($jsonTree);
 
         $expected = '[' . $nl .
-            '    {'. $nl .
+            '    {' . $nl .
             '        "a": 0,' . $nl .
             '        "b": 34' . $nl .
-            '    },'. $nl .
-            '    {'. $nl .
+            '    },' . $nl .
+            '    {' . $nl .
             '        "x": 17' . $nl .
-            '    }'. $nl .
+            '    }' . $nl .
             ']';
 
         $this->assertEquals($expected, $jsonTree->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));

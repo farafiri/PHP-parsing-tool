@@ -4,11 +4,14 @@ namespace ParserGenerator\Examples;
 
 class JSONFormater extends \ParserGenerator\Parser
 {
-    public function __construct() {
-        parent::__construct($this->getJSONDefinition(), array('ignoreWhitespaces' => true, 'defaultBranchType' => 'PEG'));
+    public function __construct()
+    {
+        parent::__construct($this->getJSONDefinition(),
+            array('ignoreWhitespaces' => true, 'defaultBranchType' => 'PEG'));
     }
 
-    protected function getJSONDefinition() {
+    protected function getJSONDefinition()
+    {
         return '
         start:       => value.
         value:bool   => ("true"|"false")
@@ -21,16 +24,18 @@ class JSONFormater extends \ParserGenerator\Parser
         ';
     }
 
-    public function setObjectsPropertiesOrder($node) {
+    public function setObjectsPropertiesOrder($node)
+    {
         $node->inPlaceTranslate('value:object', function ($node) {
             $node->getSubnode(1)->orderBy('key');
         });
     }
 
-    public function setIndention($node, $indention = '    ', $start = "\n") {
+    public function setIndention($node, $indention = '    ', $start = "\n")
+    {
         if ($node->getType() === 'start') {
-            foreach($node->getLeafs() as $leaf) {
-                $leaf->setAfterContent((string) $leaf == ':' ? ' ' : '');
+            foreach ($node->getLeafs() as $leaf) {
+                $leaf->setAfterContent((string)$leaf == ':' ? ' ' : '');
             }
 
             return $this->setIndention($node->getSubnode(0), $indention, $start);
@@ -43,13 +48,13 @@ class JSONFormater extends \ParserGenerator\Parser
 
             $collection = $node->getSubnode(1);
 
-            foreach($collection->getSeparators() as $separator) {
+            foreach ($collection->getSeparators() as $separator) {
                 $separator->setAfterContent($start . $indention);
             }
 
             $collection->setAfterContent($start);
 
-            foreach($collection->getMainNodes() as $collectionNode) {
+            foreach ($collection->getMainNodes() as $collectionNode) {
                 if ($node->getDetailType() === 'array') {
                     $this->setIndention($collectionNode, $indention, $start . $indention);
                 } else {

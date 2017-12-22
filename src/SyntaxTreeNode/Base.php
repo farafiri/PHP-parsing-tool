@@ -16,15 +16,19 @@ abstract class Base
     const TO_STRING_REDUCED_WHITESPACES = 4;
 
     abstract public function getLeftLeaf();
+
     abstract public function getRightLeaf();
+
     abstract public function toString($mode = \ParserGenerator\SyntaxTreeNode\Base::TO_STRING_NO_WHITESPACES);
 
-    public function setAfterContent($newValue) {
+    public function setAfterContent($newValue)
+    {
         $this->getRightLeaf()->afterContent = $newValue;
         return $this;
     }
 
-    public function getAfterContent() {
+    public function getAfterContent()
+    {
         return $this->getRightLeaf()->afterContent;
     }
 }
