@@ -38,8 +38,9 @@ Let say you have string with dates in format d.m.y or y-m-d separated by comma.
 
 ## Branch types
 
-You could declare previous grammar as PEG, it would improve speed x10. You can declare grammar as PEG by adding
-However not every grammar can be parsed with PEG packrat algorithm.
+You could declare the previous grammar as PEG and it would improve speed x10.
+To do so, add the option `['defaultBranchType' => 'PEG']` as a second argument to `Parser`.
+Note that not every grammar can be parsed with PEG packrat algorithm.
 
 ```php
   // by adding 'defaultBranchType' with 'PEG' value into options we declare grammar as PEG
@@ -62,19 +63,18 @@ Matches text. You can also use single quotes. You can use escape sequences so "\
 
 ##### /regular|expression/
 Matches given regular expression. You can use pattern modifiers.
-Grammar like "start :=> /[a-z]/i." will match also upper case letters.
-Regular expression cannot be backtracked. They work like fist match is only match
-For example: "start :=> /a+/ 'a'.", when we try to parse string "aa" regular expression will capture both characters and string will be not matched.
+Grammar like "start :=> /[a-z]/i." will also match upper case letters.
+Regular expression cannot be backtracked. They work like the first match is the only match.
+For example: "start :=> /a+/ 'a'.", when we try to parse string "aa" regular expression will capture both characters and the string will be not matched.
 
 ##### symbolName
-will match defined symbol
-For example:
+Will match the defined symbol.
+The following example will match any pair of letters, followed by digits.
 ```
 start  :=> letter digit.
 letter :=> /\w/.
 digit  :=> /\d/.
 ```
-will match any pair of letter followed by digit.
 
 ##### whiteSpace, space, newLine, tab
 whiteSpace matches space, tabulator or new line character
@@ -87,19 +87,19 @@ For example sequence: 'a' newLine space space 'b' will match characters 'a' and 
 match any text
 
 ##### symbol+
-will try to match symbol several times (at least once)
+Will try to match symbol several times (at least once).
 For example start :=> "a"+. will match "a" "aa" "aaa" but not ""
 
 ##### symbol?
-symbol is optional
+Symbol is optional.
 For example start :=> "a"?. wil match "a" and "" but not "aa"
 
 ##### symbol*
-will try to match symbol several times (symbol is optional)
+Will try to match symbol several times (symbol is optional)
 For example start :=> "a"*. will match "a" "aa" "aaa" and ""
 
 ##### symbol++, symbol**, symbol??
-same as adequate symbol+, symbol* and symbol* but consumes it in greedy way.
+Same as adequate symbol+, symbol* and symbol* but consumes it in a greedy way.
 Example:
 ```php
 $nonGreedy = new \ParserGenerator\Parser('start :=> "a"* "a"*.');
@@ -115,10 +115,10 @@ $greedy = new \ParserGenerator\Parser('start :=> "a"** "a"+.');
 $greedy->parse("aaa")->getSubnode(0)->toString();
 $greedy->parse("aaa")->getSubnode(1)->toString(); // "a"
 ```
-If 'defaultBranchType' is set to 'PEG' then symbol* is equal to symbol** (always greedy). Same with "+" and "?". In this mode last case will fail (PEG cannot parse it)
+If 'defaultBranchType' is set to 'PEG' then symbol* is equal to symbol** (always greedy). Same with "+" and "?". In this mode, the last case will fail (PEG cannot parse it)
 
 ##### ?symbol
-Lookahead. Check if symbol can be parsed but do not capture it
+Lookahead. Check if symbol can be parsed but do not capture it.
 For example "start   :=> 'a' ?/.{3}/ integer.
              integer :=> /\d+/." will match "a" followed by at least 3 digit number.
 ##### !symbol
@@ -143,7 +143,7 @@ This space between + and symbol2 is crucial
 "a"+"b"  matches: "ababa" but not :aaaab"
 
 ##### (symbol1 | symbol2)
-Choice, match symbol1 or symbol2
+Choice, match symbol1 or symbol2.
 For example "start :=> ('a' | 'b') 'c'." will parse strings "ac" and "bc"
 
 ##### string
@@ -187,7 +187,7 @@ $parser->parse('04'); //syntax tree object
 ```
 
 ##### time()
-Matching time in given format
+Matching time in the given format:
 ```php
 $parser = new \ParserGenerator\Parser('start :=> (time(Y-m-d) | time(d.m.Y)) .');
 $parser->parse('2017-01-02')->getSubnode(0)->getValue(); // equal to new \DateTime('2017-01-02')
@@ -195,8 +195,8 @@ $parser->parse('03.05.2014')->getSubnode(0)->getValue(); // equal to new \DateTi
 ```
 
 ##### contain, is
-Sometimes you may want to do extra checks on parsed node.
-Thanks to these constructs you can check if node contain some text or if matches to an pattern
+Sometimes you may want to do extra checks on the parsed node.
+Thanks to these constructs, you can check if node contain some text or if matches a pattern:
 ```php
 $parser = new \ParserGenerator\Parser('start   :=> word not is keyword.
                                        word    :=> /\w+/.
@@ -205,7 +205,7 @@ $parser->parse('do'); //false
 $parser->parse('doSomething'); // syntax tree object
 ```
 
-It is possible to make some basic logic operations on check and put them into braces
+It is possible to make some basic logic operations on the check and put them into braces
 ```php
 $parser = new \ParserGenerator\Parser('start   :=> word not(is keyword or
                                                             is ("p" text /* we don`t want words starting with "p" */) or
