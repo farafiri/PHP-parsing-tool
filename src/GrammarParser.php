@@ -197,7 +197,7 @@ class GrammarParser
             if ($newSequence) {
                 return $newSequence;
             } else {
-                throw new Exception('Rule type [' . $rule->getDetailType() . '] added but not supported');
+                throw new \Exception('Rule type [' . $rule->getDetailType() . '] added but not supported');
             }
         }
     }

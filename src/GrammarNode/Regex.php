@@ -25,7 +25,7 @@ class Regex extends \ParserGenerator\GrammarNode\BaseNode Implements \ParserGene
             }
             $this->regex = '/(' . $regexBody . ')?\s*/' . $regexModifiers;
         } else {
-            throw new Exception ("Wrong regex format [$regex]");
+            throw new \Exception ("Wrong regex format [$regex]");
         }
     }
 

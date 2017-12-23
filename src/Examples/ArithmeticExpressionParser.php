@@ -28,7 +28,7 @@ class ArithmeticExpressionParser extends \ParserGenerator\Parser
         if ($expr) {
             return $this->getExpressionValue($expr->getSubnode(0));
         } else {
-            throw new Exception('Cannot parse arithmetic expression.');
+            throw new \Exception('Cannot parse arithmetic expression.');
         }
     }
 

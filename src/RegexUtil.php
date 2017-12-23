@@ -90,7 +90,7 @@ class RegexUtil
             $regex = $this->getParser()->parse($regex);
 
             if (empty($regex)) {
-                throw new Exception('Invalid argument, [string isn\'t valid regular expression]');
+                throw new \Exception('Invalid argument, [string isn\'t valid regular expression]');
             }
         }
 
@@ -102,7 +102,7 @@ class RegexUtil
             return $this->_canBeEmpty($regex);
         }
 
-        throw new Exception('invalid argument given [epected string or \ParserGenerator\SyntaxTreeNode\Branch]');
+        throw new \Exception('invalid argument given [epected string or \ParserGenerator\SyntaxTreeNode\Branch]');
     }
 
     protected function _canBeEmpty($node)
@@ -142,7 +142,7 @@ class RegexUtil
             $regex = $this->getParser()->parse($regex);
 
             if (empty($regex)) {
-                throw new Exception('Invalid argument, [string isn\'t valid regular expression]');
+                throw new \Exception('Invalid argument, [string isn\'t valid regular expression]');
             }
         }
 
@@ -154,7 +154,7 @@ class RegexUtil
             return $this->_getStartCharacters($regex);
         }
 
-        throw new Exception('invalid argument given [epected string or \ParserGenerator\SyntaxTreeNode\Branch]');
+        throw new \Exception('invalid argument given [epected string or \ParserGenerator\SyntaxTreeNode\Branch]');
     }
 
     protected function _getStartCharacters($node)
@@ -215,7 +215,7 @@ class RegexUtil
                             $result[substr((string)$node, 1, 1)] = true;
                             return $result;
                         default:
-                            throw new Exception("Unknown character group [$node]");
+                            throw new \Exception("Unknown character group [$node]");
                     }
                 } else {
                     $result = array();
@@ -269,7 +269,7 @@ class RegexUtil
             $regex = $this->getParser()->parse($regex);
 
             if (empty($regex)) {
-                throw new Exception('Invalid argument, [string isn\'t valid regular expression]');
+                throw new \Exception('Invalid argument, [string isn\'t valid regular expression]');
             }
         }
 
@@ -281,7 +281,7 @@ class RegexUtil
             return $this->_generateString($regex);
         }
 
-        throw new Exception('invalid argument given [epected string or \ParserGenerator\SyntaxTreeNode\Branch]');
+        throw new \Exception('invalid argument given [epected string or \ParserGenerator\SyntaxTreeNode\Branch]');
     }
 
     public function getOccurenceRange($node)
@@ -329,7 +329,7 @@ class RegexUtil
                     case 1:
                         return '';
                     case 2:
-                        throw new Exception("canot generate regex string with lookaround");
+                        throw new \Exception("canot generate regex string with lookaround");
                     case 3:
                         $occurenceRange = $this->getOccurenceRange($node->getSubnode(1));
                         if (empty($occurenceRange['max'])) {
@@ -361,7 +361,7 @@ class RegexUtil
                 }
 
             default:
-                throw new Exception('this code should be never executed');
+                throw new \Exception('this code should be never executed');
         }
     }
 }
