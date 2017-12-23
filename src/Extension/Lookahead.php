@@ -49,5 +49,3 @@ class Lookahead extends \ParserGenerator\Extension\SequenceItem
         return new \ParserGenerator\GrammarNode\Lookahead($lookaheadNode, $mainNode, $before, $operator == '?');
     }
 }
-
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new Lookahead();

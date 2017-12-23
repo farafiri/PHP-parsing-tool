@@ -32,5 +32,3 @@ class Text extends \ParserGenerator\Extension\SequenceItem
         return new \ParserGenerator\GrammarNode\AnyText($options);
     }
 }
-
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new Text();

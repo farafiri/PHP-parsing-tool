@@ -54,5 +54,3 @@ class Unorder extends \ParserGenerator\Extension\SequenceItem
         return (count($choice) === 1) ? $choice[0] : $choice;
     }
 }
-
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new Unorder();

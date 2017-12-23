@@ -2,6 +2,20 @@
 
 namespace ParserGenerator;
 
+use ParserGenerator\Extension\Choice;
+use ParserGenerator\Extension\Integer;
+use ParserGenerator\Extension\ItemRestrictions;
+use ParserGenerator\Extension\Lookahead;
+use ParserGenerator\Extension\ParametrizedNode;
+use ParserGenerator\Extension\Regex;
+use ParserGenerator\Extension\RuleCondition;
+use ParserGenerator\Extension\Series;
+use ParserGenerator\Extension\StringObject;
+use ParserGenerator\Extension\Text;
+use ParserGenerator\Extension\TextNode;
+use ParserGenerator\Extension\Time;
+use ParserGenerator\Extension\Unorder;
+use ParserGenerator\Extension\WhiteCharactersContext;
 use ParserGenerator\GrammarNode\ErrorTrackDecorator;
 
 class GrammarParser
@@ -13,6 +27,31 @@ class GrammarParser
     protected $parser = null;
 
     public function __construct()
+    {
+        $this->addDefaultPlugins();
+        $this->loadPlugins();
+    }
+
+    public function addDefaultPlugins()
+    {
+        // Note: load order does matter
+        static::$defaultPlugins[] = new ItemRestrictions();
+        static::$defaultPlugins[] = new TextNode();
+        static::$defaultPlugins[] = new Regex();
+        static::$defaultPlugins[] = new StringObject();
+        static::$defaultPlugins[] = new WhiteCharactersContext();
+        static::$defaultPlugins[] = new Integer();
+        static::$defaultPlugins[] = new RuleCondition();
+        static::$defaultPlugins[] = new Lookahead();
+        static::$defaultPlugins[] = new Time();
+        static::$defaultPlugins[] = new Unorder();
+        static::$defaultPlugins[] = new Series();
+        static::$defaultPlugins[] = new Choice();
+        static::$defaultPlugins[] = new Text();
+        static::$defaultPlugins[] = new ParametrizedNode();
+    }
+
+    public function loadPlugins()
     {
         foreach (self::$defaultPlugins as $plugin) {
             $this->addPlugin($plugin);
@@ -227,22 +266,3 @@ class GrammarParser
         }
     }
 }
-
-require_once('Extension/Interface.php');
-require_once('Extension/Base.php');
-require_once('Extension/SequenceItem.php');
-require_once('Extension/ItemRestrictions.php');
-require_once('Extension/TextNode.php');
-require_once('Extension/Regex.php');
-require_once('Extension/StringObject.php');
-require_once('Extension/WhiteCharactersContext.php');
-require_once('Extension/Integer.php');
-require_once('Extension/RuleCondition.php');
-require_once('Extension/Lookahead.php');
-require_once('Extension/Time.php');
-require_once('Extension/Unorder.php');
-require_once('Extension/Series.php');
-require_once('Extension/Choice.php');
-require_once('Extension/Text.php');
-require_once('Extension/ParametrizedNode.php');
-

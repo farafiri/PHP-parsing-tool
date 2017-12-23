@@ -34,5 +34,3 @@ class RuleCondition extends \ParserGenerator\Extension\Base
         return $grammar;
     }
 }
-
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new RuleCondition();

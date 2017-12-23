@@ -34,5 +34,3 @@ class StringObject extends \ParserGenerator\Extension\SequenceItem
         }
     }
 }
-
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new StringObject();

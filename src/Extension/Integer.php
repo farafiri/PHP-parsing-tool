@@ -137,5 +137,3 @@ class Integer extends \ParserGenerator\Extension\SequenceItem
         return new \ParserGenerator\GrammarNode\Numeric($numericOptions);
     }
 }
-
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new Integer();

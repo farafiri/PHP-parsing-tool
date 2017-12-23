@@ -15,5 +15,3 @@ class Regex extends \ParserGenerator\Extension\SequenceItem
             !empty($options['caseInsensitive']));
     }
 }
-
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new Regex();
