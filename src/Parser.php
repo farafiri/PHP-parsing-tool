@@ -2,44 +2,6 @@
 
 namespace ParserGenerator;
 
-require_once 'SyntaxTreeNode/Base.php';
-require_once 'SyntaxTreeNode/Leaf.php';
-require_once 'SyntaxTreeNode/PredefinedString.php';
-require_once 'SyntaxTreeNode/Numeric.php';
-require_once 'SyntaxTreeNode/Branch.php';
-require_once 'SyntaxTreeNode/Root.php';
-require_once 'SyntaxTreeNode/Series.php';
-require_once 'GrammarNode/NodeInterface.php';
-require_once 'GrammarNode/BranchInterface.php';
-require_once 'GrammarNode/BaseNode.php';
-require_once 'GrammarNode/LeafInterface.php';
-require_once 'GrammarNode/Branch.php';
-require_once 'GrammarNode/NaiveBranch.php';
-require_once 'GrammarNode/PEGBranch.php';
-require_once 'GrammarNode/BranchFactory.php';
-require_once 'GrammarNode/Decorator.php';
-require_once 'GrammarNode/BranchDecorator.php';
-require_once 'GrammarNode/BranchExtraCondition.php';
-require_once 'GrammarNode/BranchStringCondition.php';
-require_once 'GrammarNode/Text.php';
-require_once 'GrammarNode/TextS.php';
-require_once 'GrammarNode/PredefinedString.php';
-require_once 'GrammarNode/PredefinedSimpleString.php';
-require_once 'GrammarNode/Regex.php';
-require_once 'GrammarNode/WhitespaceContextCheck.php';
-require_once 'GrammarNode/WhitespaceNegativeContextCheck.php';
-require_once 'GrammarNode/Numeric.php';
-require_once 'GrammarNode/Series.php';
-require_once 'GrammarNode/Choice.php';
-require_once 'GrammarNode/Lookahead.php';
-require_once 'GrammarNode/AnyText.php';
-require_once 'GrammarNode/ItemRestrictions.php';
-require_once 'GrammarNode/ErrorTrackDecorator.php';
-require_once 'RegexUtil.php';
-require_once 'GrammarParser.php';
-
-namespace ParserGenerator;
-
 class Parser
 {
     public $cache;
