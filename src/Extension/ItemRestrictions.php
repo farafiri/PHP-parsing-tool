@@ -2,13 +2,6 @@
 
 namespace ParserGenerator\Extension;
 
-require_once('ItemRestrictions/ItemRestrictionInterface.php');
-require_once('ItemRestrictions/ItemRestrictionOr.php');
-require_once('ItemRestrictions/ItemRestrictionAnd.php');
-require_once('ItemRestrictions/ItemRestrictionNot.php');
-require_once('ItemRestrictions/Contain.php');
-require_once('ItemRestrictions/Is.php');
-
 use ParserGenerator\Extension\ItemRestrictions\Contain;
 use ParserGenerator\Extension\ItemRestrictions\Is;
 use ParserGenerator\Extension\ItemRestrictions\ItemRestrictionAnd;
@@ -121,5 +114,3 @@ class ItemRestrictions extends \ParserGenerator\Extension\SequenceItem
         }
     }
 }
-
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new ItemRestrictions();

@@ -57,5 +57,3 @@ class Series extends \ParserGenerator\Extension\SequenceItem
         }
     }
 }
-
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new Series();

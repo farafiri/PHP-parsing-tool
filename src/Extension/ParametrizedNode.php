@@ -77,5 +77,3 @@ class ParametrizedNode extends Base
         }
     }
 }
-
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new ParametrizedNode();
