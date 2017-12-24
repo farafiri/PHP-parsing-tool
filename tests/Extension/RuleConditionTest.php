@@ -3,8 +3,9 @@
 namespace ParserGenerator\Tests\Extension;
 
 use ParserGenerator\Parser;
+use PHPUnit\Framework\TestCase;
 
-class RuleConditionTest extends \PHPUnit_Framework_TestCase
+class RuleConditionTest extends TestCase
 {
     protected function assertObject($a)
     {

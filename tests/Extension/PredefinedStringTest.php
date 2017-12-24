@@ -3,8 +3,9 @@
 namespace ParserGenerator\Tests\Extension;
 
 use ParserGenerator\Parser;
+use PHPUnit\Framework\TestCase;
 
-class StringTest extends \PHPUnit_Framework_TestCase
+class StringTest extends TestCase
 {
 
     protected function assertObject($a)

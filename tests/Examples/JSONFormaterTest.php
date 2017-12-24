@@ -1,6 +1,8 @@
 <?php
 
-class JSONFormaterTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class JSONFormaterTest extends TestCase
 {
     public function testSetIndention()
     {

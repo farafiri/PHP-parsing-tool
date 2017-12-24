@@ -5,8 +5,9 @@ namespace ParserGenerator\Tests\Extension;
 use ParserGenerator\Parser;
 use ParserGenerator\SyntaxTreeNode\Leaf;
 use ParserGenerator\SyntaxTreeNode\Root;
+use PHPUnit\Framework\TestCase;
 
-class ItemRestrictionsTest extends \PHPUnit_Framework_TestCase
+class ItemRestrictionsTest extends TestCase
 {
     protected function assertObject($a)
     {
@@ -267,8 +268,8 @@ class ItemRestrictionsTest extends \PHPUnit_Framework_TestCase
 
     public function testFollowedBy()
     {
-        //TODO:
-        return 0;
+        $this->markTestSkipped('TODO');
+
         $x = new Parser('start :=> text followed by "a" text.');
 
         $this->assertEquals(new Root('start', 0, array(

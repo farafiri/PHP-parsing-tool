@@ -1,6 +1,8 @@
 <?php
 
-class ParserNodeTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ParserNodeTest extends TestCase
 {
     public function testClone()
     {

@@ -1,8 +1,9 @@
 <?php
 
 use ParserGenerator\Parser;
+use PHPUnit\Framework\TestCase;
 
-class ParametrizedNodeTest extends PHPUnit_Framework_TestCase
+class ParametrizedNodeTest extends TestCase
 {
     protected function assertObject($a)
     {

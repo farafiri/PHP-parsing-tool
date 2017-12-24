@@ -1,8 +1,9 @@
 <?php
 
 use ParserGenerator\Parser;
+use PHPUnit\Framework\TestCase;
 
-class ContainTest extends PHPUnit_Framework_TestCase
+class ContainTest extends TestCase
 {
     public function test()
     {

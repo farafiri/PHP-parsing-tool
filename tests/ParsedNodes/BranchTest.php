@@ -10,8 +10,9 @@ use ParserGenerator\SyntaxTreeNode\Branch;
 use ParserGenerator\SyntaxTreeNode\Leaf;
 use ParserGenerator\SyntaxTreeNode\Numeric;
 use ParserGenerator\SyntaxTreeNode\Root;
+use PHPUnit\Framework\TestCase;
 
-class BranchTest extends PHPUnit_Framework_TestCase
+class BranchTest extends TestCase
 {
     public function testCopy()
     {

@@ -6,8 +6,9 @@ use ParserGenerator\Parser;
 use ParserGenerator\SyntaxTreeNode\Leaf;
 use ParserGenerator\SyntaxTreeNode\Root;
 use ParserGenerator\SyntaxTreeNode\Series;
+use PHPUnit\Framework\TestCase;
 
-class TextTest extends \PHPUnit_Framework_TestCase
+class TextTest extends TestCase
 {
     protected function assertObject($a)
     {
