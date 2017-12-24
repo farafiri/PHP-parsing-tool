@@ -28,13 +28,13 @@ class RuleConditionTest extends \PHPUnit_Framework_TestCase
     public function testValidSubXML()
     {
         $x = new Parser('start    :=> xmlTag.
-	                 xmlText  :=> /[^<>]+/.
-					 xmlTag   :=> "<" /[a-z]+/ ">" xmlNodes "</" /[a-z]+/ ">" <? $s[1] == $s[5] ?>
-					          :=> "<" /[a-z]+/ "/>".
-					 xmlNodes :=> xmlNode xmlNodes
-					          :=> "".
-					 xmlNode  :=> xmlTag
-					          :=> xmlText.');
+                         xmlText  :=> /[^<>]+/.
+                         xmlTag   :=> "<" /[a-z]+/ ">" xmlNodes "</" /[a-z]+/ ">" <? $s[1] == $s[5] ?>
+                                  :=> "<" /[a-z]+/ "/>".
+                         xmlNodes :=> xmlNode xmlNodes
+                                  :=> "".
+                         xmlNode  :=> xmlTag
+                                  :=> xmlText.');
 
         $this->assertFalse($x->parse('<a><b>text</a>'));
         $this->assertFalse($x->parse('<a>text</b></a>'));
@@ -58,14 +58,14 @@ class RuleConditionTest extends \PHPUnit_Framework_TestCase
     public function testInvalidSubXML()
     {
         $x = new Parser('start    :=> xmlTag.
-	                 xmlText  :=> /[^<>]+/.
-					 xmlTag   :=> "<" /[a-z]+/ ">" xmlNodes "</" /[a-z]+/ ">" <? $s[1] == $s[5] ?>
-					          :=> "<" /[a-z]+/ "/>"
-							  :=> "<" /[a-z]+/ ">" xmlNodes.
-					 xmlNodes :=> xmlNode xmlNodes
-					          :=> "".
-					 xmlNode  :=> xmlTag
-					          :=> xmlText.');
+                         xmlText  :=> /[^<>]+/.
+                         xmlTag   :=> "<" /[a-z]+/ ">" xmlNodes "</" /[a-z]+/ ">" <? $s[1] == $s[5] ?>
+                                  :=> "<" /[a-z]+/ "/>"
+                                  :=> "<" /[a-z]+/ ">" xmlNodes.
+                         xmlNodes :=> xmlNode xmlNodes
+                                  :=> "".
+                         xmlNode  :=> xmlTag
+                                  :=> xmlText.');
 
         $this->assertObject($x->parse('<a><b>text</a>'));
         $this->assertFalse($x->parse('<a>text</b></a>'));
@@ -88,15 +88,15 @@ class RuleConditionTest extends \PHPUnit_Framework_TestCase
     public function testMadGrammar()
     {
         $x = new Parser('start      :=> content.
-	                 content  :=> spectext content 
-					          :=> /./ content
-							  :=> "".
-					 spectext :=> text3 content text3 <? (string) $s[0] == (string) $s[2] ?>
-							  :=> text2 content text2 <? (string) $s[0] == (string) $s[2] ?>
-							  :=> text1 content text1 <? (string) $s[0] == (string) $s[2] ?>.
-					 text1    :=> /./ .
-					 text2    :=> /.{2}/ .
-					 text3    :=> /.{3}/ .');
+                         content    :=> spectext content 
+                                    :=> /./ content
+                                    :=> "".
+                         spectext   :=> text3 content text3 <? (string) $s[0] == (string) $s[2] ?>
+                                    :=> text2 content text2 <? (string) $s[0] == (string) $s[2] ?>
+                                    :=> text1 content text1 <? (string) $s[0] == (string) $s[2] ?>.
+                         text1      :=> /./ .
+                         text2      :=> /.{2}/ .
+                         text3      :=> /.{3}/ .');
 
         $r = $x->parse('abab')->findAll('spectext');
         $this->assertEquals('abab', (string)$r[0]);
