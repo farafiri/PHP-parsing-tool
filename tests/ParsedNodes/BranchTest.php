@@ -6,6 +6,8 @@
  * Time: 12:32
  */
 
+namespace ParserGenerator\Tests\ParsedNodes;
+
 use ParserGenerator\SyntaxTreeNode\Branch;
 use ParserGenerator\SyntaxTreeNode\Leaf;
 use ParserGenerator\SyntaxTreeNode\Numeric;

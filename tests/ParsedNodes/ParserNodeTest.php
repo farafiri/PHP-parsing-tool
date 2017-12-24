@@ -1,5 +1,7 @@
 <?php
 
+namespace ParserGenerator\Tests\ParsedNodes;
+
 use PHPUnit\Framework\TestCase;
 
 class ParserNodeTest extends TestCase

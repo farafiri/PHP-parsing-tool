@@ -1,5 +1,7 @@
 <?php
 
+namespace ParserGenerator\Tests;
+
 use PHPUnit\Framework\TestCase;
 
 class RegexUtilTest extends TestCase

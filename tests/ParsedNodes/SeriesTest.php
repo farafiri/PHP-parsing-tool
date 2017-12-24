@@ -7,6 +7,8 @@
  * To change this template use File | Settings | File Templates.
  */
 
+namespace ParserGenerator\Tests\ParsedNodes;
+
 use ParserGenerator\Parser;
 use PHPUnit\Framework\TestCase;
 

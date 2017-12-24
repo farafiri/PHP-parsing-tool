@@ -10,7 +10,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ParserGenerator\\tests\\": "tests/",
+            "ParserGenerator\\Tests\\": "tests/",
             "ParserGenerator\\": "src/"
         }
     },

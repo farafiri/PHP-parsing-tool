@@ -1,5 +1,7 @@
 <?php
 
+namespace ParserGenerator\Tests\Extension;
+
 use ParserGenerator\Parser;
 use PHPUnit\Framework\TestCase;
 

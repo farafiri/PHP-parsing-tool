@@ -1,5 +1,7 @@
 <?php
 
+namespace ParserGenerator\Tests\Extension\ItemRestrictions;
+
 use ParserGenerator\Parser;
 use PHPUnit\Framework\TestCase;
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace ParserGenerator\Tests\Examples;
+
 use PHPUnit\Framework\TestCase;
 
 class JSONFormaterTest extends TestCase

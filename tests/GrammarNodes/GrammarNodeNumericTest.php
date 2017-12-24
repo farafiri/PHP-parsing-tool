@@ -1,5 +1,7 @@
 <?php
 
+namespace ParserGenerator\Tests\GrammarNodes;
+
 use PHPUnit\Framework\TestCase;
 
 class GrammarNodeNumericTest extends TestCase

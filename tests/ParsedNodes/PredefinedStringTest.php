@@ -1,8 +1,10 @@
 <?php
 
+namespace ParserGenerator\Tests\ParsedNodes;
+
 use PHPUnit\Framework\TestCase;
 
-class ParserNodePredefinedStringTest extends TestCase
+class PredefinedStringTest extends TestCase
 {
 
     public function testGetValue()
