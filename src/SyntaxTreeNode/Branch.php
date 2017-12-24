@@ -2,6 +2,8 @@
 
 namespace ParserGenerator\SyntaxTreeNode;
 
+use ParserGenerator\Exception;
+
 class Branch extends \ParserGenerator\SyntaxTreeNode\Base
 {
     protected $type;
@@ -202,7 +204,7 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
                             } elseif ($result instanceof \ParserGenerator\SyntaxTreeNode\Base) {
                                 $this->subnodes[$index] = $result;
                             } else {
-                                throw new \Exception('Result returned by callback in \ParserGenerator\SyntaxTreeNode\Branch::translate should be null|string|\ParserGenerator\SyntaxTreeNode\Base');
+                                throw new Exception('Result returned by callback in \ParserGenerator\SyntaxTreeNode\Branch::translate should be null|string|\ParserGenerator\SyntaxTreeNode\Base');
                             }
                         }
                     }

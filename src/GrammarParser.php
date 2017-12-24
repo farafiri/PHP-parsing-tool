@@ -88,7 +88,7 @@ class GrammarParser
             if (strlen($found) > $foundLength) {
                 $found = substr($found, 0, $foundLength) . '...';
             }
-            throw new \Exception("Given grammar is incorrect:\nline: " . $posData['line'] . ', character: ' . $posData['char'] . "\nexpected: " . $expected . "\nfound: " . $found);
+            throw new Exception("Given grammar is incorrect:\nline: " . $posData['line'] . ', character: ' . $posData['char'] . "\nexpected: " . $expected . "\nfound: " . $found);
         }
         $parsedGrammar->refreshOwners();
 
@@ -236,7 +236,7 @@ class GrammarParser
             if ($newSequence) {
                 return $newSequence;
             } else {
-                throw new \Exception('Rule type [' . $rule->getDetailType() . '] added but not supported');
+                throw new Exception('Rule type [' . $rule->getDetailType() . '] added but not supported');
             }
         }
     }
@@ -256,12 +256,12 @@ class GrammarParser
             if ($sequenceItem->getDetailType() === 'branch') {
                 $branchName = (string)$sequenceItem;
                 if (empty($grammar[$branchName])) {
-                    throw new \Exception("Grammar definition error: Undefined branch [$branchName]");
+                    throw new Exception("Grammar definition error: Undefined branch [$branchName]");
                 }
 
                 return $grammar[$branchName];
             } else {
-                throw new \Exception('Sequence item type [' . $sequenceItem->getDetailType() . '] added but not supported');
+                throw new Exception('Sequence item type [' . $sequenceItem->getDetailType() . '] added but not supported');
             }
         }
     }
