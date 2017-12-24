@@ -2,6 +2,8 @@
 
 namespace ParserGenerator\Extension;
 
+use ParserGenerator\Exception;
+
 class Lookahead extends \ParserGenerator\Extension\SequenceItem
 {
     protected function getGrammarGrammarSequence()
@@ -43,7 +45,7 @@ class Lookahead extends \ParserGenerator\Extension\SequenceItem
                 break;
 
             default:
-                throw new \Exception('that was unexpected');
+                throw new Exception('that was unexpected');
         }
 
         return new \ParserGenerator\GrammarNode\Lookahead($lookaheadNode, $mainNode, $before, $operator == '?');

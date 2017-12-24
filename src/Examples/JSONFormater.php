@@ -2,6 +2,8 @@
 
 namespace ParserGenerator\Examples;
 
+use ParserGenerator\Exception;
+
 class JSONFormater extends \ParserGenerator\Parser
 {
     public function __construct()
@@ -40,7 +42,7 @@ class JSONFormater extends \ParserGenerator\Parser
 
             return $this->setIndention($node->getSubnode(0), $indention, $start);
         } elseif ($node->getType() !== 'value') {
-            throw new \Exception('Function JSONFormater::setIndention can be used only on nodes with type start or value');
+            throw new Exception('Function JSONFormater::setIndention can be used only on nodes with type start or value');
         }
 
         if ($node->getDetailType() == 'array' || $node->getDetailType() == 'object') {

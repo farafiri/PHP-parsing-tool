@@ -2,6 +2,8 @@
 
 namespace ParserGenerator\GrammarNode;
 
+use ParserGenerator\Exception;
+
 class ParameterNode extends BaseNode
 {
     protected $index;
@@ -17,7 +19,7 @@ class ParameterNode extends BaseNode
 
     public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
     {
-        throw new \Exception("this function should be never called on this node type");
+        throw new Exception("this function should be never called on this node type");
     }
 
     public function getIndex()
@@ -34,4 +36,4 @@ class ParameterNode extends BaseNode
     {
         return $this->parameterName;
     }
-} 
+}

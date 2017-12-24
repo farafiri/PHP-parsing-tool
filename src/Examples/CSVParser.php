@@ -9,6 +9,8 @@
 
 namespace ParserGenerator\Examples;
 
+use ParserGenerator\Exception;
+
 class CSVParser extends \ParserGenerator\Parser
 {
     public function __construct()
@@ -48,7 +50,7 @@ class CSVParser extends \ParserGenerator\Parser
 
             return $data;
         } else {
-            throw new \Exception('given string is not proper CSV format');
+            throw new Exception('given string is not proper CSV format');
         }
     }
 }

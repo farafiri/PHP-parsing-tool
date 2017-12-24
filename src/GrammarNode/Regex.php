@@ -2,6 +2,8 @@
 
 namespace ParserGenerator\GrammarNode;
 
+use ParserGenerator\Exception;
+
 class Regex extends \ParserGenerator\GrammarNode\BaseNode Implements \ParserGenerator\GrammarNode\LeafInterface
 {
     public $lastMatch = -1;
@@ -25,7 +27,7 @@ class Regex extends \ParserGenerator\GrammarNode\BaseNode Implements \ParserGene
             }
             $this->regex = '/(' . $regexBody . ')?\s*/' . $regexModifiers;
         } else {
-            throw new \Exception ("Wrong regex format [$regex]");
+            throw new Exception("Wrong regex format [$regex]");
         }
     }
 

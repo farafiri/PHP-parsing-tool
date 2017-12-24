@@ -42,7 +42,7 @@ class Parser
                     } elseif ($seq instanceof \ParserGenerator\GrammarNode\NodeInterface) {
                         $grammarNodeOptions[$optionIndex][$seqIndex] = $seq;
                     } else {
-                        throw new \Exception('incorrect sequenceitem');
+                        throw new Exception('incorrect sequenceitem');
                     }
                 }
             }

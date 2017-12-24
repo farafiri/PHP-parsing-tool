@@ -2,6 +2,8 @@
 
 namespace ParserGenerator\GrammarNode;
 
+use ParserGenerator\Exception;
+
 class BranchFactory
 {
     const NAIVE = 'naive';
@@ -18,7 +20,7 @@ class BranchFactory
             case self::PEG:
                 return new PEGBranch($name);
             default:
-                throw new \Exception("Unknown branch type: $branchType");
+                throw new Exception("Unknown branch type: $branchType");
         }
     }
 }

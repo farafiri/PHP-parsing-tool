@@ -2,6 +2,8 @@
 
 namespace ParserGenerator\Examples;
 
+use ParserGenerator\Exception;
+
 class JSONParser extends \ParserGenerator\Parser
 {
     public function __construct()
@@ -27,7 +29,7 @@ class JSONParser extends \ParserGenerator\Parser
         $jsonTree = $this->parse($jsonString);
 
         if (!$jsonTree) {
-            throw new \Exception("Given string is not proper JSON");
+            throw new Exception("Given string is not proper JSON");
         }
 
         return $this->getValueOfNode($jsonTree->getSubnode(0));
