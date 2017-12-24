@@ -38,7 +38,7 @@ class LookaheadTest extends \PHPUnit_Framework_TestCase
     public function testSimplePositiveAfter()
     {
         $x = new Parser('start :=> x /.*/ .
-	                 x     :=> /.{3}/  !"a" .');
+                         x     :=> /.{3}/  !"a" .');
 
         $this->assertObject($x->parse('axcd'));
         $this->assertObject($x->parse('aaadaa'));
@@ -78,10 +78,10 @@ class LookaheadTest extends \PHPUnit_Framework_TestCase
         )), $x->parse("abc"));
 
         $x = new Parser('start :=> ?abc /.+/ .
-	                 abc   :=> a b c.
-					 a     :=> "a".
-					 b     :=> "b".
-					 c     :=> "c".');
+                         abc   :=> a b c.
+                         a     :=> "a".
+                         b     :=> "b".
+                         c     :=> "c".');
 
         $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
             new \ParserGenerator\SyntaxTreeNode\Leaf('abc')

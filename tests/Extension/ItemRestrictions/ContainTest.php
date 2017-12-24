@@ -7,7 +7,7 @@ class ContainTest extends PHPUnit_Framework_TestCase
     public function test()
     {
         $x = new Parser("start :=> 'abcd'
-		                       :=> 'ab'.");
+                               :=> 'ab'.");
 
         $contain = new \ParserGenerator\Extension\ItemRestrictions\Contain($x->grammar['start']);
 
@@ -30,7 +30,7 @@ class ContainTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($contain->check('ab   ', 0, 5, null));
 
         $x = new Parser("start :=> 'abcd'
-		                       :=> 'ab'.", array('ignoreWhitespaces' => true));
+                               :=> 'ab'.", array('ignoreWhitespaces' => true));
 
         $contain = new \ParserGenerator\Extension\ItemRestrictions\Contain($x->grammar['start']);
 

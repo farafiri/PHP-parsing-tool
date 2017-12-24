@@ -77,8 +77,8 @@ class ItemRestrictionsTest extends \PHPUnit_Framework_TestCase
     public function testWithNodes()
     {
         $x = new Parser('start           :=> text contain textInBranckets.
-		                 textInBranckets :=> "(" text ")"
-						                 :=> "[" text "]".');
+                         textInBranckets :=> "(" text ")"
+                                         :=> "[" text "]".');
 
         $this->assertFalse($x->parse('asdg'));
         $this->assertFalse($x->parse(''));
@@ -215,10 +215,10 @@ class ItemRestrictionsTest extends \PHPUnit_Framework_TestCase
          * without "not contain ..." string "<<<" would be parsed as well
          */
         $x = new Parser('start     :=> properText+tag.
-		                 tag       :=> open properText close.
-						 properText:=> text not contain ?(open|close).
-						 open      :=> "<<<".
-						 close     :=> ">>>".');
+                         tag       :=> open properText close.
+                         properText:=> text not contain ?(open|close).
+                         open      :=> "<<<".
+                         close     :=> ">>>".');
 
         $this->assertObject($x->parse("asd<<<asdfg>>>fsdf"));
         $this->assertObject($x->parse("as>d<<<as<<dfg>>>fsd><<f"));

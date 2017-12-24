@@ -7,7 +7,7 @@ class IsTest extends PHPUnit_Framework_TestCase
     public function test()
     {
         $x = new Parser("start :=> 'abcd'
-		                       :=> 'ab'.");
+                               :=> 'ab'.");
 
         $contain = new \ParserGenerator\Extension\ItemRestrictions\Is($x->grammar['start']);
 
@@ -27,7 +27,7 @@ class IsTest extends PHPUnit_Framework_TestCase
         $x->cache = array();
 
         $x = new Parser("start :=> 'abcd'
-		                       :=> 'ab'.", array('ignoreWhitespaces' => true));
+                               :=> 'ab'.", array('ignoreWhitespaces' => true));
 
         $contain = new \ParserGenerator\Extension\ItemRestrictions\Is($x->grammar['start']);
 

@@ -12,7 +12,7 @@ class ChoiceTest extends PHPUnit_Framework_TestCase
     public function testBase()
     {
         $x = new Parser('start :=> (abc | "z" | /[qwe]/) "." .
-	                 abc   :=> "abc".');
+                         abc   :=> "abc".');
 
         $this->assertFalse($x->parse('ax.'));
         $this->assertFalse($x->parse('a.'));
@@ -26,7 +26,7 @@ class ChoiceTest extends PHPUnit_Framework_TestCase
     public function testChoiceSchouldNotCreateNewLevelInResult()
     {
         $x = new Parser('start :=> (abc | "z" | /[qwe]/) "." .
-	                 abc   :=> "abc".');
+                         abc   :=> "abc".');
 
         $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
             new \ParserGenerator\SyntaxTreeNode\Branch('abc', 0,
@@ -48,8 +48,8 @@ class ChoiceTest extends PHPUnit_Framework_TestCase
     public function testWithSeries()
     {
         $x = new Parser('start :=> (a | b)+ .
-	                 a     :=> "a".
-					 b     :=> "b".');
+                         a     :=> "a".
+                         b     :=> "b".');
 
         $this->assertFalse($x->parse(''));
         $this->assertFalse($x->parse('abc'));
