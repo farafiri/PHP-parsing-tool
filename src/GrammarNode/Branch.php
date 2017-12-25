@@ -40,9 +40,7 @@ class Branch extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGen
             $indexes = array(-1 => $fromIndex);
             $optionCount = count($option);
             //!!! TODO:
-            for ($i = 0; $i < $optionCount; $i++) {
-                $restrictedEnds[$i] = array();
-            }
+            $restrictedEnds = array_fill(0, $optionCount - 1, array());
             $restrictedEnds[$optionCount - 1] = $restrictedEnd;
             while (true) {
                 $subNode = $option[$optionIndex]->rparse($string, $indexes[$optionIndex - 1],
