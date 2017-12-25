@@ -55,9 +55,10 @@ class Parser
         $this->options = $options;
 
         foreach ($this->grammar as $name => $node) {
-            $grammarNode = new \ParserGenerator\GrammarNode\BranchDecorator(new \ParserGenerator\GrammarNode\Branch($name));
+            $grammarNode = new \ParserGenerator\GrammarNode\Branch($name);
+            $grammarNode->setParser($this);
+            $grammarNode = new \ParserGenerator\GrammarNode\ErrorTrackDecorator($grammarNode);
             $this->grammar[$name] = $grammarNode;
-            $this->grammar[$name]->setParser($this);
         }
 
         $this->grammar['string'] = new \ParserGenerator\GrammarNode\PredefinedString(true);
@@ -69,22 +70,23 @@ class Parser
                     if (is_string($seq)) {
                         if (substr($seq, 0, 1) == ':') {
                             if (substr($seq, 1, 1) == '/') {
-                                $grammarNodeOptions[$optionIndex][$seqIndex] = new \ParserGenerator\GrammarNode\Regex(substr($seq,
-                                    1), true);
+                                $grammarNodeOptions[$optionIndex][$seqIndex] = new \ParserGenerator\GrammarNode\ErrorTrackDecorator(new \ParserGenerator\GrammarNode\Regex(substr($seq,
+                                    1), true));
                             } else {
                                 $grammarNodeOptions[$optionIndex][$seqIndex] = $this->grammar[substr($seq, 1)];
                             }
                         } else {
-                            $grammarNodeOptions[$optionIndex][$seqIndex] = new \ParserGenerator\GrammarNode\TextS($seq);
+                            $grammarNodeOptions[$optionIndex][$seqIndex] = new \ParserGenerator\GrammarNode\ErrorTrackDecorator(
+                                new \ParserGenerator\GrammarNode\TextS($seq));
                         }
                     } elseif ($seq instanceof \ParserGenerator\GrammarNode\NodeInterface) {
-                        $grammarNodeOptions[$optionIndex][$seqIndex] = $seq;
+                        $grammarNodeOptions[$optionIndex][$seqIndex] = new \ParserGenerator\GrammarNode\ErrorTrackDecorator($seq);
                     } else {
                         throw new \Exception('incorrect sequenceitem');
                     }
                 }
             }
-            $this->grammar[$name]->setNode($grammarNodeOptions);
+            $this->grammar[$name]->getDecoratedNode()->setNode($grammarNodeOptions);
         }
     }
 
@@ -151,6 +153,9 @@ class Parser
         $this->iterateOverNodes(function ($node) {
             if ($node instanceof \ParserGenerator\GrammarNode\ErrorTrackDecorator) {
                 $node->reset();
+            } elseif (isset($node->lastMatch)) {
+                $node->lastMatch = -1;
+                $node->lastNMatch = -1;
             }
         });
         $this->cache = array();
@@ -264,47 +269,18 @@ class Parser
             $errorsByHash[spl_object_hash($error)] = $error;
         }
 
-        foreach ($this->grammar as $grammarNode) {
-            if ($grammarNode instanceof \ParserGenerator\GrammarNode\BranchInterface) {
-                $generalizeThisNode = false;
-
-                foreach ($grammarNode->getNode() as $sequence) {
-                    if (isset($sequence[0]) && $sequence[0] instanceof \ParserGenerator\GrammarNode\LeafInterface) {
-                        if (isset($errorsByHash[spl_object_hash($sequence[0])])) {
-                            unset($errorsByHash[spl_object_hash($sequence[0])]);
-                            $generalizeThisNode = true;
-                        }
-                    }
-                }
-
-                if ($generalizeThisNode) {
-                    $errorsByHash[spl_object_hash($grammarNode)] = $grammarNode;
-                }
-            }
-        }
-
         foreach ($errorsByHash as $hash => $error) {
-            if (empty($errorsByHash[$hash])) {
-                continue;
-            }
-
-            $subErrorsByHash = array($hash => $error);
-            do {
-                $oneMoreIteration = false;
-                foreach ($subErrorsByHash as $subError) {
-                    if ($subError instanceof \ParserGenerator\GrammarNode\BranchInterface) {
-                        foreach ($subError->getNode() as $sequence) {
-                            if (isset($sequence[0]) && empty($subErrorsByHash[spl_object_hash($sequence[0])])) {
-                                $subErrorsByHash[spl_object_hash($sequence[0])] = $sequence[0];
-                                $oneMoreIteration = true;
-                                unset($errorsByHash[spl_object_hash($sequence[0])]);
-                            }
-                        }
+            if (isset($errorsByHash[$hash]) && $error instanceof \ParserGenerator\GrammarNode\BranchInterface) {
+                $this->parse('', $error->getNodeName());
+                $errorData = $this->getError();
+                foreach($errorData['expected'] as $errorToRemove) {
+                    if ($errorToRemove !== $error) {
+                        unset($errorsByHash[spl_object_hash($errorToRemove)]);
                     }
                 }
-            } while ($oneMoreIteration);
+            }
         }
 
-        return $errorsByHash;
+        return array_values($errorsByHash);
     }
 }

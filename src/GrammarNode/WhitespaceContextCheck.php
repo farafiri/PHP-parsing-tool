@@ -58,4 +58,9 @@ class WhitespaceContextCheck extends BaseNode implements LeafInterface
 
         return false;
     }
+
+    public function __toString()
+    {
+        return (string) $this->char;
+    }
 }

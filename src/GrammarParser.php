@@ -40,16 +40,7 @@ class GrammarParser
         $parsedGrammar = $this->getParser()->parse($grammarStr);
 
         if ($parsedGrammar === false) {
-            $error = $this->getParser()->getError();
-            $posData = \ParserGenerator\Parser::getLineAndCharacterFromOffset($grammarStr, $error['index']);
-
-            $expected = implode(' or ', $this->getParser()->generalizeErrors($error['expected']));
-            $foundLength = 20;
-            $found = substr($grammarStr, $error['index']);
-            if (strlen($found) > $foundLength) {
-                $found = substr($found, 0, $foundLength) . '...';
-            }
-            throw new \Exception("Given grammar is incorrect:\nline: " . $posData['line'] . ', character: ' . $posData['char'] . "\nexpected: " . $expected . "\nfound: " . $found);
+            throw new \Exception("Given grammar is incorrect:\n" . $this->getParser()->getErrorString($grammarStr));
         }
         $parsedGrammar->refreshOwners();
 

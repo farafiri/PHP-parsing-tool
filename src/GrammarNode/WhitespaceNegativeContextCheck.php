@@ -29,4 +29,9 @@ class WhitespaceNegativeContextCheck extends \ParserGenerator\GrammarNode\BaseNo
 
         return false;
     }
+
+    public function __toString()
+    {
+        return (string) $this->char;
+    }
 }

@@ -631,7 +631,6 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($x->parse('(34b'));
         $e = $x->getError();
-
         $this->assertEquals(3, $e['index']);
         $this->assertEquals('"," | ")"', implode(' | ', $e['expected']));
     }
@@ -676,5 +675,15 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
         $x = new Parser('start :=> "a" /** "b" */ "c" **/ /** "d" /* "e" */ "f" **/');
         $this->assertArrayElementsEquals(array('Branch[start]', 'Text["a"]'), $nodeDump($x));
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessageRegExp /line: 1, character: 20.*expected:.*")"/s
+     */
+    public function testIncorrectGrammarRaisesException()
+    {
+        new Parser('start :=> "a" (a "b".
+                    a     :=> "c" start.');
     }
 }
