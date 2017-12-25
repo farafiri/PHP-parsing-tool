@@ -679,7 +679,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \ParserGenerator\Exception
-     * @expectedExceptionMessageRegExp /line: 1, character: 20.*expected:.*")"/s
+     * @expectedExceptionMessageRegExp /line: 1, character: 21.*expected:.*")"/s
      */
     public function testIncorrectGrammarRaisesException()
     {
