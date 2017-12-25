@@ -24,5 +24,3 @@ class Time extends \ParserGenerator\Extension\SequenceItem
         return new LeafTime((string)$sequenceItem->getSubnode(1), !empty($options['ignoreWhitespaces']));
     }
 }
-
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new Time();

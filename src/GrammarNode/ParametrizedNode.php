@@ -2,6 +2,7 @@
 
 namespace ParserGenerator\GrammarNode;
 
+use ParserGenerator\Exception;
 use ParserGenerator\GrammarNodeCopier;
 
 class ParametrizedNode extends BaseNode implements \ParserGenerator\ParserAwareInterface
@@ -37,7 +38,7 @@ class ParametrizedNode extends BaseNode implements \ParserGenerator\ParserAwareI
 
             if ($node instanceof ParameterNode) {
                 if (empty($params[$node->getIndex()])) {
-                    throw new \Exception("Parameter " . $node->getParameterName() . " with index " . $node->getIndex() . " in branch " . $node->getBranchName() . " not provided");
+                    throw new Exception("Parameter " . $node->getParameterName() . " with index " . $node->getIndex() . " in branch " . $node->getBranchName() . " not provided");
                 }
                 return $params[$node->getIndex()];
             }
@@ -78,4 +79,4 @@ class ParametrizedNode extends BaseNode implements \ParserGenerator\ParserAwareI
         $copy->setParser($this->getParser());
         return $copy;
     }
-} 
+}

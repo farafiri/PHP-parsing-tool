@@ -57,6 +57,13 @@ Note that not every grammar can be parsed with PEG packrat algorithm.
                                                :=> "x".');
 ```
 
+## Error handling
+If your input cannot be parsed, `\ParserGenerator\Parser::parse` will return `false`.
+
+Use `\ParserGenerator\Parser::getErrorString()` and provide your input data to get a human-readable error description.
+
+Alternatively you can use `\ParserGenerator\Parser::getError()` and directly work with error nodes.
+
 ## Symbols
 ##### "text"
 Matches text. You can also use single quotes. You can use escape sequences so "\n" will match new line.

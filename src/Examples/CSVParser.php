@@ -9,6 +9,8 @@
 
 namespace ParserGenerator\Examples;
 
+use ParserGenerator\Exception;
+
 class CSVParser extends \ParserGenerator\Parser
 {
     public function __construct()

@@ -22,5 +22,3 @@ class TextNode extends \ParserGenerator\Extension\SequenceItem
         }
     }
 }
-
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new TextNode();

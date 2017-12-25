@@ -2,6 +2,8 @@
 
 namespace ParserGenerator\SyntaxTreeNode;
 
+use ParserGenerator\Exception;
+
 class Branch extends \ParserGenerator\SyntaxTreeNode\Base
 {
     protected $type;

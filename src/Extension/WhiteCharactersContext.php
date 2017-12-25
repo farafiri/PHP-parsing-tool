@@ -66,5 +66,3 @@ class WhiteCharactersContext extends \ParserGenerator\Extension\SequenceItem
         }
     }
 }
-
-\ParserGenerator\GrammarParser::$defaultPlugins[] = new WhiteCharactersContext();

@@ -14,9 +14,9 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
     public function testPWithoutSeparator()
     {
         $x = new Parser('start :=> str+.
-	                 str   :=> "a"
-					       :=> "b"
-						   :=> "c".');
+                         str   :=> "a"
+                               :=> "b"
+                               :=> "c".');
 
 
         $this->assertFalse($x->parse('ax'));
@@ -44,9 +44,9 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
     public function testMWithoutSeparator()
     {
         $x = new Parser('start :=> str*.
-	                 str   :=> "a"
-					       :=> "b"
-						   :=> "c".');
+                         str   :=> "a"
+                               :=> "b"
+                               :=> "c".');
 
 
         $this->assertFalse($x->parse('ax'));
@@ -62,10 +62,10 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
     public function testWithSeparator()
     {
         $x = new Parser('start :=> str+coma.
-	                 coma  :=> ",".
-	                 str   :=> "a"
-					       :=> "b"
-						   :=> "c".');
+                         coma  :=> ",".
+                         str   :=> "a"
+                               :=> "b"
+                               :=> "c".');
 
         $this->assertFalse($x->parse('a,'));
         $this->assertObject($x->parse('a'));
@@ -158,7 +158,7 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
     public function testSurrounded()
     {
         $x = new Parser('start :=> num+"," /b/.
-	                 num   :=> /\d+/.');
+                         num   :=> /\d+/.');
 
         $this->assertObject($x->parse('2,3b'));
     }

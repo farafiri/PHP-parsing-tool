@@ -2,6 +2,8 @@
 
 namespace ParserGenerator\Examples;
 
+use ParserGenerator\Exception;
+
 class JSONParser extends \ParserGenerator\Parser
 {
     public function __construct()

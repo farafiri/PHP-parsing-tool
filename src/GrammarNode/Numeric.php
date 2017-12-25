@@ -3,6 +3,8 @@
 
 namespace ParserGenerator\GrammarNode;
 
+use ParserGenerator\Exception;
+
 class Numeric extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGenerator\GrammarNode\LeafInterface
 {
     protected $regexes;
@@ -35,11 +37,11 @@ class Numeric extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
         }
 
         if (!$this->formatDec && !$this->formatHex && !$this->formatOct && !$this->formatBin) {
-            throw new \Exception ('You must specify at least one proper format');
+            throw new Exception('You must specify at least one proper format');
         }
 
         if ($this->formatOct && $this->formatDec && ($this->requireFixedCharacters || $this->allowFixedCharacters)) {
-            throw new \Exception('options fixedCharacters and oct format canot be mixed together');
+            throw new Exception('options fixedCharacters and oct format canot be mixed together');
         }
 
         $this->buildRegexes();
