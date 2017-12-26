@@ -113,7 +113,6 @@ class LookaheadTest extends \PHPUnit_Framework_TestCase
         )), $x->parse("abce"));
     }
 
-
     public function testAnBnCnGrammar()
     {
         $x = new Parser('start :=> ?(A "c") "a"++ B.
@@ -135,6 +134,13 @@ class LookaheadTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($x->parse('aabbccc'));
         $this->assertFalse($x->parse('aabbbcc'));
         $this->assertFalse($x->parse('aaabbcc'));
+    }
+
+    public function testBugNoBacktracking()
+    {
+        $x = new Parser('start :=> text ?"c" text.');
+
+        $this->assertObject($x->parse('abcd'));
     }
 
     public function testErrorTrack()

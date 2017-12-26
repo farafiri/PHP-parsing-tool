@@ -40,17 +40,18 @@ class Lookahead extends \ParserGenerator\GrammarNode\BaseNode
 
             return $this->mainNode->rparse($string, $fromIndex, $restrictedEnd);
         } else { // !$this->before
-            $rparseResult = $this->mainNode->rparse($string, $fromIndex, $restrictedEnd);;
+            while($rparseResult = $this->mainNode->rparse($string, $fromIndex, $restrictedEnd)) {
+                    $offset = $rparseResult['offset'];
+                    $match  = $this->lookaheadNode->rparse($string, $offset, array()) !== false;
 
-            if ($rparseResult) {
-                $match = $this->lookaheadNode->rparse($string, $rparseResult['offset'], array()) !== false;
-
-                if ($match !== $this->positive) {
-                    return false;
-                }
+                    if ($match === $this->positive) {
+                        return $rparseResult;
+                    } else {
+                        $restrictedEnd[$offset] = $offset;
+                    }
             }
 
-            return $rparseResult;
+            return false;
         }
     }
 
