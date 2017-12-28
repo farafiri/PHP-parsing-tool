@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: Rafał
@@ -24,7 +24,7 @@ class LeafTime extends Leaf
     {
         $result = new \DateTime();
         $result->setDate($this->timeData['year'], $this->timeData['month'], $this->timeData['day']);
-        $result->setTime($this->timeData['hour'], $this->timeData['minute'], $this->timeData['second']);
+        $result->setTime($this->timeData['hour'] ?: 0, $this->timeData['minute'] ?: 0, $this->timeData['second'] ?: 0);
 
         return $result;
     }
