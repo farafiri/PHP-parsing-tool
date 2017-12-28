@@ -17,22 +17,22 @@ class Lookahead extends \ParserGenerator\GrammarNode\BaseNode
         $this->positive = $positive;
     }
 
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         if ($this->mainNode === null) {
             if (isset($restrictedEnd[$fromIndex])) {
                 return false;
             }
 
-            $match = $this->lookaheadNode->rparse($string, $fromIndex, array()) !== false;
+            $match = $this->lookaheadNode->rparse($string, $fromIndex, []) !== false;
 
             if ($match === $this->positive) {
-                return array('node' => new \ParserGenerator\SyntaxTreeNode\Leaf(''), 'offset' => $fromIndex);
+                return ['node' => new \ParserGenerator\SyntaxTreeNode\Leaf(''), 'offset' => $fromIndex];
             } else {
                 return false;
             }
         } elseif ($this->before) {
-            $match = $this->lookaheadNode->rparse($string, $fromIndex, array()) !== false;
+            $match = $this->lookaheadNode->rparse($string, $fromIndex, []) !== false;
 
             if ($match !== $this->positive) {
                 return false;
@@ -40,15 +40,15 @@ class Lookahead extends \ParserGenerator\GrammarNode\BaseNode
 
             return $this->mainNode->rparse($string, $fromIndex, $restrictedEnd);
         } else { // !$this->before
-            while($rparseResult = $this->mainNode->rparse($string, $fromIndex, $restrictedEnd)) {
-                    $offset = $rparseResult['offset'];
-                    $match  = $this->lookaheadNode->rparse($string, $offset, array()) !== false;
+            while ($rparseResult = $this->mainNode->rparse($string, $fromIndex, $restrictedEnd)) {
+                $offset = $rparseResult['offset'];
+                $match = $this->lookaheadNode->rparse($string, $offset, []) !== false;
 
-                    if ($match === $this->positive) {
-                        return $rparseResult;
-                    } else {
-                        $restrictedEnd[$offset] = $offset;
-                    }
+                if ($match === $this->positive) {
+                    return $rparseResult;
+                } else {
+                    $restrictedEnd[$offset] = $offset;
+                }
             }
 
             return false;
@@ -57,7 +57,7 @@ class Lookahead extends \ParserGenerator\GrammarNode\BaseNode
 
     public function getUsedNodes($startWithOnly = false, $onlyPositive = false)
     {
-        $result = array();
+        $result = [];
         if ((!$startWithOnly || $this->before) && (!$onlyPositive || $this->positive)) {
             $result[] = $this->lookaheadNode;
         }

@@ -14,13 +14,13 @@ class Text extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGener
         $this->str = $str;
     }
 
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         if (substr($string, $fromIndex, strlen($this->str)) === $this->str ||
             ($this->str === '' && strlen($string) === $fromIndex)) {
             $endPos = $fromIndex + strlen($this->str);
             if (!isset($restrictedEnd[$endPos])) {
-                return array('node' => new \ParserGenerator\SyntaxTreeNode\Leaf($this->str), 'offset' => $endPos);
+                return ['node' => new \ParserGenerator\SyntaxTreeNode\Leaf($this->str), 'offset' => $endPos];
             }
         }
 

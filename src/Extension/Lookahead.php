@@ -12,11 +12,11 @@ class Lookahead extends \ParserGenerator\Extension\SequenceItem
         $whiteChar = new \ParserGenerator\GrammarNode\WhitespaceContextCheck(null);
         $operator = ':/[!?]/';
 
-        return array(
-            array($operator, $noWhiteChar, ':sequenceItem', $whiteChar, ':sequenceItem'),
-            array(':sequenceItem', $whiteChar, $operator, $noWhiteChar, ':sequenceItem'),
-            array($operator, $noWhiteChar, ':sequenceItem'),
-        );
+        return [
+            [$operator, $noWhiteChar, ':sequenceItem', $whiteChar, ':sequenceItem'],
+            [':sequenceItem', $whiteChar, $operator, $noWhiteChar, ':sequenceItem'],
+            [$operator, $noWhiteChar, ':sequenceItem'],
+        ];
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)

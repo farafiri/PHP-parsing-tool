@@ -10,10 +10,10 @@ class CSVParserTest extends TestCase
     {
         $parser = new \ParserGenerator\Examples\CSVParser();
 
-        $expected = array(
-            array('r1c1', 'r1c2'),
-            array('r2c1', 'r2c2')
-        );
+        $expected = [
+            ['r1c1', 'r1c2'],
+            ['r2c1', 'r2c2'],
+        ];
 
         $this->assertEquals($expected, $parser->parseCSV("r1c1,r1c2\nr2c1,r2c2"));
     }
@@ -22,10 +22,10 @@ class CSVParserTest extends TestCase
     {
         $parser = new \ParserGenerator\Examples\CSVParser();
 
-        $expected = array(
-            array('r1c1', 'r1c2'),
-            array('r2c1', 'r2c2')
-        );
+        $expected = [
+            ['r1c1', 'r1c2'],
+            ['r2c1', 'r2c2'],
+        ];
 
         $this->assertEquals($expected, $parser->parseCSV("\"r1c1\" , \"r1c2\"\n\"r2c1\",\"r2c2\""));
     }
@@ -34,9 +34,9 @@ class CSVParserTest extends TestCase
     {
         $parser = new \ParserGenerator\Examples\CSVParser();
 
-        $expected = array(
-            array('  c1  ', ' c2 ')
-        );
+        $expected = [
+            ['  c1  ', ' c2 '],
+        ];
 
         $this->assertEquals($expected, $parser->parseCSV("  c1  , c2 "));
     }
@@ -45,10 +45,10 @@ class CSVParserTest extends TestCase
     {
         $parser = new \ParserGenerator\Examples\CSVParser();
 
-        $expected = array(
-            array('text "quot"', ", \n"),
-            array('\n', 'a')
-        );
+        $expected = [
+            ['text "quot"', ", \n"],
+            ['\n', 'a'],
+        ];
 
         $this->assertEquals($expected, $parser->parseCSV("\"text \"\"quot\"\"\", \", \n\" \n  \"\\n\",a"));
     }

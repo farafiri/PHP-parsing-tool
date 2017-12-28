@@ -20,29 +20,29 @@ class ItemRestrictions extends \ParserGenerator\Extension\SequenceItem
 
     public function extendGrammar($grammarGrammar)
     {
-        $grammarGrammar[$this->getNS('', false)] = array(
-            array(
+        $grammarGrammar[$this->getNS('', false)] = [
+            [
                 ':sequenceItem',
-                $this->getNS('condition')
-            )
-        );
+                $this->getNS('condition'),
+            ],
+        ];
 
-        $grammarGrammar[$this->getNS('condition', false)] = array(
-            array($this->getNS('conditionAnd'), 'or', $this->getNS('condition')),
-            'last' => array($this->getNS('conditionAnd'))
-        );
+        $grammarGrammar[$this->getNS('condition', false)] = [
+            [$this->getNS('conditionAnd'), 'or', $this->getNS('condition')],
+            'last' => [$this->getNS('conditionAnd')],
+        ];
 
-        $grammarGrammar[$this->getNS('conditionAnd', false)] = array(
-            array($this->getNS('simpleCondition'), 'and', $this->getNS('conditionAnd')),
-            'last' => array($this->getNS('simpleCondition'))
-        );
+        $grammarGrammar[$this->getNS('conditionAnd', false)] = [
+            [$this->getNS('simpleCondition'), 'and', $this->getNS('conditionAnd')],
+            'last' => [$this->getNS('simpleCondition')],
+        ];
 
-        $grammarGrammar[$this->getNS('simpleCondition', false)] = array(
-            'bracket' => array('(', $this->getNS('condition'), ':comments', ')'),
-            'not' => array('not', $this->getNS('simpleCondition')),
-            'contain' => array('contain', ':sequenceItem'),
-            'is' => array('is', ':sequenceItem')
-        );
+        $grammarGrammar[$this->getNS('simpleCondition', false)] = [
+            'bracket' => ['(', $this->getNS('condition'), ':comments', ')'],
+            'not' => ['not', $this->getNS('simpleCondition')],
+            'contain' => ['contain', ':sequenceItem'],
+            'is' => ['is', ':sequenceItem'],
+        ];
 
         return parent::extendGrammar($grammarGrammar);
     }
@@ -54,7 +54,7 @@ class ItemRestrictions extends \ParserGenerator\Extension\SequenceItem
 
     protected function getGrammarGrammarSequence()
     {
-        return array($this->getNS(''));
+        return [$this->getNS('')];
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)
@@ -77,20 +77,20 @@ class ItemRestrictions extends \ParserGenerator\Extension\SequenceItem
                 if ($node->getDetailType() === 'last') {
                     return $this->buildCondition($node->getSubnode(0));
                 } else {
-                    return new ItemRestrictionOr(array(
+                    return new ItemRestrictionOr([
                         $this->buildCondition($node->getSubnode(0)),
-                        $this->buildCondition($node->getSubnode(2))
-                    ));
+                        $this->buildCondition($node->getSubnode(2)),
+                    ]);
                 }
 
             case $this->getNS('conditionAnd', false):
                 if ($node->getDetailType() === 'last') {
                     return $this->buildCondition($node->getSubnode(0));
                 } else {
-                    return new ItemRestrictionAnd(array(
+                    return new ItemRestrictionAnd([
                         $this->buildCondition($node->getSubnode(0)),
-                        $this->buildCondition($node->getSubnode(2))
-                    ));
+                        $this->buildCondition($node->getSubnode(2)),
+                    ]);
                 }
 
             case $this->getNS('simpleCondition', false):

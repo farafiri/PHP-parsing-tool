@@ -6,7 +6,7 @@ class Regex extends \ParserGenerator\Extension\SequenceItem
 {
     protected function getGrammarGrammarSequence()
     {
-        return array(':/\\/([^*\\\\\\/]|\\\\.)([^\\\\\\/]|\\\\.)*\\/[a-zA-Z]*/');
+        return [':/\\/([^*\\\\\\/]|\\\\.)([^\\\\\\/]|\\\\.)*\\/[a-zA-Z]*/'];
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)

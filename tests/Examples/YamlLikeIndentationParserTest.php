@@ -10,11 +10,11 @@ class YamlLikeIndentationParserTest extends TestCase
     {
         $parser = new \ParserGenerator\Examples\YamlLikeIndentationParser();
 
-        $this->assertEquals(array("a" => "x"), $parser->getValue("a:x"));
-        $this->assertEquals(array(
+        $this->assertEquals(["a" => "x"], $parser->getValue("a:x"));
+        $this->assertEquals([
             "a" => "x",
-            "b" => "y"
-        ), $parser->getValue("
+            "b" => "y",
+        ], $parser->getValue("
             a:x
             b:y"));
     }
@@ -23,11 +23,11 @@ class YamlLikeIndentationParserTest extends TestCase
     {
         $parser = new \ParserGenerator\Examples\YamlLikeIndentationParser();
 
-        $this->assertEquals(array(
-            "a" => array(
-                "b" => "x"
-            )
-        ), $parser->getValue("
+        $this->assertEquals([
+            "a" => [
+                "b" => "x",
+            ],
+        ], $parser->getValue("
             a:
              b:x"));
     }
@@ -36,11 +36,11 @@ class YamlLikeIndentationParserTest extends TestCase
     {
         $parser = new \ParserGenerator\Examples\YamlLikeIndentationParser();
 
-        $this->assertEquals(array(
-            "a" => array(
-                "b" => "x"
-            )
-        ), $parser->getValue("
+        $this->assertEquals([
+            "a" => [
+                "b" => "x",
+            ],
+        ], $parser->getValue("
             a:
                          b:x"));
     }
@@ -49,17 +49,17 @@ class YamlLikeIndentationParserTest extends TestCase
     {
         $parser = new \ParserGenerator\Examples\YamlLikeIndentationParser();
 
-        $this->assertEquals(array(
-            "a" => array(
-                "b" => array(
-                    "c" => array(
-                        "d" => array(
-                            "e" => "x"
-                        )
-                    )
-                )
-            )
-        ), $parser->getValue("
+        $this->assertEquals([
+            "a" => [
+                "b" => [
+                    "c" => [
+                        "d" => [
+                            "e" => "x",
+                        ],
+                    ],
+                ],
+            ],
+        ], $parser->getValue("
             a:
               b:
                 c:
@@ -71,40 +71,40 @@ class YamlLikeIndentationParserTest extends TestCase
     {
         $parser = new \ParserGenerator\Examples\YamlLikeIndentationParser();
 
-        $this->assertEquals(array(
-            "a" => array(
-                "b" => array(
+        $this->assertEquals([
+            "a" => [
+                "b" => [
                     "c" => "x",
-                    "d" => "y"
-                )
-            )
-        ), $parser->getValue("
+                    "d" => "y",
+                ],
+            ],
+        ], $parser->getValue("
             a:
               b:
                 c:x
                 d:y"));
 
-        $this->assertEquals(array(
-            "a" => array(
-                "b" => array(
-                    "c" => "x"
-                ),
-                "d" => "y"
-            )
-        ), $parser->getValue("
+        $this->assertEquals([
+            "a" => [
+                "b" => [
+                    "c" => "x",
+                ],
+                "d" => "y",
+            ],
+        ], $parser->getValue("
             a:
               b:
                 c:x
               d:y"));
 
-        $this->assertEquals(array(
-            "a" => array(
-                "b" => array(
-                    "c" => "x"
-                )
-            ),
-            "d" => "y"
-        ), $parser->getValue("
+        $this->assertEquals([
+            "a" => [
+                "b" => [
+                    "c" => "x",
+                ],
+            ],
+            "d" => "y",
+        ], $parser->getValue("
             a:
               b:
                 c:x
@@ -129,30 +129,30 @@ class YamlLikeIndentationParserTest extends TestCase
     {
         $parser = new \ParserGenerator\Examples\YamlLikeIndentationParser();
 
-        $this->assertEquals(array(
-            "a" => array(
-                "b" => array(
+        $this->assertEquals([
+            "a" => [
+                "b" => [
                     "c" => "1",
-                    "d" => "2"
-                ),
-                "e" => array(
-                    "f" => array(
+                    "d" => "2",
+                ],
+                "e" => [
+                    "f" => [
                         "g" => "3",
-                        "h" => "4"
-                    )
-                ),
+                        "h" => "4",
+                    ],
+                ],
                 "i" => "5",
                 "j" => "6",
-                "k" => array(
-                    "l" => array(
-                        "m" => "7"
-                    ),
+                "k" => [
+                    "l" => [
+                        "m" => "7",
+                    ],
                     "n" => "8",
-                    "o" => "9"
-                ),
-                "p" => "10"
-            )
-        ), $parser->getValue("
+                    "o" => "9",
+                ],
+                "p" => "10",
+            ],
+        ], $parser->getValue("
             a:
               b:
                 c:1

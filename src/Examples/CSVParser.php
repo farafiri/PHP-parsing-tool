@@ -34,9 +34,9 @@ class CSVParser extends \ParserGenerator\Parser
         $csvRaw = $this->parse($string);
 
         if ($csvRaw) {
-            $data = array();
+            $data = [];
             foreach ($csvRaw->getSubnode(0)->getMainNodes() as $csvLine) {
-                $line = array();
+                $line = [];
                 foreach ($csvLine->getSubnode(0)->getMainNodes() as $csvValue) {
                     if ($csvValue->getDetailType() == 0) {
                         $line[] = $csvValue->getSubnode(1)->getValue();

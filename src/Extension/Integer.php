@@ -8,56 +8,56 @@ class Integer extends \ParserGenerator\Extension\SequenceItem
 
     public function extendGrammar($grammarGrammar)
     {
-        $grammarGrammar[$this->getNS(null, false)] = array(
-            array(
+        $grammarGrammar[$this->getNS(null, false)] = [
+            [
                 $this->getNS('LowBound'),
                 new \ParserGenerator\GrammarNode\Text('..'),
                 $this->getNS('HiBound'),
                 $this->getNs('modifiers'),
-                ''
-            )
-        );
+                '',
+            ],
+        ];
 
-        $grammarGrammar[$this->getNS('LowBound', false)] = array(
-            array(new \ParserGenerator\GrammarNode\Text('-inf')),
-            array(new \ParserGenerator\GrammarNode\Text('-infinity')),
-            'int' => array(
-                new \ParserGenerator\GrammarNode\Numeric(array(
+        $grammarGrammar[$this->getNS('LowBound', false)] = [
+            [new \ParserGenerator\GrammarNode\Text('-inf')],
+            [new \ParserGenerator\GrammarNode\Text('-infinity')],
+            'int' => [
+                new \ParserGenerator\GrammarNode\Numeric([
                     'formatHex' => true,
                     'formatBin' => true,
-                    'allowFixedCharacters' => true
-                ))
-            )
-        );
-        $grammarGrammar[$this->getNS('HiBound', false)] = array(
-            array(new \ParserGenerator\GrammarNode\Text('inf')),
-            array(new \ParserGenerator\GrammarNode\Text('infinity')),
-            'int' => array(
-                new \ParserGenerator\GrammarNode\Numeric(array(
+                    'allowFixedCharacters' => true,
+                ]),
+            ],
+        ];
+        $grammarGrammar[$this->getNS('HiBound', false)] = [
+            [new \ParserGenerator\GrammarNode\Text('inf')],
+            [new \ParserGenerator\GrammarNode\Text('infinity')],
+            'int' => [
+                new \ParserGenerator\GrammarNode\Numeric([
                     'formatHex' => true,
                     'formatBin' => true,
-                    'allowFixedCharacters' => true
-                ))
-            )
-        );
+                    'allowFixedCharacters' => true,
+                ]),
+            ],
+        ];
 
-        $grammarGrammar[$this->getNS('modifiers', false)] = array(
-            array(new \ParserGenerator\GrammarNode\Text('/'), $this->getNS('modifierList')),
-            array('')
-        );
+        $grammarGrammar[$this->getNS('modifiers', false)] = [
+            [new \ParserGenerator\GrammarNode\Text('/'), $this->getNS('modifierList')],
+            [''],
+        ];
 
-        $grammarGrammar[$this->getNS('modifierList', false)] = array(
-            array($this->getNS('modifier'), $this->getNS('modifierList')),
-            array($this->getNS('modifier'))
-        );
+        $grammarGrammar[$this->getNS('modifierList', false)] = [
+            [$this->getNS('modifier'), $this->getNS('modifierList')],
+            [$this->getNS('modifier')],
+        ];
 
-        $grammarGrammar[$this->getNS('modifier', false)] = array(
-            'formatHex' => array(new \ParserGenerator\GrammarNode\Text('h')),
-            'formatDec' => array(new \ParserGenerator\GrammarNode\Text('d')),
-            'formatOct' => array(new \ParserGenerator\GrammarNode\Text('o')),
-            'formatBin' => array(new \ParserGenerator\GrammarNode\Text('b')),
-            'fixed' => array(new \ParserGenerator\GrammarNode\Regex('/\d+/'))
-        );
+        $grammarGrammar[$this->getNS('modifier', false)] = [
+            'formatHex' => [new \ParserGenerator\GrammarNode\Text('h')],
+            'formatDec' => [new \ParserGenerator\GrammarNode\Text('d')],
+            'formatOct' => [new \ParserGenerator\GrammarNode\Text('o')],
+            'formatBin' => [new \ParserGenerator\GrammarNode\Text('b')],
+            'fixed' => [new \ParserGenerator\GrammarNode\Regex('/\d+/')],
+        ];
 
         return parent::extendGrammar($grammarGrammar);
     }
@@ -69,12 +69,12 @@ class Integer extends \ParserGenerator\Extension\SequenceItem
 
     protected function getGrammarGrammarSequence()
     {
-        return array($this->getNS(''));
+        return [$this->getNS('')];
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)
     {
-        $numericOptions = array();
+        $numericOptions = [];
         $numericOptions['eatWhiteChars'] = !empty($options['ignoreWhitespaces']);
 
         $item = $sequenceItem->getSubnode(0);
@@ -123,7 +123,7 @@ class Integer extends \ParserGenerator\Extension\SequenceItem
         }
 
         foreach ($modifiers as $modifier) {
-            if (in_array($modifier->getDetailType(), array('formatDec', 'formatHex', 'formatOct', 'formatBin'))) {
+            if (in_array($modifier->getDetailType(), ['formatDec', 'formatHex', 'formatOct', 'formatBin'])) {
                 $numericOptions[$modifier->getDetailType()] = true;
             } elseif ($modifier->getDetailType() === 'fixed') {
                 if ((string)$modifier === '0') {

@@ -10,13 +10,13 @@ class PredefinedString extends \ParserGenerator\GrammarNode\BaseNode Implements 
     protected $eatWhiteChars;
     protected $startCharacters;
 
-    public function __construct($eatWhiteChars = false, $startCharacters = array("'", '"'))
+    public function __construct($eatWhiteChars = false, $startCharacters = ["'", '"'])
     {
         $this->eatWhiteChars = $eatWhiteChars;
         $this->startCharacters = $startCharacters;
     }
 
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         $stChar = substr($string, $fromIndex, 1);
         if (in_array($stChar, $this->startCharacters)) {
@@ -39,7 +39,7 @@ class PredefinedString extends \ParserGenerator\GrammarNode\BaseNode Implements 
                         $node = new \ParserGenerator\SyntaxTreeNode\PredefinedString($val,
                             $this->eatWhiteChars ? $match[0] : '');
 
-                        return array('node' => $node, 'offset' => $nextPos + 1);
+                        return ['node' => $node, 'offset' => $nextPos + 1];
                     }
                 }
             }

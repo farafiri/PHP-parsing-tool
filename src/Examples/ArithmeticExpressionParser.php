@@ -8,7 +8,7 @@ class ArithmeticExpressionParser extends \ParserGenerator\Parser
 {
     public function __construct()
     {
-        parent::__construct($this->getExpressionDefinition(), array('ignoreWhitespaces' => true));
+        parent::__construct($this->getExpressionDefinition(), ['ignoreWhitespaces' => true]);
     }
 
     public function getExpressionDefinition()

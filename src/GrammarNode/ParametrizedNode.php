@@ -18,7 +18,7 @@ class ParametrizedNode extends BaseNode implements \ParserGenerator\ParserAwareI
         $this->params = $params;
     }
 
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         if (!$this->node) {
             $this->node = $this->createNode();

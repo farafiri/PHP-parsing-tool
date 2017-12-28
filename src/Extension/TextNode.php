@@ -6,7 +6,7 @@ class TextNode extends \ParserGenerator\Extension\SequenceItem
 {
     protected function getGrammarGrammarSequence()
     {
-        return array(':string');
+        return [':string'];
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)

@@ -26,7 +26,7 @@ class WhiteCharactersTest extends TestCase
         $this->assertObject($x->parse("x\r\nx"));
         $this->assertObject($x->parse("x\rx"));
 
-        $x = new Parser('start :=> "x"+newLine.', array('ignoreWhitespaces' => true));
+        $x = new Parser('start :=> "x"+newLine.', ['ignoreWhitespaces' => true]);
 
         $this->assertObject($x->parse("x\nx"));
         $this->assertObject($x->parse("x\r\nx"));

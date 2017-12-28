@@ -4,7 +4,7 @@ namespace ParserGenerator;
 
 class RegexUtil
 {
-    protected static $specialChars = array('\\', '/', '+', '*', '?', '[', ']', '(', ')', '|', '.', '$', '^', '{', '}');
+    protected static $specialChars = ['\\', '/', '+', '*', '?', '[', ']', '(', ')', '|', '.', '$', '^', '{', '}'];
     protected static $instance = 0;
     protected $parser = null;
 
@@ -29,46 +29,46 @@ class RegexUtil
 
     public static function getGrammarArray()
     {
-        return array(
-            'start' => array(array('/', ':regex', '/', ':regexModifiers')),
-            'regexModifiers' => array(':/[imsxeADSUXJu]*/'),
-            'regex' => array(array(':regexLine', '|', ':regex'), ':regexLine'),
-            'regexLine' => array(array(':regexToken', ':regexLine'), ''),
-            'regexToken' => array(
+        return [
+            'start' => [['/', ':regex', '/', ':regexModifiers']],
+            'regexModifiers' => [':/[imsxeADSUXJu]*/'],
+            'regex' => [[':regexLine', '|', ':regex'], ':regexLine'],
+            'regexLine' => [[':regexToken', ':regexLine'], ''],
+            'regexToken' => [
                 ':startMatcher',
                 ':endMatcher',
                 ':lookAround',
-                array(':singleStatement', ':repetition', ':nonGreedy')
-            ),
-            'lookAround' => array(array('(?', ':lookArroundType', ':regex', ')')),
-            'lookArroundType' => array('=', '!', '<=', '<!'),
-            'singleStatement' => array(
-                array('(?:', ':regex', ')'),
-                array('(', ':regex', ')'),
-                array('[', ':characterSet', ']'),
-                array('[^', ':characterSet', ']'),
-                array('.'),
-                array(':character')
-            ),
-            'characterSet' => array(
-                array(':simpleCharacter', '-', ':simpleCharacter', ':characterSet'),
-                array(':character', ':characterSet'),
-                ''
-            ),
-            'character' => array(array(':/\\\\./'), ':simpleCharacter'),
-            'simpleCharacter' => array(':/[^\\\\\\]\\[\\+\\*\\?\\|\\(\\)\\$\\^\\/]/'),
-            'repetition' => array(
+                [':singleStatement', ':repetition', ':nonGreedy'],
+            ],
+            'lookAround' => [['(?', ':lookArroundType', ':regex', ')']],
+            'lookArroundType' => ['=', '!', '<=', '<!'],
+            'singleStatement' => [
+                ['(?:', ':regex', ')'],
+                ['(', ':regex', ')'],
+                ['[', ':characterSet', ']'],
+                ['[^', ':characterSet', ']'],
+                ['.'],
+                [':character'],
+            ],
+            'characterSet' => [
+                [':simpleCharacter', '-', ':simpleCharacter', ':characterSet'],
+                [':character', ':characterSet'],
+                '',
+            ],
+            'character' => [[':/\\\\./'], ':simpleCharacter'],
+            'simpleCharacter' => [':/[^\\\\\\]\\[\\+\\*\\?\\|\\(\\)\\$\\^\\/]/'],
+            'repetition' => [
                 '?',
                 '+',
                 '*',
-                array('{', ':/\d+/', '}'),
-                array('{', ':/\d+/', ',', ':/\d*/', '}'),
-                ''
-            ),
-            'nonGreedy' => array('?', ''),
-            'startMatcher' => array('^'),
-            'endMatcher' => array('$'),
-        );
+                ['{', ':/\d+/', '}'],
+                ['{', ':/\d+/', ',', ':/\d*/', '}'],
+                '',
+            ],
+            'nonGreedy' => ['?', ''],
+            'startMatcher' => ['^'],
+            'endMatcher' => ['$'],
+        ];
     }
 
     public function getParser()
@@ -161,7 +161,7 @@ class RegexUtil
     {
         switch ($node->getType()) {
             case 'regex':
-                return $this->_getStartCharacters($node->getSubnode(0)) + ($node->getSubnode(2) ? $this->_getStartCharacters($node->getSubnode(2)) : array());
+                return $this->_getStartCharacters($node->getSubnode(0)) + ($node->getSubnode(2) ? $this->_getStartCharacters($node->getSubnode(2)) : []);
 
             case 'regexLine':
                 if ($node->getDetailType() === 0) {
@@ -171,11 +171,11 @@ class RegexUtil
                         return $this->_getStartCharacters($node->getSubnode(0));
                     }
                 } elseif ($node->getDetailType() === 1) {
-                    return array();
+                    return [];
                 }
 
             case 'regexToken':
-                return ($node->getDetailType() !== 3) ? array() : $this->_getStartCharacters($node->getSubnode(0));
+                return ($node->getDetailType() !== 3) ? [] : $this->_getStartCharacters($node->getSubnode(0));
 
             case 'singleStatement':
                 if ($node->getDetailType() === 0 || $node->getDetailType() === 1 || $node->getDetailType() === 2) {
@@ -185,14 +185,14 @@ class RegexUtil
                 } elseif ($node->getDetailType() === 5) {
                     return $this->_getStartCharacters($node->getSubnode(0));
                 } elseif ($node->getDetailType() === 4) {
-                    return $this->getReverseCharSet(array("\n"));
+                    return $this->getReverseCharSet(["\n"]);
                 }
 
             case 'character':
                 if ($node->getDetailType() === 0) {
                     switch ((string)$node) {
                         case '\\s':
-                            return array("\n" => true, "\r" => true, " " => true, "\t" => true);
+                            return ["\n" => true, "\r" => true, " " => true, "\t" => true];
                         case '\\d':
                             return $this->getCharacterRange('0', '9');
                         case '\\w':
@@ -211,14 +211,14 @@ class RegexUtil
                         case '\\.':
                         case '\\$':
                         case '\\^':
-                            $result = array();
+                            $result = [];
                             $result[substr((string)$node, 1, 1)] = true;
                             return $result;
                         default:
                             throw new Exception("Unknown character group [$node]");
                     }
                 } else {
-                    $result = array();
+                    $result = [];
                     $result[(string)$node] = true;
                     return $result;
                 }
@@ -234,7 +234,7 @@ class RegexUtil
                     case 1:
                         return $this->_getStartCharacters($node->getSubnode(0)) + $this->_getStartCharacters($node->getSubnode(1));
                     case 2:
-                        return array();
+                        return [];
                 }
             default:
                 return true;
@@ -243,7 +243,7 @@ class RegexUtil
 
     protected function getReverseCharSet($charSet)
     {
-        $result = array();
+        $result = [];
         for ($i = 0; $i < 256; $i++) {
             if (empty($charSet[chr($i)])) {
                 $result[chr($i)] = true;
@@ -255,7 +255,7 @@ class RegexUtil
 
     protected function getCharacterRange($from, $to)
     {
-        $result = array();
+        $result = [];
         for ($i = ord((string)$from); $i <= ord((string)$to); $i++) {
             $result[chr($i)] = true;
         }
@@ -289,21 +289,21 @@ class RegexUtil
         //'repetition' => array('?', '+', '*', array('{', ':/\d+/', '}'), array('{', ':/\d+/', ',', ':/\d*/', '}'), '');
         switch ($node->getDetailType()) {
             case 0:
-                return array('min' => 0, 'max' => 1);
+                return ['min' => 0, 'max' => 1];
             case 1:
-                return array('min' => 1);
+                return ['min' => 1];
             case 2:
-                return array('min' => 0);
+                return ['min' => 0];
             case 3:
                 $o = (int)(string)$node->getSubnode(1);
-                return array('min' => $o, 'max' => $o);
+                return ['min' => $o, 'max' => $o];
             case 4:
                 $min = (int)(string)$node->getSubnode(1);
                 $maxStr = (string)$node->getSubnode(3);
                 $max = $maxStr ? (int)$maxStr : null;
-                return array('min' => $min, 'max' => $max);
+                return ['min' => $min, 'max' => $max];
         }
-        return array('min' => 1, 'max' => 1);
+        return ['min' => 1, 'max' => 1];
     }
 
     protected function _generateString($node)

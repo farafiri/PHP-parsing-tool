@@ -8,11 +8,11 @@ class Text extends \ParserGenerator\Extension\SequenceItem
 
     public function extendGrammar($grammarGrammar)
     {
-        $grammarGrammar[$this->getNS(null, false)] = array(
-            array(
+        $grammarGrammar[$this->getNS(null, false)] = [
+            [
                 'text',
-            )
-        );
+            ],
+        ];
 
         return parent::extendGrammar($grammarGrammar);
     }
@@ -24,7 +24,7 @@ class Text extends \ParserGenerator\Extension\SequenceItem
 
     protected function getGrammarGrammarSequence()
     {
-        return array($this->getNS(''));
+        return [$this->getNS('')];
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)

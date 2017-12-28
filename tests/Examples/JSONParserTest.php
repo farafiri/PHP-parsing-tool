@@ -21,23 +21,23 @@ class JSONParserTest extends TestCase
     public function testArray()
     {
         $jsonParser = new \ParserGenerator\Examples\JSONParser();
-        $this->assertEquals(array(), $jsonParser->getValue('[]'));
-        $this->assertEquals(array(true), $jsonParser->getValue('[true]'));
-        $this->assertEquals(array(1, 2, 3), $jsonParser->getValue('[1, 2, 3]'));
-        $this->assertEquals(array("1, 2", "3"), $jsonParser->getValue('["1, 2", "3"]'));
-        $this->assertEquals(array(array(), array(array())), $jsonParser->getValue('[[],[[]]]'));
-        $this->assertEquals(array(array("a1", "a2"), array("b1", "b2")),
+        $this->assertEquals([], $jsonParser->getValue('[]'));
+        $this->assertEquals([true], $jsonParser->getValue('[true]'));
+        $this->assertEquals([1, 2, 3], $jsonParser->getValue('[1, 2, 3]'));
+        $this->assertEquals(["1, 2", "3"], $jsonParser->getValue('["1, 2", "3"]'));
+        $this->assertEquals([[], [[]]], $jsonParser->getValue('[[],[[]]]'));
+        $this->assertEquals([["a1", "a2"], ["b1", "b2"]],
             $jsonParser->getValue('[["a1", "a2"], ["b1", "b2"]]'));
     }
 
     public function testObject()
     {
         $jsonParser = new \ParserGenerator\Examples\JSONParser();
-        $this->assertEquals(array(), $jsonParser->getValue('{}'));
-        $this->assertEquals(array("x" => "x"), $jsonParser->getValue('{"x":"x"}'));
-        $this->assertEquals(array("x" => 4, "y" => 5, "color" => "red", "visible" => true),
+        $this->assertEquals([], $jsonParser->getValue('{}'));
+        $this->assertEquals(["x" => "x"], $jsonParser->getValue('{"x":"x"}'));
+        $this->assertEquals(["x" => 4, "y" => 5, "color" => "red", "visible" => true],
             $jsonParser->getValue('{"x": 4, "y": 5, "color":"red", "visible":true}'));
-        $this->assertEquals(array("a" => array(), "b" => array("c" => "c")),
+        $this->assertEquals(["a" => [], "b" => ["c" => "c"]],
             $jsonParser->getValue('{"a" : {}, "b":{"c": "c"}}'));
 
     }
@@ -45,6 +45,6 @@ class JSONParserTest extends TestCase
     public function testMixed()
     {
         $jsonParser = new \ParserGenerator\Examples\JSONParser();
-        $this->assertEquals(array("x" => array(array("c" => "c"), 6)), $jsonParser->getValue('{"x":[{"c":"c"}, 6]}'));
+        $this->assertEquals(["x" => [["c" => "c"], 6]], $jsonParser->getValue('{"x":[{"c":"c"}, 6]}'));
     }
 }

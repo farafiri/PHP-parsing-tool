@@ -15,7 +15,7 @@ class RuleConditionTest extends TestCase
     public function testIntegers()
     {
         $x = new Parser('start :=> 1..100 1..100 <? $s[0]->getValue() < $s[1]->getValue() ?>.',
-            array('ignoreWhitespaces' => true));
+            ['ignoreWhitespaces' => true]);
         $this->assertObject($x->parse('36 45'));
         $this->assertObject($x->parse('1 100'));
         $this->assertObject($x->parse('1 2'));

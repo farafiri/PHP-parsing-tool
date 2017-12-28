@@ -6,7 +6,7 @@ class Root extends \ParserGenerator\SyntaxTreeNode\Branch
 {
     protected $beforeContent = '';
 
-    public function __construct($type, $detailType, $subnodes = array(), $beforeContent = '')
+    public function __construct($type, $detailType, $subnodes = [], $beforeContent = '')
     {
         parent::__construct($type, $detailType, $subnodes);
         $this->beforeContent = $beforeContent;

@@ -22,11 +22,11 @@ class SeriesTest extends TestCase
         $seriesNode = $x->parse('8,12,4')->getSubnode(0);
 
         $this->assertTrue($seriesNode instanceof \ParserGenerator\SyntaxTreeNode\Series);
-        $this->assertEquals(array(
+        $this->assertEquals([
             new \ParserGenerator\SyntaxTreeNode\Leaf('8'),
             new \ParserGenerator\SyntaxTreeNode\Leaf('12'),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('4')
-        ), $seriesNode->getMainNodes());
+            new \ParserGenerator\SyntaxTreeNode\Leaf('4'),
+        ], $seriesNode->getMainNodes());
     }
 
     public function testOrderBy()

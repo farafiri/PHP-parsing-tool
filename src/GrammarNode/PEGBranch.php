@@ -4,17 +4,17 @@ namespace ParserGenerator\GrammarNode;
 
 class PEGBranch extends \ParserGenerator\GrammarNode\Branch
 {
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         $cacheStr = $fromIndex . '-' . $this->nodeName;
 
         if (!isset($this->parser->cache[$cacheStr])) {
             foreach ($this->node as $_optionIndex => $option) {
                 $index = $fromIndex;
-                $subnodes = array();
+                $subnodes = [];
 
                 foreach ($option as $sequenceItem) {
-                    $subnode = $sequenceItem->rparse($string, $index, array());
+                    $subnode = $sequenceItem->rparse($string, $index, []);
                     if ($subnode) {
                         $subnodes[] = $subnode['node'];
                         $index = $subnode['offset'];
@@ -24,7 +24,7 @@ class PEGBranch extends \ParserGenerator\GrammarNode\Branch
                 }
 
                 $node = new \ParserGenerator\SyntaxTreeNode\Branch($this->nodeShortName, $_optionIndex, $subnodes);
-                $r = array('node' => $node, 'offset' => $index);
+                $r = ['node' => $node, 'offset' => $index];
                 $this->parser->cache[$cacheStr] = $r;
                 return isset($restrictedEnd[$index]) ? false : $r;
             }

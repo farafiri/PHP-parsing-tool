@@ -7,14 +7,14 @@ class WhitespaceNegativeContextCheck extends \ParserGenerator\GrammarNode\BaseNo
     protected $char;
 
     /* this schoul be const but PHP don't accept array as const */
-    static protected $whiteCharacters = array(" ", "\n", "\t", "\r");
+    static protected $whiteCharacters = [" ", "\n", "\t", "\r"];
 
     public function __construct($char)
     {
         $this->char = $char;
     }
 
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         if (!isset($restrictedEnd[$fromIndex])) {
             $index = $fromIndex;
@@ -24,7 +24,7 @@ class WhitespaceNegativeContextCheck extends \ParserGenerator\GrammarNode\BaseNo
                 }
             }
 
-            return array('node' => new \ParserGenerator\SyntaxTreeNode\Leaf(''), 'offset' => $fromIndex);
+            return ['node' => new \ParserGenerator\SyntaxTreeNode\Leaf(''), 'offset' => $fromIndex];
         }
 
         return false;

@@ -19,7 +19,7 @@ class LeafTime extends \ParserGenerator\GrammarNode\BaseNode implements \ParserG
         $this->eatWhiteChars = $eatWhiteChars;
     }
 
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         $s = substr($string, $fromIndex, $this->maxLength);
         $data = date_parse_from_format($this->format, $s);
@@ -59,6 +59,6 @@ class LeafTime extends \ParserGenerator\GrammarNode\BaseNode implements \ParserG
             $this->lastMatch = $fromIndex;
         }
 
-        return array('node' => $node, 'offset' => $end);
+        return ['node' => $node, 'offset' => $end];
     }
 } 

@@ -19,7 +19,7 @@ class Numeric extends \ParserGenerator\SyntaxTreeNode\Leaf
 
     public function getFixedCharacters()
     {
-        $str = str_replace(array('0x', '0b'), array('', ''), $this->content);
+        $str = str_replace(['0x', '0b'], ['', ''], $this->content);
 
         if (substr($str, 0, 1) === '-') {
             $str = substr($str, 1);
@@ -38,7 +38,7 @@ class Numeric extends \ParserGenerator\SyntaxTreeNode\Leaf
 
     public function getValue()
     {
-        $str = str_replace(array('0x', '0b'), array('', ''), $this->content);
+        $str = str_replace(['0x', '0b'], ['', ''], $this->content);
         return intval($str, $this->base);
     }
 }

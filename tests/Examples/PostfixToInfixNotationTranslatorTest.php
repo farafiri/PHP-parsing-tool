@@ -16,7 +16,7 @@ class PostfixToInfixNotationTranslatorTest extends TestCase
                      :=> "-"
                      :=> "*"
                      :=> "/".
-        ', array('ignoreWhitespaces' => true));
+        ', ['ignoreWhitespaces' => true]);
 
         $tree = $parser->parse($str);
 
@@ -30,7 +30,7 @@ class PostfixToInfixNotationTranslatorTest extends TestCase
             $node->setSubnode(2, $temp);
 
             if ($parent && in_array((string)$node->getSubnode(1),
-                    array('+', '-')) && in_array((string)$parent->getSubnode(2), array('*', '/'))) {
+                    ['+', '-']) && in_array((string)$parent->getSubnode(2), ['*', '/'])) {
                 return '(' . $node . ')';
             }
         });

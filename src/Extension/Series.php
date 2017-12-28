@@ -11,10 +11,10 @@ class Series extends \ParserGenerator\Extension\SequenceItem
         $operator = ':/(\*{1,2}|\+{1,2}|\?{1,2})/';
         $noWhiteChar = new \ParserGenerator\GrammarNode\WhitespaceNegativeContextCheck(null);
 
-        return array(
-            array(':sequenceItem', $noWhiteChar, $operator, $noWhiteChar, ':sequenceItem'),
-            array(':sequenceItem', $noWhiteChar, $operator)
-        );
+        return [
+            [':sequenceItem', $noWhiteChar, $operator, $noWhiteChar, ':sequenceItem'],
+            [':sequenceItem', $noWhiteChar, $operator],
+        ];
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)
@@ -35,9 +35,9 @@ class Series extends \ParserGenerator\Extension\SequenceItem
             case '**':
             case '+':
             case '*':
-                $greedy = in_array($operator, array('**', '++')) || $forceGreedy;
+                $greedy = in_array($operator, ['**', '++']) || $forceGreedy;
                 $node = new \ParserGenerator\GrammarNode\Series($main, $separator,
-                    in_array($operator, array('*', '**')), $greedy);
+                    in_array($operator, ['*', '**']), $greedy);
                 if (isset($options['parser'])) {
                     $node->setParser($options['parser']);
                 }
@@ -46,7 +46,7 @@ class Series extends \ParserGenerator\Extension\SequenceItem
             case '??':
             case '?':
                 $empty = new \ParserGenerator\GrammarNode\Text('');
-                $choices = ($operator == '??' || $forceGreedy) ? array($main, $empty) : array($empty, $main);
+                $choices = ($operator == '??' || $forceGreedy) ? [$main, $empty] : [$empty, $main];
                 $node = new \ParserGenerator\GrammarNode\Choice($choices);
 
                 if (isset($options['parser'])) {

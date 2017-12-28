@@ -8,12 +8,12 @@ class ParserNodeTest extends TestCase
 {
     public function testClone()
     {
-        $a = new \ParserGenerator\SyntaxTreeNode\Branch('a', 'b', array(
-            new \ParserGenerator\SyntaxTreeNode\Branch('q', 'w', array(
-                new \ParserGenerator\SyntaxTreeNode\Leaf('l1')
-            )),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('l2')
-        ));
+        $a = new \ParserGenerator\SyntaxTreeNode\Branch('a', 'b', [
+            new \ParserGenerator\SyntaxTreeNode\Branch('q', 'w', [
+                new \ParserGenerator\SyntaxTreeNode\Leaf('l1'),
+            ]),
+            new \ParserGenerator\SyntaxTreeNode\Leaf('l2'),
+        ]);
 
         $b = clone $a;
 
@@ -26,12 +26,12 @@ class ParserNodeTest extends TestCase
 
     public function testToString()
     {
-        $a = new \ParserGenerator\SyntaxTreeNode\Branch('a', 'b', array(
-            new \ParserGenerator\SyntaxTreeNode\Branch('q', 'w', array(
-                new \ParserGenerator\SyntaxTreeNode\Leaf('l1')
-            )),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('l2')
-        ));
+        $a = new \ParserGenerator\SyntaxTreeNode\Branch('a', 'b', [
+            new \ParserGenerator\SyntaxTreeNode\Branch('q', 'w', [
+                new \ParserGenerator\SyntaxTreeNode\Leaf('l1'),
+            ]),
+            new \ParserGenerator\SyntaxTreeNode\Leaf('l2'),
+        ]);
 
         $this->assertEquals('l1l2', (string)$a);
 
@@ -50,12 +50,12 @@ class ParserNodeTest extends TestCase
 
     public function testCompare()
     {
-        $a = new \ParserGenerator\SyntaxTreeNode\Branch('a', 'b', array(
-            new \ParserGenerator\SyntaxTreeNode\Branch('q', 'w', array(
-                new \ParserGenerator\SyntaxTreeNode\Leaf('l1')
-            )),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('l2')
-        ));
+        $a = new \ParserGenerator\SyntaxTreeNode\Branch('a', 'b', [
+            new \ParserGenerator\SyntaxTreeNode\Branch('q', 'w', [
+                new \ParserGenerator\SyntaxTreeNode\Leaf('l1'),
+            ]),
+            new \ParserGenerator\SyntaxTreeNode\Leaf('l2'),
+        ]);
 
         $b = clone $a;
 
@@ -91,65 +91,65 @@ class ParserNodeTest extends TestCase
 
     protected function getTestNode1()
     {
-        return new \ParserGenerator\SyntaxTreeNode\Branch('a', '', array(
-            new \ParserGenerator\SyntaxTreeNode\Branch('b', '', array(
+        return new \ParserGenerator\SyntaxTreeNode\Branch('a', '', [
+            new \ParserGenerator\SyntaxTreeNode\Branch('b', '', [
                 new \ParserGenerator\SyntaxTreeNode\Leaf('l1'),
-                new \ParserGenerator\SyntaxTreeNode\Branch('b', '', array(
-                    new \ParserGenerator\SyntaxTreeNode\Branch('c', '', array(
-                        new \ParserGenerator\SyntaxTreeNode\Leaf('l2')
-                    )),
-                    new \ParserGenerator\SyntaxTreeNode\Branch('b', '', array(
+                new \ParserGenerator\SyntaxTreeNode\Branch('b', '', [
+                    new \ParserGenerator\SyntaxTreeNode\Branch('c', '', [
+                        new \ParserGenerator\SyntaxTreeNode\Leaf('l2'),
+                    ]),
+                    new \ParserGenerator\SyntaxTreeNode\Branch('b', '', [
                         new \ParserGenerator\SyntaxTreeNode\Leaf('l3'),
-                        new \ParserGenerator\SyntaxTreeNode\Leaf('l4')
-                    ))
-                ))
-            )),
+                        new \ParserGenerator\SyntaxTreeNode\Leaf('l4'),
+                    ]),
+                ]),
+            ]),
             new \ParserGenerator\SyntaxTreeNode\Leaf('l2'),
-            new \ParserGenerator\SyntaxTreeNode\Branch('c', '', array(
-                new \ParserGenerator\SyntaxTreeNode\Branch('b', '', array()),
-                new \ParserGenerator\SyntaxTreeNode\Branch('d', '', array(
-                    new \ParserGenerator\SyntaxTreeNode\Leaf('l5')
-                ))
-            ))
-        ));
+            new \ParserGenerator\SyntaxTreeNode\Branch('c', '', [
+                new \ParserGenerator\SyntaxTreeNode\Branch('b', '', []),
+                new \ParserGenerator\SyntaxTreeNode\Branch('d', '', [
+                    new \ParserGenerator\SyntaxTreeNode\Leaf('l5'),
+                ]),
+            ]),
+        ]);
     }
 
     public function testFindAll()
     {
         $a = $this->getTestNode1();
 
-        $this->assertEquals(array($a), $a->findAll('a'));
+        $this->assertEquals([$a], $a->findAll('a'));
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             $a->getSubnode(0)->getSubnode(1)->getSubnode(0),
-            $a->getSubnode(2)
-        ), $a->findAll('c'));
+            $a->getSubnode(2),
+        ], $a->findAll('c'));
 
-        $this->assertEquals(array(
-            $a->getSubnode(2)->getSubnode(1)
-        ), $a->findAll('d'));
+        $this->assertEquals([
+            $a->getSubnode(2)->getSubnode(1),
+        ], $a->findAll('d'));
 
-        $this->assertEquals(array(), $a->findAll('nonExistingType'));
-        $this->assertEquals(array(), $a->findAll('nonExistingType', true));
-        $this->assertEquals(array(), $a->findAll('nonExistingType', true, true));
+        $this->assertEquals([], $a->findAll('nonExistingType'));
+        $this->assertEquals([], $a->findAll('nonExistingType', true));
+        $this->assertEquals([], $a->findAll('nonExistingType', true, true));
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             $a->getSubnode(0),
-            $a->getSubnode(2)->getSubnode(0)
-        ), $a->findAll('b'));
+            $a->getSubnode(2)->getSubnode(0),
+        ], $a->findAll('b'));
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             $a->getSubnode(0),
             $a->getSubnode(0)->getSubnode(1),
             $a->getSubnode(0)->getSubnode(1)->getSubnode(1),
-            $a->getSubnode(2)->getSubnode(0)
-        ), $a->findAll('b', true));
+            $a->getSubnode(2)->getSubnode(0),
+        ], $a->findAll('b', true));
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             $a->getSubnode(0)->getSubnode(1)->getSubnode(1),
             $a->getSubnode(0)->getSubnode(1),
             $a->getSubnode(0),
-            $a->getSubnode(2)->getSubnode(0)
-        ), $a->findAll('b', true, true));
+            $a->getSubnode(2)->getSubnode(0),
+        ], $a->findAll('b', true, true));
     }
 }

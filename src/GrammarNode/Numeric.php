@@ -19,16 +19,16 @@ class Numeric extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
     protected $formatBin = false;
     protected $eatWhiteChars = false;
 
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         foreach ($options as $key => $value) {
-            if (in_array($key, array('min', 'max', 'requireFixedCharacters'), true)) {
+            if (in_array($key, ['min', 'max', 'requireFixedCharacters'], true)) {
                 if (is_int($value)) {
                     $this->$key = $value;
                 }
             }
             if (in_array($key,
-                array('formatDec', 'formatHex', 'formatOct', 'formatBin', 'eatWhiteChars', 'allowFixedCharacters'),
+                ['formatDec', 'formatHex', 'formatOct', 'formatBin', 'eatWhiteChars', 'allowFixedCharacters'],
                 true)) {
                 if (is_bool($value)) {
                     $this->$key = $value;
@@ -49,7 +49,7 @@ class Numeric extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
 
     protected function buildRegexes()
     {
-        $this->regexes = array();
+        $this->regexes = [];
 
         if ($this->formatHex) {
             $this->regexes[16] = $this->buildRegexForBaseFormat('1-9a-fA-F', '0x');
@@ -86,14 +86,14 @@ class Numeric extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
         }
     }
 
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         foreach ($this->regexes as $base => $regex) {
             if (preg_match($regex, $string, $match, 0, $fromIndex)) {
                 if (isset($match[1])) {
                     $offset = strlen($match[$this->eatWhiteChars ? 0 : 1]) + $fromIndex;
                     if (!isset($restrictedEnd[$offset])) {
-                        $value = intval(str_replace(array('0x', '0b'), array('', ''), $match[1]), $base);
+                        $value = intval(str_replace(['0x', '0b'], ['', ''], $match[1]), $base);
                         if (isset($this->min) && $value < $this->min) {
                             return false;
                         };
@@ -103,7 +103,7 @@ class Numeric extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
 
                         $node = new \ParserGenerator\SyntaxTreeNode\Numeric($match[1], $base);
                         $node->setAfterContent(substr($match[0], strlen($match[1])));
-                        return array('node' => $node, 'offset' => $offset);
+                        return ['node' => $node, 'offset' => $offset];
                     }
                 }
             }

@@ -6,7 +6,7 @@ class Series extends \ParserGenerator\SyntaxTreeNode\Branch
 {
     protected $isWithSeparator;
 
-    public function __construct($type, $detailType, $subnodes = array(), $isWithSeparator = false)
+    public function __construct($type, $detailType, $subnodes = [], $isWithSeparator = false)
     {
         parent::__construct($type, $detailType, $subnodes);
         $this->isWithSeparator = $isWithSeparator;
@@ -19,7 +19,7 @@ class Series extends \ParserGenerator\SyntaxTreeNode\Branch
         }
 
         $subnodesCount = count($this->subnodes);
-        $result = array();
+        $result = [];
 
         for ($i = 0; $i < $subnodesCount; $i += 2) {
             $result[] = $this->subnodes[$i];
@@ -31,11 +31,11 @@ class Series extends \ParserGenerator\SyntaxTreeNode\Branch
     public function getSeparators()
     {
         if (!$this->isWithSeparator) {
-            return array();
+            return [];
         }
 
         $subnodesCount = count($this->subnodes);
-        $result = array();
+        $result = [];
 
         for ($i = 1; $i < $subnodesCount; $i += 2) {
             $result[] = $this->subnodes[$i];
@@ -72,7 +72,7 @@ class Series extends \ParserGenerator\SyntaxTreeNode\Branch
 
     public function findFirstInMainNodes($type, $addNullValues = false)
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->getMainNodes() as $node) {
             if ($node instanceof \ParserGenerator\SyntaxTreeNode\Branch) {

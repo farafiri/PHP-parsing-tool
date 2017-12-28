@@ -152,12 +152,12 @@ class ParametrizedNodeTest extends TestCase
             return array_map('strval', $parsed->getSubnode(0)->getMainNodes());
         };
 
-        $this->assertEquals(array("11", "11"), $toList("1111"));
-        $this->assertEquals(array("1010", "11"), $toList("101011"));
-        $this->assertEquals(array("10110101", "0010"), $toList("101101010010"));
-        $this->assertEquals(array("1001001111", "11011", "1011100"), $toList("1001001111110111011100"));
-        $this->assertEquals(array("11111101111010"), $toList("11111101111010"));
-        $this->assertEquals(array("1111110111", "1110"), $toList("11111101111110"));
+        $this->assertEquals(["11", "11"], $toList("1111"));
+        $this->assertEquals(["1010", "11"], $toList("101011"));
+        $this->assertEquals(["10110101", "0010"], $toList("101101010010"));
+        $this->assertEquals(["1001001111", "11011", "1011100"], $toList("1001001111110111011100"));
+        $this->assertEquals(["11111101111010"], $toList("11111101111010"));
+        $this->assertEquals(["1111110111", "1110"], $toList("11111101111110"));
 
         $this->assertFalse($x->parse("0000000000000"));
         $this->assertFalse($x->parse("1001001"));

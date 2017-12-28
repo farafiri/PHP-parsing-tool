@@ -47,7 +47,7 @@ class RegexUtilTest extends TestCase
 
     protected function assertCanStart($chars, $regex)
     {
-        $assocCharacters = array();
+        $assocCharacters = [];
         foreach ($chars as $char) {
             $assocCharacters[$char] = true;
         }
@@ -57,28 +57,28 @@ class RegexUtilTest extends TestCase
 
     public function testGetStartCharacters()
     {
-        $this->assertCanStart(array('a'), '/a/');
-        $this->assertCanStart(array('a'), '/ab/');
-        $this->assertCanStart(array('a'), '/a+b/');
-        $this->assertCanStart(array('a', 'b'), '/a*b/');
-        $this->assertCanStart(array('a', 'b'), '/a?b/');
-        $this->assertCanStart(array('a'), '/a+?b/');
-        $this->assertCanStart(array('a', 'b'), '/(a|b)/');
-        $this->assertCanStart(array('a', 'c'), '/(ab|c)/');
-        $this->assertCanStart(array('a', 'b', 'c', 'd', 'e'), '/a?b?c?d?efg/');
-        $this->assertCanStart(array('a', 'b', 'c'), '/(a|b?)c/');
-        $this->assertCanStart(array('a', 'b', 'c'), '/(a|b)?c/');
-        $this->assertCanStart(array('a', 'b'), '/a{0,3}b/');
-        $this->assertCanStart(array('a'), '/a{1,3}b/');
-        $this->assertCanStart(array('a', 'b', 'c'), '/[abc]/');
-        $this->assertCanStart(array('a', 'b', 'c', 'd'), '/[a-d]/');
-        $this->assertCanStart(array('h', 'a', 'b', 'c'), '/[ha-c]/');
-        $this->assertCanStart(array('-', 'a', 'b', 'c'), '/[-a-c]/');
-        $this->assertCanStart(array('a', 'b', 'c', '1', '2', '3'), '/[a-c1-3]/');
-        $this->assertCanStart(array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'), '/\\d/');
-        $this->assertCanStart(array('['), '/\\[/');
-        $this->assertCanStart(array("\n", "\r", " ", "\t"), '/\\s/');
-        $this->assertCanStart(array("\n", "\r", " ", "\t", "j"), '/[\\sj]/');
+        $this->assertCanStart(['a'], '/a/');
+        $this->assertCanStart(['a'], '/ab/');
+        $this->assertCanStart(['a'], '/a+b/');
+        $this->assertCanStart(['a', 'b'], '/a*b/');
+        $this->assertCanStart(['a', 'b'], '/a?b/');
+        $this->assertCanStart(['a'], '/a+?b/');
+        $this->assertCanStart(['a', 'b'], '/(a|b)/');
+        $this->assertCanStart(['a', 'c'], '/(ab|c)/');
+        $this->assertCanStart(['a', 'b', 'c', 'd', 'e'], '/a?b?c?d?efg/');
+        $this->assertCanStart(['a', 'b', 'c'], '/(a|b?)c/');
+        $this->assertCanStart(['a', 'b', 'c'], '/(a|b)?c/');
+        $this->assertCanStart(['a', 'b'], '/a{0,3}b/');
+        $this->assertCanStart(['a'], '/a{1,3}b/');
+        $this->assertCanStart(['a', 'b', 'c'], '/[abc]/');
+        $this->assertCanStart(['a', 'b', 'c', 'd'], '/[a-d]/');
+        $this->assertCanStart(['h', 'a', 'b', 'c'], '/[ha-c]/');
+        $this->assertCanStart(['-', 'a', 'b', 'c'], '/[-a-c]/');
+        $this->assertCanStart(['a', 'b', 'c', '1', '2', '3'], '/[a-c1-3]/');
+        $this->assertCanStart(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], '/\\d/');
+        $this->assertCanStart(['['], '/\\[/');
+        $this->assertCanStart(["\n", "\r", " ", "\t"], '/\\s/');
+        $this->assertCanStart(["\n", "\r", " ", "\t", "j"], '/[\\sj]/');
         $this->assertEquals(255,
             count(\ParserGenerator\RegexUtil::getInstance()->getStartCharacters('/./'))); //256 - 1 cause \n is out
     }
@@ -107,19 +107,19 @@ class RegexUtilTest extends TestCase
     public function testRegexGenarateString()
     {
         srand(10);
-        $this->checkStringGenerate('/a/', array('a'));
-        $this->checkStringGenerate('/asd/', array('asd'));
-        $this->checkStringGenerate('/(a|b|c)/', array('a', 'b', 'c'));
-        $this->checkStringGenerate('/a?/', array('a', ''));
-        $this->checkStringGenerate('/a?b?/', array('a', 'b', 'ab', ''));
-        $this->checkStringGenerate('/(a|b|c)?/', array('a', 'b', 'c', ''));
-        $this->checkStringGenerate('/a*/', array('', 'a', 'aa', 'aaa'), 3);
-        $this->checkStringGenerate('/a+/', array('a', 'aa', 'aaa'), 3);
-        $this->checkStringGenerate('/a{2}/', array('aa'));
-        $this->checkStringGenerate('/a{2,3}/', array('aa', 'aaa'));
-        $this->checkStringGenerate('/(a|(c|de)?f)/', array('a', 'cf', 'def', 'f'));
-        $this->checkStringGenerate('/[abc]/', array('a', 'b', 'c'));
-        $this->checkStringGenerate('/[a-dz]/', array('a', 'b', 'c', 'd', 'z'));
-        $this->checkStringGenerate('/\d/', array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
+        $this->checkStringGenerate('/a/', ['a']);
+        $this->checkStringGenerate('/asd/', ['asd']);
+        $this->checkStringGenerate('/(a|b|c)/', ['a', 'b', 'c']);
+        $this->checkStringGenerate('/a?/', ['a', '']);
+        $this->checkStringGenerate('/a?b?/', ['a', 'b', 'ab', '']);
+        $this->checkStringGenerate('/(a|b|c)?/', ['a', 'b', 'c', '']);
+        $this->checkStringGenerate('/a*/', ['', 'a', 'aa', 'aaa'], 3);
+        $this->checkStringGenerate('/a+/', ['a', 'aa', 'aaa'], 3);
+        $this->checkStringGenerate('/a{2}/', ['aa']);
+        $this->checkStringGenerate('/a{2,3}/', ['aa', 'aaa']);
+        $this->checkStringGenerate('/(a|(c|de)?f)/', ['a', 'cf', 'def', 'f']);
+        $this->checkStringGenerate('/[abc]/', ['a', 'b', 'c']);
+        $this->checkStringGenerate('/[a-dz]/', ['a', 'b', 'c', 'd', 'z']);
+        $this->checkStringGenerate('/\d/', ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']);
     }
 }

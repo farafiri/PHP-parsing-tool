@@ -17,7 +17,7 @@ class ParameterNode extends BaseNode
         $this->parameterName = $parameterName;
     }
 
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         throw new Exception("this function should be never called on this node type");
     }

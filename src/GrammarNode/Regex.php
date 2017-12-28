@@ -31,7 +31,7 @@ class Regex extends \ParserGenerator\GrammarNode\BaseNode Implements \ParserGene
         }
     }
 
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         if (preg_match($this->regex, $string, $match, 0, $fromIndex)) {
             if (isset($match[1])) {
@@ -43,7 +43,7 @@ class Regex extends \ParserGenerator\GrammarNode\BaseNode Implements \ParserGene
                     if ($this->lastMatch < $fromIndex) {
                         $this->lastMatch = $fromIndex;
                     }
-                    return array('node' => $node, 'offset' => $offset);
+                    return ['node' => $node, 'offset' => $offset];
                 }
             }
         }

@@ -74,9 +74,9 @@ class LookaheadTest extends TestCase
     {
         $x = new Parser('start :=> ?/[abc]/ /.+/ .');
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
-            new \ParserGenerator\SyntaxTreeNode\Leaf('abc')
-        )), $x->parse("abc"));
+        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
+            new \ParserGenerator\SyntaxTreeNode\Leaf('abc'),
+        ]), $x->parse("abc"));
 
         $x = new Parser('start :=> ?abc /.+/ .
                          abc   :=> a b c.
@@ -84,9 +84,9 @@ class LookaheadTest extends TestCase
                          b     :=> "b".
                          c     :=> "c".');
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
-            new \ParserGenerator\SyntaxTreeNode\Leaf('abc')
-        )), $x->parse("abc"));
+        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
+            new \ParserGenerator\SyntaxTreeNode\Leaf('abc'),
+        ]), $x->parse("abc"));
     }
 
     public function testInsideChoice()
@@ -96,22 +96,22 @@ class LookaheadTest extends TestCase
         $this->assertFalse($x->parse('acd'));
         $this->assertFalse($x->parse(''));
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
+        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
             new \ParserGenerator\SyntaxTreeNode\Leaf('ab'),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('de')
-        )), $x->parse("abde"));
+            new \ParserGenerator\SyntaxTreeNode\Leaf('de'),
+        ]), $x->parse("abde"));
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
+        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
             new \ParserGenerator\SyntaxTreeNode\Leaf('a'),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('bce')
-        )), $x->parse("abce"));
+            new \ParserGenerator\SyntaxTreeNode\Leaf('bce'),
+        ]), $x->parse("abce"));
 
         $x = new Parser('start :=> (?"abc" | "bc")  /.*/ .');
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
+        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
             new \ParserGenerator\SyntaxTreeNode\Leaf(''),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('abce')
-        )), $x->parse("abce"));
+            new \ParserGenerator\SyntaxTreeNode\Leaf('abce'),
+        ]), $x->parse("abce"));
     }
 
     public function testAnBnCnGrammar()
