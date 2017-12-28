@@ -36,6 +36,11 @@ Let say you have string with dates in format d.m.y or y-m-d separated by comma.
   }
 ```
 
+### Even more examples
+There are a few different example parsers implemented in the `ParserGenerator\Example` namespace, and you'll also find tests for them, e.g.:
+- `\ParserGenerator\Examples\CSVParser` (and `\ParserGenerator\Tests\Examples\CSVParserTest`)
+- `\ParserGenerator\Examples\JSONParser` (and `\ParserGenerator\Tests\Examples\JSONParserTest`)
+
 ## Branch types
 
 You could declare the previous grammar as PEG and it would improve speed x10.
