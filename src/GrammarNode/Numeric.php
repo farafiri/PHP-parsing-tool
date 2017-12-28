@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 //TODO: now this class supports only integers : add real support
 
 namespace ParserGenerator\GrammarNode;
