@@ -1,5 +1,7 @@
 <?php
 
+namespace ParserGenerator\Tests;
+
 use ParserGenerator\Parser;
 use ParserGenerator\SyntaxTreeNode\Branch;
 use ParserGenerator\SyntaxTreeNode\Leaf;
