@@ -8,9 +8,9 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
 {
     protected $type;
     protected $detailType;
-    protected $subnodes = array();
+    protected $subnodes = [];
 
-    public function __construct($type, $detailType, $subnodes = array())
+    public function __construct($type, $detailType, $subnodes = [])
     {
         $this->type = $type;
         $this->detailType = $detailType;
@@ -126,7 +126,7 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
 
     public function getLeafs()
     {
-        $result = array();
+        $result = [];
         foreach ($this->subnodes as $subnode) {
             if ($subnode instanceof \ParserGenerator\SyntaxTreeNode\Branch) {
                 $result = array_merge($result, $subnode->getLeafs());
@@ -147,7 +147,7 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
 
     public function findAll($type, $nest = false, $childrenFirst = false)
     {
-        $result = array();
+        $result = [];
 
         if ($this->is($type) && !$childrenFirst) {
             $result[] = $this;
@@ -278,12 +278,12 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
         ) {
 
             if ($returnAsPair) {
-                return array(array($this, $anotherNode));
+                return [[$this, $anotherNode]];
             } else {
-                return array($this);
+                return [$this];
             }
         } else {
-            $result = array();
+            $result = [];
 
             foreach ($this->subnodes as $index => $subnode) {
                 $result = array_merge($result, $subnode->diff($anotherNode->subnodes[$index], $returnAsPair));

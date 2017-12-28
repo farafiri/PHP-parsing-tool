@@ -8,17 +8,17 @@ class Unorder extends \ParserGenerator\Extension\SequenceItem
 
     public function extendGrammar($grammarGrammar)
     {
-        $grammarGrammar[$this->seqName] = array(
-            'nest' => array(':/[?*+]?/', ':sequenceItem', ',', (':' . $this->seqName)),
-            'last' => array(':/[?*+]?/', ':sequenceItem')
-        );
+        $grammarGrammar[$this->seqName] = [
+            'nest' => [':/[?*+]?/', ':sequenceItem', ',', (':' . $this->seqName)],
+            'last' => [':/[?*+]?/', ':sequenceItem'],
+        ];
 
         return parent::extendGrammar($grammarGrammar);
     }
 
     protected function getGrammarGrammarSequence()
     {
-        return array(array('unorder(', ':sequenceItem', ',', (':' . $this->seqName), ')'));
+        return [['unorder(', ':sequenceItem', ',', (':' . $this->seqName), ')']];
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)
@@ -45,7 +45,7 @@ class Unorder extends \ParserGenerator\Extension\SequenceItem
 
     private function buildInternalSequence(&$grammar, $sequence, $grammarParser, $options)
     {
-        $choice = array();
+        $choice = [];
 
         foreach ($sequence->findAll('sequenceItem') as $sequenceItem) {
             $choice[] = $grammarParser->buildSequenceItem($grammar, $sequenceItem, $options);

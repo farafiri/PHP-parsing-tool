@@ -4,7 +4,7 @@ namespace ParserGenerator\GrammarNode;
 
 class TextS extends \ParserGenerator\GrammarNode\Text
 {
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         if (substr($string, $fromIndex, strlen($this->str)) == $this->str ||
             ($this->str === '' && strlen($string) === $fromIndex)) {
@@ -13,7 +13,7 @@ class TextS extends \ParserGenerator\GrammarNode\Text
             $endPos += strlen($match[0]);
             if (!isset($restrictedEnd[$endPos])) {
                 $node = new \ParserGenerator\SyntaxTreeNode\Leaf($this->str, $match[0]);
-                return array('node' => $node, 'offset' => $endPos);
+                return ['node' => $node, 'offset' => $endPos];
             }
         }
 

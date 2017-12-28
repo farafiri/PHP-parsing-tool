@@ -20,9 +20,9 @@ use ParserGenerator\GrammarNode\ErrorTrackDecorator;
 
 class GrammarParser
 {
-    static public $defaultPlugins = array();
+    static public $defaultPlugins = [];
     static protected $instance = null;
-    protected $plugins = array();
+    protected $plugins = [];
     protected $parserSchouldBeRefreshed = true;
     protected $parser = null;
 
@@ -73,9 +73,9 @@ class GrammarParser
         return self::$instance;
     }
 
-    public function buildGrammar($grammarStr, $options = array())
+    public function buildGrammar($grammarStr, $options = [])
     {
-        $grammar = array();
+        $grammar = [];
         $parsedGrammar = $this->getParser()->parse($grammarStr);
 
         if ($parsedGrammar === false) {
@@ -108,7 +108,7 @@ class GrammarParser
         foreach ($grammarBranches as $grammarBranch) {
             if ($grammarBranch->getDetailType() === 'standard') {
                 $branchName = (string)$grammarBranch->findFirst('branchName');
-                $rules = array();
+                $rules = [];
                 foreach ($grammarBranch->findAll('rule') as $rule) {
                     $buildRule = $this->buildRule($grammar, $rule, $options);
                     $ruleName = (string)$rule->findFirst('ruleName');
@@ -150,9 +150,9 @@ class GrammarParser
 
     protected function buildBranchNameNode()
     {
-        $restrictedWords = array('or', 'and', 'contain', 'is', 'text', 'string');
+        $restrictedWords = ['or', 'and', 'contain', 'is', 'text', 'string'];
 
-        $restrictedWordsGrammarNode = array();
+        $restrictedWordsGrammarNode = [];
         foreach ($restrictedWords as $restrictedWord) {
             $restrictedWordsGrammarNode[] = new \ParserGenerator\Extension\ItemRestrictions\Is(new \ParserGenerator\GrammarNode\TextS($restrictedWord));
         }
@@ -168,36 +168,36 @@ class GrammarParser
 
     protected function generateNewParser()
     {
-        $stdGrammarGrammar = array(
-            'start' => array(array(':grammarBranches')),
-            'grammarBranches' => array(
-                'notLast' => array(':grammarBranch', ':comments', ':/\./', ':grammarBranches'),
-                'last' => array(':grammarBranch', ':comments', ':/\.?/', ":comments")
-            ),
-            'grammarBranch' => array('standard' => array(':comments', ':branchName', ':branchType', ':rules')),
-            'branchType' => array(array(''), array('(full)'), array('(naive)'), array('(PEG)')),
-            'rules' => array(
-                'last' => array(':rule'),
-                'notLast' => array(':rule', ':rules')
-            ),
-            'rule' => array('standard' => array(':comments', ':/:/', ':ruleName', ':/=>|:=/', ':sequence')),
-            'ruleName' => array(array(':/([A-Za-z_][0-9A-Za-z_]*)?/')),
-            'sequence' => array(
-                'last' => array(':commentSequenceItem'),
-                'notLast' => array(':commentSequenceItem', ':sequence')
-            ),
-            'comments' => array(array(':comment', ':comments'), array('')),
-            'comment' => array(array(':/\/(\*+)[^*](\s|.)*?\2\//')),
-            'commentSequenceItem' => array(array(':comments', ':sequenceItem')),
-            'sequenceItem' => array( /* rule for branches is added after plugin initalizing because it should have lowest priority */)
-        );
+        $stdGrammarGrammar = [
+            'start' => [[':grammarBranches']],
+            'grammarBranches' => [
+                'notLast' => [':grammarBranch', ':comments', ':/\./', ':grammarBranches'],
+                'last' => [':grammarBranch', ':comments', ':/\.?/', ":comments"],
+            ],
+            'grammarBranch' => ['standard' => [':comments', ':branchName', ':branchType', ':rules']],
+            'branchType' => [[''], ['(full)'], ['(naive)'], ['(PEG)']],
+            'rules' => [
+                'last' => [':rule'],
+                'notLast' => [':rule', ':rules'],
+            ],
+            'rule' => ['standard' => [':comments', ':/:/', ':ruleName', ':/=>|:=/', ':sequence']],
+            'ruleName' => [[':/([A-Za-z_][0-9A-Za-z_]*)?/']],
+            'sequence' => [
+                'last' => [':commentSequenceItem'],
+                'notLast' => [':commentSequenceItem', ':sequence'],
+            ],
+            'comments' => [[':comment', ':comments'], ['']],
+            'comment' => [[':/\/(\*+)[^*](\s|.)*?\2\//']],
+            'commentSequenceItem' => [[':comments', ':sequenceItem']],
+            'sequenceItem' => [ /* rule for branches is added after plugin initalizing because it should have lowest priority */],
+        ];
 
         $grammarGrammar = $stdGrammarGrammar;
         foreach ($this->plugins as $plugin) {
             $grammarGrammar = $plugin->extendGrammar($grammarGrammar);
         }
 
-        $grammarGrammar['branchName'] = array(array($this->buildBranchNameNode()));
+        $grammarGrammar['branchName'] = [[$this->buildBranchNameNode()]];
         $grammarGrammar['sequenceItem']['branch'] = ':branchName';
 
         $this->parser = new \ParserGenerator\Parser($grammarGrammar);
@@ -206,7 +206,7 @@ class GrammarParser
     public function buildRule(&$grammar, $rule, $options)
     {
         if ($rule->getDetailType() === 'standard') {
-            $sequence = array();
+            $sequence = [];
             foreach ($rule->findAll('sequenceItem') as $sequenceItem) {
                 $sequenceItemNode = $this->buildSequenceItem($grammar, $sequenceItem, $options);
                 if (count($sequence)) {

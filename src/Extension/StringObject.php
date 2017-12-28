@@ -6,10 +6,10 @@ class StringObject extends \ParserGenerator\Extension\SequenceItem
 {
     protected function getGrammarGrammarSequence()
     {
-        return array(
-            array('string'),
-            array('string/', ':/(apostrophe|simple|quotation|default)/')
-        );
+        return [
+            ['string'],
+            ['string/', ':/(apostrophe|simple|quotation|default)/'],
+        ];
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)
@@ -19,15 +19,15 @@ class StringObject extends \ParserGenerator\Extension\SequenceItem
         switch ($type) {
             case "default":
                 return new \ParserGenerator\GrammarNode\PredefinedString(!empty($options['ignoreWhitespaces']),
-                    array("'", '"'));
+                    ["'", '"']);
 
             case "apostrophe":
                 return new \ParserGenerator\GrammarNode\PredefinedString(!empty($options['ignoreWhitespaces']),
-                    array("'"));
+                    ["'"]);
 
             case "quotation":
                 return new \ParserGenerator\GrammarNode\PredefinedString(!empty($options['ignoreWhitespaces']),
-                    array('"'));
+                    ['"']);
 
             case "simple":
                 return new \ParserGenerator\GrammarNode\PredefinedSimpleString(!empty($options['ignoreWhitespaces']));

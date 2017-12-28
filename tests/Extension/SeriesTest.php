@@ -26,20 +26,20 @@ class SeriesTest extends TestCase
         $this->assertObject($x->parse('abacab'));
         $this->assertFalse($x->parse(''));
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
-            new \ParserGenerator\SyntaxTreeNode\Series('list', 'str', array(
+        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
+            new \ParserGenerator\SyntaxTreeNode\Series('list', 'str', [
                 new \ParserGenerator\SyntaxTreeNode\Branch('str', 0,
-                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('a'))),
+                    [new \ParserGenerator\SyntaxTreeNode\Leaf('a')]),
                 new \ParserGenerator\SyntaxTreeNode\Branch('str', 1,
-                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('b'))),
+                    [new \ParserGenerator\SyntaxTreeNode\Leaf('b')]),
                 new \ParserGenerator\SyntaxTreeNode\Branch('str', 0,
-                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('a'))),
+                    [new \ParserGenerator\SyntaxTreeNode\Leaf('a')]),
                 new \ParserGenerator\SyntaxTreeNode\Branch('str', 2,
-                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('c'))),
+                    [new \ParserGenerator\SyntaxTreeNode\Leaf('c')]),
                 new \ParserGenerator\SyntaxTreeNode\Branch('str', 0,
-                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('a'))),
-            ), false)
-        )), $x->parse("abaca"));
+                    [new \ParserGenerator\SyntaxTreeNode\Leaf('a')]),
+            ], false),
+        ]), $x->parse("abaca"));
     }
 
     public function testMWithoutSeparator()
@@ -55,9 +55,9 @@ class SeriesTest extends TestCase
         $this->assertObject($x->parse('b'));
         $this->assertObject($x->parse('abacab'));
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
-            new \ParserGenerator\SyntaxTreeNode\Series('list', 'str', array(), false)
-        )), $x->parse(''));
+        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
+            new \ParserGenerator\SyntaxTreeNode\Series('list', 'str', [], false),
+        ]), $x->parse(''));
     }
 
     public function testWithSeparator()
@@ -73,20 +73,20 @@ class SeriesTest extends TestCase
         $this->assertObject($x->parse('b,a'));
         $this->assertFalse($x->parse(''));
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
-            new \ParserGenerator\SyntaxTreeNode\Series('list', 'str', array(
+        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
+            new \ParserGenerator\SyntaxTreeNode\Series('list', 'str', [
                 new \ParserGenerator\SyntaxTreeNode\Branch('str', 0,
-                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('a'))),
+                    [new \ParserGenerator\SyntaxTreeNode\Leaf('a')]),
                 new \ParserGenerator\SyntaxTreeNode\Branch('coma', 0,
-                    array(new \ParserGenerator\SyntaxTreeNode\Leaf(','))),
+                    [new \ParserGenerator\SyntaxTreeNode\Leaf(',')]),
                 new \ParserGenerator\SyntaxTreeNode\Branch('str', 2,
-                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('c'))),
+                    [new \ParserGenerator\SyntaxTreeNode\Leaf('c')]),
                 new \ParserGenerator\SyntaxTreeNode\Branch('coma', 0,
-                    array(new \ParserGenerator\SyntaxTreeNode\Leaf(','))),
+                    [new \ParserGenerator\SyntaxTreeNode\Leaf(',')]),
                 new \ParserGenerator\SyntaxTreeNode\Branch('str', 1,
-                    array(new \ParserGenerator\SyntaxTreeNode\Leaf('b'))),
-            ), true)
-        )), $x->parse("a,c,b"));
+                    [new \ParserGenerator\SyntaxTreeNode\Leaf('b')]),
+            ], true),
+        ]), $x->parse("a,c,b"));
     }
 
     public function testWithVariousTypes()
@@ -137,23 +137,23 @@ class SeriesTest extends TestCase
 
         $x = new Parser('start :=> /./+  /.*/ .');
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
-            new \ParserGenerator\SyntaxTreeNode\Series('list', '/./', array(
-                new \ParserGenerator\SyntaxTreeNode\Leaf('a')
-            ), false),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('bc')
-        )), $x->parse("abc"));
+        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
+            new \ParserGenerator\SyntaxTreeNode\Series('list', '/./', [
+                new \ParserGenerator\SyntaxTreeNode\Leaf('a'),
+            ], false),
+            new \ParserGenerator\SyntaxTreeNode\Leaf('bc'),
+        ]), $x->parse("abc"));
 
         $x = new Parser('start :=> /./++  /.*/ .');
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, array(
-            new \ParserGenerator\SyntaxTreeNode\Series('list', '/./', array(
+        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
+            new \ParserGenerator\SyntaxTreeNode\Series('list', '/./', [
                 new \ParserGenerator\SyntaxTreeNode\Leaf('a'),
                 new \ParserGenerator\SyntaxTreeNode\Leaf('b'),
-                new \ParserGenerator\SyntaxTreeNode\Leaf('c')
-            ), false),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('')
-        )), $x->parse("abc"));
+                new \ParserGenerator\SyntaxTreeNode\Leaf('c'),
+            ], false),
+            new \ParserGenerator\SyntaxTreeNode\Leaf(''),
+        ]), $x->parse("abc"));
     }
 
     public function testSurrounded()
@@ -166,7 +166,7 @@ class SeriesTest extends TestCase
 
     public function testSeriesInPegAreAlwaysGreedy()
     {
-        $x = new Parser('start :=> "a"+', array('defaultBranchType' => 'PEG'));
+        $x = new Parser('start :=> "a"+', ['defaultBranchType' => 'PEG']);
 
         $this->assertObject($x->parse('aaa'));
     }

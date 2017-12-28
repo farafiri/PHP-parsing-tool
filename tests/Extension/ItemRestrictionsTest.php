@@ -37,20 +37,20 @@ class ItemRestrictionsTest extends TestCase
         $this->assertFalse($x->parse('aac'));
         $this->assertFalse($x->parse('ab'));
 
-        $this->assertEquals(new Root('start', 0, array(
+        $this->assertEquals(new Root('start', 0, [
             new Leaf("aa"),
-            new Leaf("b")
-        )), $x->parse("aab"));
+            new Leaf("b"),
+        ]), $x->parse("aab"));
 
-        $this->assertEquals(new Root('start', 0, array(
+        $this->assertEquals(new Root('start', 0, [
             new Leaf("sdabag"),
-            new Leaf("b")
-        )), $x->parse("sdabagb"));
+            new Leaf("b"),
+        ]), $x->parse("sdabagb"));
 
-        $this->assertEquals(new Root('start', 0, array(
+        $this->assertEquals(new Root('start', 0, [
             new Leaf("ba"),
-            new Leaf("b")
-        )), $x->parse("bab"));
+            new Leaf("b"),
+        ]), $x->parse("bab"));
 
         $x = new Parser('start :=> text contain /[ab]{2}/ text.');
 
@@ -59,20 +59,20 @@ class ItemRestrictionsTest extends TestCase
         $this->assertFalse($x->parse('a'));
         $this->assertFalse($x->parse(''));
 
-        $this->assertEquals(new Root('start', 0, array(
+        $this->assertEquals(new Root('start', 0, [
             new Leaf("ba"),
-            new Leaf("b")
-        )), $x->parse("bab"));
+            new Leaf("b"),
+        ]), $x->parse("bab"));
 
-        $this->assertEquals(new Root('start', 0, array(
+        $this->assertEquals(new Root('start', 0, [
             new Leaf("xba"),
-            new Leaf("bb")
-        )), $x->parse("xbabb"));
+            new Leaf("bb"),
+        ]), $x->parse("xbabb"));
 
-        $this->assertEquals(new Root('start', 0, array(
+        $this->assertEquals(new Root('start', 0, [
             new Leaf("xba"),
-            new Leaf("xbbxaa")
-        )), $x->parse("xbaxbbxaa"));
+            new Leaf("xbbxaa"),
+        ]), $x->parse("xbaxbbxaa"));
     }
 
     public function testWithNodes()
@@ -202,10 +202,10 @@ class ItemRestrictionsTest extends TestCase
     {
         $x = new Parser('start :=> (text contain ?"aaa") text.');
 
-        $this->assertEquals(new Root('start', 0, array(
+        $this->assertEquals(new Root('start', 0, [
             new Leaf("qaaba"),
-            new Leaf("aacaaaa")
-        )), $x->parse("qaabaaacaaaa"));
+            new Leaf("aacaaaa"),
+        ]), $x->parse("qaabaaacaaaa"));
     }
 
     public function testWithLookaround()
@@ -272,14 +272,14 @@ class ItemRestrictionsTest extends TestCase
 
         $x = new Parser('start :=> text followed by "a" text.');
 
-        $this->assertEquals(new Root('start', 0, array(
+        $this->assertEquals(new Root('start', 0, [
             new Leaf("qw"),
-            new Leaf("adgahaab")
-        )), $x->parse("qwadgahaab"));
+            new Leaf("adgahaab"),
+        ]), $x->parse("qwadgahaab"));
 
-        $this->assertEquals(new Root('start', 0, array(
+        $this->assertEquals(new Root('start', 0, [
             new Leaf(""),
-            new Leaf("aaa")
-        )), $x->parse("aaa"));
+            new Leaf("aaa"),
+        ]), $x->parse("aaa"));
     }
 }

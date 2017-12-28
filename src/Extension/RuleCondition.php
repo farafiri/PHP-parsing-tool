@@ -7,8 +7,8 @@ class RuleCondition extends \ParserGenerator\Extension\Base
     public function extendGrammar($grammarGrammar)
     {
         $grammarGrammar['rule']['standard'][] = ':possibleRuleCondition';
-        $grammarGrammar['possibleRuleCondition'] = array(array(':ruleCondition'), array(''));
-        $grammarGrammar['ruleCondition']['standard'] = array('<?', ':/([^?]|\?[^>])+/', '?>');
+        $grammarGrammar['possibleRuleCondition'] = [[':ruleCondition'], ['']];
+        $grammarGrammar['ruleCondition']['standard'] = ['<?', ':/([^?]|\?[^>])+/', '?>'];
 
         return $grammarGrammar;
     }
@@ -16,7 +16,7 @@ class RuleCondition extends \ParserGenerator\Extension\Base
     function modifyBranches($grammar, $parsedGrammar, $grammarParser, $options)
     {
         foreach ($parsedGrammar->findAll('grammarBranch') as $grammarBranch) {
-            $functions = array();
+            $functions = [];
             foreach ($grammarBranch->findAll('rule') as $ruleIndex => $rule) {
                 $ruleName = (string)$rule->findFirst('ruleName') ?: $ruleIndex;
                 if ($condition = $rule->findFirst('ruleCondition')) {

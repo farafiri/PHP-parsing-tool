@@ -34,26 +34,26 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
 
         $this->node = new \ParserGenerator\GrammarNode\Branch($this->tmpNodeName);
 
-        $ruleGo = $separator ? array($mainNode, $separator, $this->node) : array($mainNode, $this->node);
-        $ruleStop = array($mainNode);
+        $ruleGo = $separator ? [$mainNode, $separator, $this->node] : [$mainNode, $this->node];
+        $ruleStop = [$mainNode];
 
         if ($greedy) {
-            $node = array('go' => $ruleGo, 'stop' => $ruleStop);
+            $node = ['go' => $ruleGo, 'stop' => $ruleStop];
         } else {
-            $node = array('stop' => $ruleStop, 'go' => $ruleGo);
+            $node = ['stop' => $ruleStop, 'go' => $ruleGo];
         }
 
         $this->node->setNode($node);
     }
 
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         if ($this->from0 && !$this->greedy && !isset($restrictedEnd[$fromIndex])) {
-            return array(
+            return [
                 'node' => new \ParserGenerator\SyntaxTreeNode\Series($this->resultType, $this->resultDetailType,
-                    array(), (bool)$this->separator),
-                'offset' => $fromIndex
-            );
+                    [], (bool)$this->separator),
+                'offset' => $fromIndex,
+            ];
         }
 
         if ($rparseResult = $this->node->rparse($string, $fromIndex, $restrictedEnd)) {
@@ -62,11 +62,11 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
         }
 
         if ($this->from0 && !isset($restrictedEnd[$fromIndex])) {
-            return array(
+            return [
                 'node' => new \ParserGenerator\SyntaxTreeNode\Series($this->resultType, $this->resultDetailType,
-                    array(), (bool)$this->separator),
-                'offset' => $fromIndex
-            );
+                    [], (bool)$this->separator),
+                'offset' => $fromIndex,
+            ];
         }
 
         return false;
@@ -74,7 +74,7 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
 
     protected function getFlattenNode($ast)
     {
-        $astSubnodes = array();
+        $astSubnodes = [];
         while ($ast->getDetailType() == 'go') {
             $astSubnodes[] = $ast->getSubnode(0);
             if ($this->separator) {
@@ -92,9 +92,9 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
 
     public function getNode()
     {
-        $node = $this->separator ? array(array($this->mainNode, $this->separator)) : array(array($this->mainNode));
+        $node = $this->separator ? [[$this->mainNode, $this->separator]] : [[$this->mainNode]];
         if ($this->from0) {
-            $node[] = array();
+            $node[] = [];
         }
         return $node;
     }
@@ -106,7 +106,7 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
 
     public function __toString()
     {
-        $op = array(array('+', '++'), array('*', '**'));
+        $op = [['+', '++'], ['*', '**']];
         return $this->mainNode . $op[$this->from0][$this->greedy] . ($this->separator ?: '');
     }
 

@@ -4,7 +4,7 @@ namespace ParserGenerator\GrammarNode;
 
 class NaiveBranch extends \ParserGenerator\GrammarNode\Branch
 {
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         $cacheStr = $fromIndex . '-' . $this->nodeName . '-' . implode(',', $restrictedEnd);
 
@@ -14,12 +14,12 @@ class NaiveBranch extends \ParserGenerator\GrammarNode\Branch
         $this->parser->cache[$cacheStr] = false;
 
         foreach ($this->node as $_optionIndex => $option) {
-            $subnodes = array();
+            $subnodes = [];
             $optionIndex = 0;
-            $indexes = array(-1 => $fromIndex);
+            $indexes = [-1 => $fromIndex];
             $optionCount = count($option);
             //!!! TODO:
-            $restrictedEnds = array(array(), array(), array(), array(), array(), array(), array(), array());
+            $restrictedEnds = [[], [], [], [], [], [], [], []];
             $restrictedEnds[$optionCount - 1] = $restrictedEnd;
             while (true) {
                 $subNode = $option[$optionIndex]->rparse($string, $indexes[$optionIndex - 1],
@@ -39,7 +39,7 @@ class NaiveBranch extends \ParserGenerator\GrammarNode\Branch
             // match
             $index = $indexes[$optionCount - 1];
             $node = new \ParserGenerator\SyntaxTreeNode\Branch($this->nodeShortName, $_optionIndex, $subnodes);
-            $r = array('node' => $node, 'offset' => $index);
+            $r = ['node' => $node, 'offset' => $index];
             $this->parser->cache[$cacheStr] = $r;
             return $r;
         }

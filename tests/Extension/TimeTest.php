@@ -57,7 +57,7 @@ class TimeTest extends TestCase
 
     public function testDataShouldProperlyCaptureWhitespaces()
     {
-        $x = new Parser('start :=> time(Y-m-d) text.', array('ignoreWhitespaces' => true));
+        $x = new Parser('start :=> time(Y-m-d) text.', ['ignoreWhitespaces' => true]);
 
         $timeNode = $x->parse('2014-03-08  lorem ipsum')->getSubnode(0);
         $this->assertEquals('2014-03-08  ',

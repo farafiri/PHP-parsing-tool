@@ -4,15 +4,15 @@ namespace ParserGenerator\GrammarNode;
 
 class AnyText extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGenerator\GrammarNode\LeafInterface
 {
-    public static $whiteChars = array("\n" => true, "\t" => true, "\r" => true, " " => true);
+    public static $whiteChars = ["\n" => true, "\t" => true, "\r" => true, " " => true];
     public $ignoreWhitespaces;
 
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $this->ignoreWhitespaces = true;
     }
 
-    public function rparse($string, $fromIndex = 0, $restrictedEnd = array())
+    public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
         $endPos = $this->getNextNonrestrictedIndex($string, $fromIndex, $restrictedEnd);
         $str = substr($string, $fromIndex, $endPos - $fromIndex);
@@ -21,12 +21,12 @@ class AnyText extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
             if ($this->ignoreWhitespaces) {
                 $trimedString = rtrim($str);
                 $whitespaces = substr($str, strlen($trimedString));
-                return array(
+                return [
                     'node' => new \ParserGenerator\SyntaxTreeNode\Leaf($trimedString, $whitespaces),
-                    'offset' => $endPos
-                );
+                    'offset' => $endPos,
+                ];
             } else {
-                return array('node' => new \ParserGenerator\SyntaxTreeNode\Leaf($str), 'offset' => $endPos);
+                return ['node' => new \ParserGenerator\SyntaxTreeNode\Leaf($str), 'offset' => $endPos];
             }
         } else {
             return false;

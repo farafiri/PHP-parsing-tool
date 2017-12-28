@@ -13,6 +13,6 @@ class FollowedBy implements \ParserGenerator\Extension\ItemRestrictions\ItemRest
 
     public function check($string, $fromIndex, $toIndex, $node)
     {
-        return (bool)$this->grammarNode->rparse($string, $toIndex, array());
+        return (bool)$this->grammarNode->rparse($string, $toIndex, []);
     }
 }

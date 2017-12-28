@@ -14,9 +14,9 @@ class Time extends \ParserGenerator\Extension\SequenceItem
 {
     protected function getGrammarGrammarSequence()
     {
-        return array(
-            array('time(', ':/[^)]+/', ')')
-        );
+        return [
+            ['time(', ':/[^)]+/', ')'],
+        ];
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)

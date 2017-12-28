@@ -19,7 +19,7 @@ class GrammarNodeCopier
                 return null;
             }
             if (is_array($node)) {
-                $result = array();
+                $result = [];
                 foreach ($node as $index => $subnode) {
                     $result[$index] = $_copy($subnode);
                 }

@@ -14,7 +14,7 @@ class Contain implements \ParserGenerator\Extension\ItemRestrictions\ItemRestric
     public function check($string, $fromIndex, $toIndex, $node)
     {
         for ($currentIndex = $fromIndex; $currentIndex < $toIndex; $currentIndex++) {
-            $restrictedEnds = array();
+            $restrictedEnds = [];
             while (true) {
                 $parsedNode = $this->grammarNode->rparse($string, $currentIndex, $restrictedEnds);
 

@@ -12,31 +12,31 @@ class ParametrizedNode extends Base
 
     public function extendGrammar($grammarGrammar)
     {
-        $this->nodeParams = array();
+        $this->nodeParams = [];
 
         $grammarGrammar['grammarBranch']['standard'] = $this->insert($grammarGrammar['grammarBranch']['standard'],
             ':branchName', ':branchParamsDef');
 
-        $grammarGrammar['branchParamsDef'] = array(
-            array('<', ':branchParamsDefList', '>'),
-            array('')
-        );
+        $grammarGrammar['branchParamsDef'] = [
+            ['<', ':branchParamsDefList', '>'],
+            [''],
+        ];
 
-        $grammarGrammar['branchParamsDefList'] = array(
-            'last' => array(':branchName'),
-            'notLast' => array(':branchName', ',', ':branchParamsDefList')
-        );
+        $grammarGrammar['branchParamsDefList'] = [
+            'last' => [':branchName'],
+            'notLast' => [':branchName', ',', ':branchParamsDefList'],
+        ];
 
-        $grammarGrammar['sequenceItem']['parametrizedNode'] = array(
+        $grammarGrammar['sequenceItem']['parametrizedNode'] = [
             ':branchName',
             '<',
             ':parametrizedNodeParamsList',
-            '>'
-        );
-        $grammarGrammar['parametrizedNodeParamsList'] = array(
-            'last' => array(':sequenceItem'),
-            'notLast' => array(':sequenceItem', ',', ':parametrizedNodeParamsList')
-        );
+            '>',
+        ];
+        $grammarGrammar['parametrizedNodeParamsList'] = [
+            'last' => [':sequenceItem'],
+            'notLast' => [':sequenceItem', ',', ':parametrizedNodeParamsList'],
+        ];
 
         return $grammarGrammar;
     }
@@ -66,7 +66,7 @@ class ParametrizedNode extends Base
         }
 
         if ($sequenceItem->getDetailType() === 'parametrizedNode') {
-            $params = array();
+            $params = [];
             foreach ($sequenceItem->findFirst('parametrizedNodeParamsList')->findAll('sequenceItem') as $param) {
                 $params[] = $grammarParser->buildSequenceItem($grammar, $param, $options);
             }

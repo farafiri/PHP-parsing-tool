@@ -73,12 +73,12 @@ class Leaf extends \ParserGenerator\SyntaxTreeNode\Base
     public function diff($anotherNode, $returnAsPair = true)
     {
         if ($this->content === $anotherNode->content) {
-            return array();
+            return [];
         } else {
             if ($returnAsPair) {
-                return array(array($this, $anotherNode));
+                return [[$this, $anotherNode]];
             } else {
-                return array($this);
+                return [$this];
             }
         }
     }

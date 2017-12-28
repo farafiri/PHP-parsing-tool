@@ -5,7 +5,7 @@ namespace ParserGenerator;
 class Parser
 {
     public $cache;
-    public $grammar = array();
+    public $grammar = [];
 
     public $maxIndex;
     public $expected;
@@ -26,7 +26,7 @@ class Parser
         $this->grammar['string'] = new \ParserGenerator\GrammarNode\PredefinedString(true);
 
         foreach ($grammar as $name => $node) {
-            $grammarNodeOptions = array();
+            $grammarNodeOptions = [];
             foreach ($node as $optionIndex => $option) {
                 foreach ((array)$option as $seqIndex => $seq) {
                     if (is_string($seq)) {
@@ -54,7 +54,7 @@ class Parser
 
     public function iterateOverNodes($callback)
     {
-        $visitedNodes = array();
+        $visitedNodes = [];
         foreach ($this->grammar as $node) {
             $this->_iterateOverNodes($node, $callback, $visitedNodes);
         }
@@ -94,7 +94,7 @@ class Parser
         $this->grammar = \ParserGenerator\GrammarParser::getInstance()->buildGrammar($grammar, $options);
     }
 
-    public function __construct($grammar, $options = array())
+    public function __construct($grammar, $options = [])
     {
         if (is_array($grammar)) {
             $this->buildFromArray($grammar, $options);
@@ -120,8 +120,8 @@ class Parser
                 $node->lastNMatch = -1;
             }
         });
-        $this->cache = array();
-        $restrictedEnd = array();
+        $this->cache = [];
+        $restrictedEnd = [];
         if (!empty($this->options['ignoreWhitespaces'])) {
             $trimmedString = ltrim($string);
             $beforeContent = substr($string, 0, strlen($string) - strlen($trimmedString));
@@ -148,12 +148,12 @@ class Parser
     public function getError()
     {
         $maxMatch = -1;
-        $match = array();
+        $match = [];
         $this->iterateOverNodes(function ($node) use (&$maxMatch, &$match) {
             if ($node instanceof \ParserGenerator\GrammarNode\ErrorTrackDecorator) {
                 if ($maxMatch < $node->getMaxCheck()) {
                     $maxMatch = $node->getMaxCheck();
-                    $match = array();
+                    $match = [];
                 }
 
                 if ($maxMatch === $node->getMaxCheck()) {
@@ -182,25 +182,25 @@ class Parser
         });
 
         if ($maxMatch === -1) {
-            return array(
+            return [
                 'index' => 0,
-                'expected' => array($this->grammar['start'])
-            );
+                'expected' => [$this->grammar['start']],
+            ];
         }
 
-        return array(
+        return [
             'index' => $maxMatch,
-            'expected' => $match
-        );
+            'expected' => $match,
+        ];
     }
 
     public static function getLineAndCharacterFromOffset($str, $offset)
     {
         $lines = preg_split('/(\r\n|\n\r|\r|\n)/', substr($str, 0, $offset));
-        return array(
+        return [
             'line' => count($lines),
-            'char' => strlen($lines[count($lines) - 1]) + 1
-        );
+            'char' => strlen($lines[count($lines) - 1]) + 1,
+        ];
     }
 
     public function getErrorString($str)
@@ -226,7 +226,7 @@ class Parser
 
     public function generalizeErrors($errors)
     {
-        $errorsByHash = array();
+        $errorsByHash = [];
         foreach ($errors as $error) {
             $errorsByHash[spl_object_hash($error)] = $error;
         }

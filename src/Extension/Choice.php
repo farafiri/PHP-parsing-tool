@@ -8,22 +8,22 @@ class Choice extends \ParserGenerator\Extension\SequenceItem
 
     public function extendGrammar($grammarGrammar)
     {
-        $grammarGrammar[$this->seqName] = array(
-            'nest' => array(':sequence', '|', (':' . $this->seqName)),
-            'last' => array(':sequence')
-        );
+        $grammarGrammar[$this->seqName] = [
+            'nest' => [':sequence', '|', (':' . $this->seqName)],
+            'last' => [':sequence'],
+        ];
 
         return parent::extendGrammar($grammarGrammar);
     }
 
     protected function getGrammarGrammarSequence()
     {
-        return array('(', (':' . $this->seqName), ':comments', ')');
+        return ['(', (':' . $this->seqName), ':comments', ')'];
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)
     {
-        $choices = array();
+        $choices = [];
         $sequenceNode = $sequenceItem->getSubnode(1);
 
         while ($sequenceNode->getDetailType() !== 'last') {
@@ -44,7 +44,7 @@ class Choice extends \ParserGenerator\Extension\SequenceItem
 
     private function buildInternalSequence(&$grammar, $sequence, $grammarParser, $options)
     {
-        $choice = array();
+        $choice = [];
 
         foreach ($sequence->findAll('sequenceItem') as $sequenceItem) {
             $choice[] = $grammarParser->buildSequenceItem($grammar, $sequenceItem, $options);

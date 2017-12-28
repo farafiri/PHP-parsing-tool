@@ -6,7 +6,7 @@ class WhiteCharactersContext extends \ParserGenerator\Extension\SequenceItem
 {
     protected function getGrammarGrammarSequence()
     {
-        return array(':/(\\\\s|whiteSpace|\\\\space|space|\\\\n|newLine|\\\\newline|\\\\t|\\\\tab|tab)/');
+        return [':/(\\\\s|whiteSpace|\\\\space|space|\\\\n|newLine|\\\\newline|\\\\t|\\\\tab|tab)/'];
     }
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)

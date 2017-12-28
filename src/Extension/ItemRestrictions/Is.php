@@ -13,7 +13,7 @@ class Is implements \ParserGenerator\Extension\ItemRestrictions\ItemRestrictionI
 
     public function check($string, $fromIndex, $toIndex, $node)
     {
-        $restrictedEnds = array();
+        $restrictedEnds = [];
         while (true) {
             $parsedNode = $this->grammarNode->rparse($string, $fromIndex, $restrictedEnds);
 

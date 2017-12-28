@@ -15,7 +15,7 @@ class BranchStringCondition extends \ParserGenerator\GrammarNode\BranchExtraCond
     public function setConditionString($conditionStrings)
     {
         $this->conditionStrings = $conditionStrings;
-        $this->_functions = array();
+        $this->_functions = [];
 
         foreach ($conditionStrings as $detailType => $conditionString) {
             $this->_functions[$detailType] = $this->create_function('$string,$fromIndex,$toIndex,$node,$s',

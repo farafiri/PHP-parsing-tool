@@ -18,14 +18,14 @@ class BranchTest extends TestCase
 {
     public function testCopy()
     {
-        $b = new Root('x', 0, array(
+        $b = new Root('x', 0, [
             new Leaf('leaf1'),
-            new Branch('b1', 0, array(
+            new Branch('b1', 0, [
                 new Leaf('leaf1.1'),
-                new Leaf('leaf1.2')
-            )),
-            new Numeric('23', 10)
-        ));
+                new Leaf('leaf1.2'),
+            ]),
+            new Numeric('23', 10),
+        ]);
 
         $b->refreshOwners();
 

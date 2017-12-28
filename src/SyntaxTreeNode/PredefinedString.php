@@ -27,7 +27,7 @@ class PredefinedString extends \ParserGenerator\SyntaxTreeNode\Leaf
         if (substr($this->content, 0, 1) === '"') {
             return stripcslashes(substr(str_replace("\\'", "\\\\'", $this->content), 1, -1));
         } else {
-            return str_replace(array('\\\\', '\\\''), array('\\', '\''), substr($this->content, 1, -1));
+            return str_replace(['\\\\', '\\\''], ['\\', '\''], substr($this->content, 1, -1));
         }
     }
 }

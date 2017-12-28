@@ -8,7 +8,7 @@ class JSONParser extends \ParserGenerator\Parser
 {
     public function __construct()
     {
-        parent::__construct($this->getJSONDefinition(), array('ignoreWhitespaces' => true));
+        parent::__construct($this->getJSONDefinition(), ['ignoreWhitespaces' => true]);
     }
 
     protected function getJSONDefinition()
@@ -44,7 +44,7 @@ class JSONParser extends \ParserGenerator\Parser
             case "number":
                 return $node->getSubnode(0)->getValue();
             case "array":
-                $result = array();
+                $result = [];
 
                 foreach ($node->getSubnode(1)->getMainNodes() as $valueNode) {
                     $result[] = $this->getValueOfNode($valueNode);
@@ -52,7 +52,7 @@ class JSONParser extends \ParserGenerator\Parser
 
                 return $result;
             case "object":
-                $result = array();
+                $result = [];
 
                 foreach ($node->getSubnode(1)->getMainNodes() as $objValueNode) {
                     $result[$objValueNode->getSubnode(0)->getValue()] = $this->getValueOfNode($objValueNode->getSubnode(2));

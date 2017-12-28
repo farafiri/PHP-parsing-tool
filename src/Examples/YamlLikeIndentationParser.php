@@ -46,7 +46,7 @@ class YamlLikeIndentationParser extends \ParserGenerator\Parser
         } elseif ($node->getType() == 'value' && $node->getDetailType() == 'object') {
             return $this->getValueOfNode($node->getSubnode(0));
         } elseif ($node->getType() == 'objValues' && $node->getDetailType() == 'values') {
-            $result = array();
+            $result = [];
             foreach ($node->getSubnode(0)->getMainNodes() as $objValue) {
                 $result[(string)$objValue->getSubnode(2)] = $this->getValueOfNode($objValue->getSubnode(5));
             }
