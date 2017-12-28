@@ -2,28 +2,38 @@
 
 namespace ParserGenerator;
 
+use ParserGenerator\GrammarNode\Branch;
+use ParserGenerator\GrammarNode\BranchInterface;
+use ParserGenerator\GrammarNode\ErrorTrackDecorator;
+use ParserGenerator\GrammarNode\Lookahead;
+use ParserGenerator\GrammarNode\NodeInterface;
+use ParserGenerator\GrammarNode\PredefinedString;
+use ParserGenerator\GrammarNode\Regex;
+use ParserGenerator\GrammarNode\TextS;
+use ParserGenerator\SyntaxTreeNode\Root;
+
 class Parser
 {
+    /** @var array */
     public $cache;
+    /** @var array */
     public $grammar = [];
-
-    public $maxIndex;
-    public $expected;
+    /** @var array */
     public $options;
 
-    protected function buildFromArray($grammar, $options)
+    protected function buildFromArray(array $grammar, array $options)
     {
         $this->grammar = $grammar;
         $this->options = $options;
 
         foreach ($this->grammar as $name => $node) {
-            $grammarNode = new \ParserGenerator\GrammarNode\Branch($name);
+            $grammarNode = new Branch($name);
             $grammarNode->setParser($this);
-            $grammarNode = new \ParserGenerator\GrammarNode\ErrorTrackDecorator($grammarNode);
+            $grammarNode = new ErrorTrackDecorator($grammarNode);
             $this->grammar[$name] = $grammarNode;
         }
 
-        $this->grammar['string'] = new \ParserGenerator\GrammarNode\PredefinedString(true);
+        $this->grammar['string'] = new PredefinedString(true);
 
         foreach ($grammar as $name => $node) {
             $grammarNodeOptions = [];
@@ -32,17 +42,16 @@ class Parser
                     if (is_string($seq)) {
                         if (substr($seq, 0, 1) == ':') {
                             if (substr($seq, 1, 1) == '/') {
-                                $grammarNodeOptions[$optionIndex][$seqIndex] = new \ParserGenerator\GrammarNode\ErrorTrackDecorator(new \ParserGenerator\GrammarNode\Regex(substr($seq,
+                                $grammarNodeOptions[$optionIndex][$seqIndex] = new ErrorTrackDecorator(new Regex(substr($seq,
                                     1), true));
                             } else {
                                 $grammarNodeOptions[$optionIndex][$seqIndex] = $this->grammar[substr($seq, 1)];
                             }
                         } else {
-                            $grammarNodeOptions[$optionIndex][$seqIndex] = new \ParserGenerator\GrammarNode\ErrorTrackDecorator(
-                                new \ParserGenerator\GrammarNode\TextS($seq));
+                            $grammarNodeOptions[$optionIndex][$seqIndex] = new ErrorTrackDecorator(new TextS($seq));
                         }
-                    } elseif ($seq instanceof \ParserGenerator\GrammarNode\NodeInterface) {
-                        $grammarNodeOptions[$optionIndex][$seqIndex] = new \ParserGenerator\GrammarNode\ErrorTrackDecorator($seq);
+                    } elseif ($seq instanceof NodeInterface) {
+                        $grammarNodeOptions[$optionIndex][$seqIndex] = new ErrorTrackDecorator($seq);
                     } else {
                         throw new Exception('incorrect sequenceitem');
                     }
@@ -52,7 +61,7 @@ class Parser
         }
     }
 
-    public function iterateOverNodes($callback)
+    public function iterateOverNodes(callable $callback)
     {
         $visitedNodes = [];
         foreach ($this->grammar as $node) {
@@ -60,41 +69,51 @@ class Parser
         }
     }
 
-    protected function _iterateOverNodes($node, $callback, &$visitedNodes)
+    protected function _iterateOverNodes(NodeInterface $node, callable $callback, array &$visitedNodes)
     {
         $hash = spl_object_hash($node);
 
-        if (empty($visitedNodes[$hash])) {
-            $visitedNodes[$hash] = true;
-            $callback($node);
+        if (isset($visitedNodes[$hash])) {
+            return;
+        }
 
-            if ($node instanceof GrammarNode\ErrorTrackDecorator) {
-                return $this->_iterateOverNodes($node->getDecoratedNode(), $callback, $visitedNodes);
-            } elseif (method_exists($node, 'getNode')) {
-                foreach ($node->getNode() as $sequence) {
-                    foreach ($sequence as $subnode) {
-                        $this->_iterateOverNodes($subnode, $callback, $visitedNodes);
-                    }
-                }
-            } elseif (method_exists($node, 'getUsedNodes')) {
-                foreach ($node->getUsedNodes() as $subnode) {
+        $visitedNodes[$hash] = true;
+        $callback($node);
+
+        if ($node instanceof ErrorTrackDecorator) {
+            return $this->_iterateOverNodes($node->getDecoratedNode(), $callback, $visitedNodes);
+        }
+
+        if (method_exists($node, 'getNode')) {
+            /** @var BranchInterface $node */
+            foreach ($node->getNode() as $sequence) {
+                foreach ($sequence as $subnode) {
                     $this->_iterateOverNodes($subnode, $callback, $visitedNodes);
                 }
+            }
+        } elseif (method_exists($node, 'getUsedNodes')) {
+            /** @var Lookahead $node */
+            foreach ($node->getUsedNodes() as $subnode) {
+                $this->_iterateOverNodes($subnode, $callback, $visitedNodes);
             }
         }
     }
 
-    protected function buildFromString($grammar, $options)
+    protected function buildFromString(string $grammar, array $options)
     {
         if (!isset($options['errorTrack'])) {
             $options['trackError'] = true;
         }
         $this->options = $options;
         $options['parser'] = $this;
-        $this->grammar = \ParserGenerator\GrammarParser::getInstance()->buildGrammar($grammar, $options);
+        $this->grammar = GrammarParser::getInstance()->buildGrammar($grammar, $options);
     }
 
-    public function __construct($grammar, $options = [])
+    /**
+     * @param array|string $grammar
+     * @param array $options
+     */
+    public function __construct($grammar, array $options = [])
     {
         if (is_array($grammar)) {
             $this->buildFromArray($grammar, $options);
@@ -110,10 +129,16 @@ class Parser
         });*/
     }
 
-    public function parse($string, $nodeToParseName = 'start')
+    /**
+     * @param string $string
+     * @param string $nodeToParseName
+     * @return Root|bool When successfully parsed, returns a Root node, otherwise false
+     *                   In such a case, use getErrorString() to get more details.
+     */
+    public function parse(string $string, string $nodeToParseName = 'start')
     {
-        $this->iterateOverNodes(function ($node) {
-            if ($node instanceof \ParserGenerator\GrammarNode\ErrorTrackDecorator) {
+        $this->iterateOverNodes(function (NodeInterface $node) {
+            if ($node instanceof ErrorTrackDecorator) {
                 $node->reset();
             } elseif (isset($node->lastMatch)) {
                 $node->lastMatch = -1;
@@ -136,21 +161,21 @@ class Parser
         $rparseResult = $this->grammar[$nodeToParseName]->rparse($string, 0, $restrictedEnd);
 
         if ($rparseResult) {
-            $result = \ParserGenerator\SyntaxTreeNode\Root::createFromPrototype($rparseResult['node']);
+            $result = Root::createFromPrototype($rparseResult['node']);
             $result->setBeforeContent($beforeContent);
 
             return $result;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
-    public function getError()
+    public function getError(): array
     {
         $maxMatch = -1;
         $match = [];
-        $this->iterateOverNodes(function ($node) use (&$maxMatch, &$match) {
-            if ($node instanceof \ParserGenerator\GrammarNode\ErrorTrackDecorator) {
+        $this->iterateOverNodes(function (NodeInterface $node) use (&$maxMatch, &$match) {
+            if ($node instanceof ErrorTrackDecorator) {
                 if ($maxMatch < $node->getMaxCheck()) {
                     $maxMatch = $node->getMaxCheck();
                     $match = [];
@@ -194,7 +219,7 @@ class Parser
         ];
     }
 
-    public static function getLineAndCharacterFromOffset($str, $offset)
+    protected static function getLineAndCharacterFromOffset(string $str, int $offset): array
     {
         $lines = preg_split('/(\r\n|\n\r|\r|\n)/', substr($str, 0, $offset));
         return [
@@ -203,7 +228,11 @@ class Parser
         ];
     }
 
-    public function getErrorString($str)
+    /**
+     * @param string $str The same input used for parse()
+     * @return string
+     */
+    public function getErrorString(string $str): string
     {
         $error = $this->getError();
 
@@ -219,12 +248,7 @@ class Parser
         return "line: " . $posData['line'] . ', character: ' . $posData['char'] . "\nexpected: " . $expected . "\nfound: " . $found;
     }
 
-    public function generate($length, $node = 'start')
-    {
-        return GrammarStringGenerator::generate($this->grammar[$node], $length);
-    }
-
-    public function generalizeErrors($errors)
+    protected function generalizeErrors(array $errors)
     {
         $errorsByHash = [];
         foreach ($errors as $error) {
@@ -232,10 +256,10 @@ class Parser
         }
 
         foreach ($errorsByHash as $hash => $error) {
-            if (isset($errorsByHash[$hash]) && $error instanceof \ParserGenerator\GrammarNode\BranchInterface) {
+            if (isset($errorsByHash[$hash]) && $error instanceof BranchInterface) {
                 $this->parse('', $error->getNodeName());
                 $errorData = $this->getError();
-                foreach($errorData['expected'] as $errorToRemove) {
+                foreach ($errorData['expected'] as $errorToRemove) {
                     if ($errorToRemove !== $error) {
                         unset($errorsByHash[spl_object_hash($errorToRemove)]);
                     }
