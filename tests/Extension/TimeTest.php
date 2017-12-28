@@ -3,8 +3,9 @@
 namespace ParserGenerator\Tests\Extension;
 
 use ParserGenerator\Parser;
+use PHPUnit\Framework\TestCase;
 
-class TimeTest extends \PHPUnit_Framework_TestCase
+class TimeTest extends TestCase
 {
     public function setUp()
     {

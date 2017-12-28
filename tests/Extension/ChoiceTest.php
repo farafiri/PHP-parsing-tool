@@ -1,8 +1,9 @@
 <?php
 
 use ParserGenerator\Parser;
+use PHPUnit\Framework\TestCase;
 
-class ChoiceTest extends PHPUnit_Framework_TestCase
+class ChoiceTest extends TestCase
 {
     protected function assertObject($a)
     {

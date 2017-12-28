@@ -1,6 +1,8 @@
 <?php
 
-class GrammarNodeNumericTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class GrammarNodeNumericTest extends TestCase
 {
     protected function assertNodeEquals($expected, $node)
     {

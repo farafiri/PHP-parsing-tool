@@ -9,8 +9,9 @@
 namespace ParserGenerator\Tests\Extension;
 
 use ParserGenerator\Parser;
+use PHPUnit\Framework\TestCase;
 
-class WhiteCharactersTest extends \PHPUnit_Framework_TestCase
+class WhiteCharactersTest extends TestCase
 {
     protected function assertObject($a)
     {

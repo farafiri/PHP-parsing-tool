@@ -1,8 +1,9 @@
 <?php
 
 use ParserGenerator\Parser;
+use PHPUnit\Framework\TestCase;
 
-class PostfixToInfixNotationTranslatorTest extends PHPUnit_Framework_TestCase
+class PostfixToInfixNotationTranslatorTest extends TestCase
 {
     public function translate($str)
     {

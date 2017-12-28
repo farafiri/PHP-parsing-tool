@@ -1,6 +1,8 @@
 <?php
 
-class JSONParserTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class JSONParserTest extends TestCase
 {
     public function testSimpleValues()
     {

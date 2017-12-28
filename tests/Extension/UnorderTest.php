@@ -9,8 +9,9 @@
 namespace ParserGenerator\Tests\Extension;
 
 use ParserGenerator\Parser;
+use PHPUnit\Framework\TestCase;
 
-class UnorderTest extends \PHPUnit_Framework_TestCase
+class UnorderTest extends TestCase
 {
     protected function assertObject($a)
     {
@@ -140,4 +141,4 @@ class UnorderTest extends \PHPUnit_Framework_TestCase
         $this->assertObject($x->parse('acaba'));
         $this->assertFalse($x->parse('baacac'));
     }
-} 
+}
