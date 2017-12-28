@@ -18,7 +18,7 @@ class BranchStringCondition extends \ParserGenerator\GrammarNode\BranchExtraCond
         $this->_functions = array();
 
         foreach ($conditionStrings as $detailType => $conditionString) {
-            $this->_functions[$detailType] = create_function('$string,$fromIndex,$toIndex,$node,$s',
+            $this->_functions[$detailType] = $this->create_function('$string,$fromIndex,$toIndex,$node,$s',
                 'return ' . $conditionString . ';');
         }
     }
@@ -33,5 +33,18 @@ class BranchStringCondition extends \ParserGenerator\GrammarNode\BranchExtraCond
         } else {
             return true;
         }
+    }
+
+    /**
+     * Emulate `create_function` (which was deprecated with PHP 7.2) tailored
+     * for the Grammar parser needs.
+     *
+     * @param string $arguments
+     * @param string $body
+     * @return \Closure
+     */
+    protected function create_function($arguments, $body)
+    {
+        return eval("return function ($arguments) { $body };");
     }
 }
