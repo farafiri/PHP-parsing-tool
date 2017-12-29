@@ -3,6 +3,7 @@
 namespace ParserGenerator;
 
 use ParserGenerator\GrammarNode\Branch;
+use ParserGenerator\GrammarNode\BranchFactory;
 use ParserGenerator\GrammarNode\BranchInterface;
 use ParserGenerator\GrammarNode\ErrorTrackDecorator;
 use ParserGenerator\GrammarNode\Lookahead;
@@ -101,9 +102,6 @@ class Parser
 
     protected function buildFromString(string $grammar, array $options)
     {
-        if (!isset($options['errorTrack'])) {
-            $options['trackError'] = true;
-        }
         $this->options = $options;
         $options['parser'] = $this;
         $this->grammar = GrammarParser::getInstance()->buildGrammar($grammar, $options);
@@ -115,6 +113,8 @@ class Parser
      */
     public function __construct($grammar, array $options = [])
     {
+        $options += $this->getDefaultOptions();
+
         if (is_array($grammar)) {
             $this->buildFromArray($grammar, $options);
         } else {
@@ -268,5 +268,16 @@ class Parser
         }
 
         return array_values($errorsByHash);
+    }
+
+    public function getDefaultOptions(): array
+    {
+        return [
+            'caseInsensitive' => false,
+            'defaultBranchType' => BranchFactory::FULL,
+            'ignoreWhitespaces' => false,
+            'parser' => null,
+            'trackError' => true,
+        ];
     }
 }

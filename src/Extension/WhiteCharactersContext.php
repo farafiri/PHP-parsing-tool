@@ -40,7 +40,7 @@ class WhiteCharactersContext extends \ParserGenerator\Extension\SequenceItem
                 break;
         }
 
-        if (empty($options['ignoreWhitespaces'])) {
+        if (!$options['ignoreWhitespaces']) {
             $node = null;
             switch ($char) {
                 case "\n":

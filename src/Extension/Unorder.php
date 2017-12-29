@@ -34,7 +34,7 @@ class Unorder extends \ParserGenerator\Extension\SequenceItem
         }
 
 
-        if (isset($options['parser'])) {
+        if ($options['parser']) {
             $node->setParser($options['parser']);
         }
 

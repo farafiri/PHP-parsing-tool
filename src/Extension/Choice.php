@@ -33,7 +33,7 @@ class Choice extends \ParserGenerator\Extension\SequenceItem
         $choices[] = $this->buildInternalSequence($grammar, $sequenceNode->getSubnode(0), $grammarParser, $options);;
 
         $node = new \ParserGenerator\GrammarNode\Choice($choices);
-        if (isset($options['parser'])) {
+        if ($options['parser']) {
             $node->setParser($options['parser']);
         }
 
