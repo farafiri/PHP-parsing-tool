@@ -199,7 +199,7 @@ class GrammarParser
         $this->parser = new \ParserGenerator\Parser($grammarGrammar);
     }
 
-    public function buildRule(&$grammar, $rule, $options)
+    public function buildRule($grammar, $rule, $options)
     {
         if ($rule->getDetailType() === 'standard') {
             $sequence = [];
@@ -228,7 +228,7 @@ class GrammarParser
         }
     }
 
-    public function buildSequenceItem(&$grammar, $sequenceItem, $options)
+    public function buildSequenceItem($grammar, $sequenceItem, $options)
     {
         $newSequenceItem = null;
         foreach ($this->plugins as $plugin) {
