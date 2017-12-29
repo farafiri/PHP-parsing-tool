@@ -103,7 +103,6 @@ class Parser
     protected function buildFromString(string $grammar, array $options)
     {
         $this->options = $options;
-        $options['parser'] = $this;
         $this->grammar = GrammarParser::getInstance()->buildGrammar($grammar, $options);
     }
 
@@ -114,6 +113,9 @@ class Parser
     public function __construct($grammar, array $options = [])
     {
         $options += $this->getDefaultOptions();
+
+        // TODO: don't missuse $options to pass around the parser
+        $options['parser'] = $this;
 
         if (is_array($grammar)) {
             $this->buildFromArray($grammar, $options);
@@ -276,7 +278,6 @@ class Parser
             'caseInsensitive' => false,
             'defaultBranchType' => BranchFactory::FULL,
             'ignoreWhitespaces' => false,
-            'parser' => null,
             'trackError' => true,
         ];
     }

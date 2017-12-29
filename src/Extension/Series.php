@@ -38,9 +38,7 @@ class Series extends \ParserGenerator\Extension\SequenceItem
                 $greedy = in_array($operator, ['**', '++']) || $forceGreedy;
                 $node = new \ParserGenerator\GrammarNode\Series($main, $separator,
                     in_array($operator, ['*', '**']), $greedy);
-                if ($options['parser']) {
-                    $node->setParser($options['parser']);
-                }
+                $node->setParser($options['parser']);
 
                 return $node;
             case '??':
@@ -49,9 +47,7 @@ class Series extends \ParserGenerator\Extension\SequenceItem
                 $choices = ($operator == '??' || $forceGreedy) ? [$main, $empty] : [$empty, $main];
                 $node = new \ParserGenerator\GrammarNode\Choice($choices);
 
-                if ($options['parser']) {
-                    $node->setParser($options['parser']);
-                }
+                $node->setParser($options['parser']);
 
                 return $node;
         }

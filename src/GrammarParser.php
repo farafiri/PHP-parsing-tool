@@ -125,11 +125,9 @@ class GrammarParser
             }
         }
 
-        if ($options['parser']) {
-            foreach ($grammar as $node) {
-                if ($node instanceof \ParserGenerator\ParserAwareInterface) {
-                    $node->setParser($options['parser']);
-                }
+        foreach ($grammar as $node) {
+            if ($node instanceof \ParserGenerator\ParserAwareInterface) {
+                $node->setParser($options['parser']);
             }
         }
 
