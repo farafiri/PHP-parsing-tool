@@ -22,13 +22,13 @@ class Series extends \ParserGenerator\Extension\SequenceItem
         $main = $grammarParser->buildSequenceItem($grammar, $sequenceItem->getSubnode(0), $options);
         if ($sequenceItem->getSubnode(4)) {
             $separator = $grammarParser->buildSequenceItem($grammar, $sequenceItem->getSubnode(4), $options);
-            if (!empty($options['trackError'])) {
+            if ($options['trackError']) {
                 $separator = new \ParserGenerator\GrammarNode\ErrorTrackDecorator($separator);
             }
         } else {
             $separator = null;
         }
-        $forceGreedy = isset($options['defaultBranchType']) && $options['defaultBranchType'] == BranchFactory::PEG;
+        $forceGreedy = $options['defaultBranchType'] === BranchFactory::PEG;
         $operator = (string)$sequenceItem->getSubnode(2);
         switch ($operator) {
             case '++':
@@ -38,9 +38,7 @@ class Series extends \ParserGenerator\Extension\SequenceItem
                 $greedy = in_array($operator, ['**', '++']) || $forceGreedy;
                 $node = new \ParserGenerator\GrammarNode\Series($main, $separator,
                     in_array($operator, ['*', '**']), $greedy);
-                if (isset($options['parser'])) {
-                    $node->setParser($options['parser']);
-                }
+                $node->setParser($options['parser']);
 
                 return $node;
             case '??':
@@ -49,9 +47,7 @@ class Series extends \ParserGenerator\Extension\SequenceItem
                 $choices = ($operator == '??' || $forceGreedy) ? [$main, $empty] : [$empty, $main];
                 $node = new \ParserGenerator\GrammarNode\Choice($choices);
 
-                if (isset($options['parser'])) {
-                    $node->setParser($options['parser']);
-                }
+                $node->setParser($options['parser']);
 
                 return $node;
         }

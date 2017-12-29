@@ -34,9 +34,7 @@ class Unorder extends \ParserGenerator\Extension\SequenceItem
         }
 
 
-        if (isset($options['parser'])) {
-            $node->setParser($options['parser']);
-        }
+        $node->setParser($options['parser']);
 
         $grammar[$node->getTmpNodeName()] = $node;
 

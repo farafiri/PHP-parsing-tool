@@ -18,19 +18,16 @@ class StringObject extends \ParserGenerator\Extension\SequenceItem
 
         switch ($type) {
             case "default":
-                return new \ParserGenerator\GrammarNode\PredefinedString(!empty($options['ignoreWhitespaces']),
-                    ["'", '"']);
+                return new \ParserGenerator\GrammarNode\PredefinedString($options['ignoreWhitespaces'], ["'", '"']);
 
             case "apostrophe":
-                return new \ParserGenerator\GrammarNode\PredefinedString(!empty($options['ignoreWhitespaces']),
-                    ["'"]);
+                return new \ParserGenerator\GrammarNode\PredefinedString($options['ignoreWhitespaces'], ["'"]);
 
             case "quotation":
-                return new \ParserGenerator\GrammarNode\PredefinedString(!empty($options['ignoreWhitespaces']),
-                    ['"']);
+                return new \ParserGenerator\GrammarNode\PredefinedString($options['ignoreWhitespaces'], ['"']);
 
             case "simple":
-                return new \ParserGenerator\GrammarNode\PredefinedSimpleString(!empty($options['ignoreWhitespaces']));
+                return new \ParserGenerator\GrammarNode\PredefinedSimpleString($options['ignoreWhitespaces']);
         }
     }
 }

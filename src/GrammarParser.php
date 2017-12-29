@@ -85,13 +85,11 @@ class GrammarParser
 
         $grammarBranches = $parsedGrammar->findAll('grammarBranch');
 
-        $defaultBranchType = empty($options['defaultBranchType']) ? \ParserGenerator\GrammarNode\BranchFactory::FULL : $options['defaultBranchType'];
-
         foreach ($grammarBranches as $grammarBranch) {
             if ($grammarBranch->getDetailType() === 'standard') {
                 $branchName = (string)$grammarBranch->findFirst('branchName');
                 $branchTypeNodeStr = (string)$grammarBranch->findFirst('branchType');
-                $branchType = $branchTypeNodeStr ? substr($branchTypeNodeStr, 1, -1) : $defaultBranchType;
+                $branchType = $branchTypeNodeStr ? substr($branchTypeNodeStr, 1, -1) : $options['defaultBranchType'];
                 $grammar[$branchName] = \ParserGenerator\GrammarNode\BranchFactory::createBranch($branchType,
                     $branchName);
             } else {
@@ -127,11 +125,9 @@ class GrammarParser
             }
         }
 
-        if (isset($options['parser'])) {
-            foreach ($grammar as $node) {
-                if ($node instanceof \ParserGenerator\ParserAwareInterface) {
-                    $node->setParser($options['parser']);
-                }
+        foreach ($grammar as $node) {
+            if ($node instanceof \ParserGenerator\ParserAwareInterface) {
+                $node->setParser($options['parser']);
             }
         }
 

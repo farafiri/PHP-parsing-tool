@@ -75,7 +75,7 @@ class Integer extends \ParserGenerator\Extension\SequenceItem
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)
     {
         $numericOptions = [];
-        $numericOptions['eatWhiteChars'] = !empty($options['ignoreWhitespaces']);
+        $numericOptions['eatWhiteChars'] = $options['ignoreWhitespaces'];
 
         $item = $sequenceItem->getSubnode(0);
         $min = $item->getSubnode(0);
