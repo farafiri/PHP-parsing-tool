@@ -36,6 +36,11 @@ local.properties
 # PDT-specific
 .buildpath
 
+#################
+## Netbeans
+#################
+
+/nbproject
 
 #################
 ## Visual Studio
