@@ -1,14 +1,15 @@
 <?php
 
-namespace ParserGenerator\Tests;
+namespace ParserGenerator\Tests\Util;
 
 use PHPUnit\Framework\TestCase;
+use ParserGenerator\Util\Regex;
 
-class RegexUtilTest extends TestCase
+class RegexTest extends TestCase
 {
     public function testCanBeEmpty()
     {
-        $x = \ParserGenerator\RegexUtil::getInstance();
+        $x = Regex::getInstance();
         $this->assertFalse($x->canBeEmpty('/a/'));
         $this->assertFalse($x->canBeEmpty('/\s/'));
         $this->assertTrue($x->canBeEmpty('/$/'));
@@ -52,7 +53,7 @@ class RegexUtilTest extends TestCase
             $assocCharacters[$char] = true;
         }
 
-        $this->assertEquals($assocCharacters, \ParserGenerator\RegexUtil::getInstance()->getStartCharacters($regex));
+        $this->assertEquals($assocCharacters, Regex::getInstance()->getStartCharacters($regex));
     }
 
     public function testGetStartCharacters()
@@ -80,12 +81,12 @@ class RegexUtilTest extends TestCase
         $this->assertCanStart(["\n", "\r", " ", "\t"], '/\\s/');
         $this->assertCanStart(["\n", "\r", " ", "\t", "j"], '/[\\sj]/');
         $this->assertEquals(255,
-            count(\ParserGenerator\RegexUtil::getInstance()->getStartCharacters('/./'))); //256 - 1 cause \n is out
+            count(Regex::getInstance()->getStartCharacters('/./'))); //256 - 1 cause \n is out
     }
 
     protected function checkStringGenerate($regex, $results, $maxLength = 10)
     {
-        $x = \ParserGenerator\RegexUtil::getInstance();
+        $x = Regex::getInstance();
         $matches = 0;
         for ($i = 0; $i < 1000; $i++) {
             $s = $x->generateString($regex);

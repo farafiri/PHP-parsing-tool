@@ -12,7 +12,7 @@ class TextNode extends \ParserGenerator\Extension\SequenceItem
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)
     {
         if ($options['caseInsensitive']) {
-            $regex = \ParserGenerator\RegexUtil::buildRegexFromString((string)$sequenceItem->getSubnode(0)->getValue());
+            $regex = \ParserGenerator\Util\Regex::buildRegexFromString((string)$sequenceItem->getSubnode(0)->getValue());
             return new \ParserGenerator\GrammarNode\Regex($regex, $options['ignoreWhitespaces'], $options['caseInsensitive']);
         }
 

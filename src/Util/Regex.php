@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ParserGenerator;
+namespace ParserGenerator\Util;
 
-class RegexUtil
+class Regex
 {
     protected static $specialChars = ['\\', '/', '+', '*', '?', '[', ']', '(', ')', '|', '.', '$', '^', '{', '}'];
     protected static $instance = 0;
