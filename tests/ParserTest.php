@@ -623,19 +623,19 @@ class ParserTest extends TestCase
         $this->assertObject($x->parse('(23,45,6)b'));
 
         $this->assertFalse($x->parse('23,34)b'));
-        $e = $x->getError();
-        $this->assertEquals(0, $e['index']);
-        $this->assertEquals('start', implode(' | ', $e['expected']));
+        $e = $x->getException('23,34)b');
+        $this->assertEquals(0, $e->getIndex());
+        $this->assertEquals('start', implode(' | ', $e->getExpected()));
 
         $this->assertFalse($x->parse('(,34)b'));
-        $e = $x->getError();
-        $this->assertEquals(1, $e['index']);
-        $this->assertEquals('num', implode(' | ', $e['expected']));
+        $e = $x->getException('(,34)b');
+        $this->assertEquals(1, $e->getIndex());
+        $this->assertEquals('num', implode(' | ', $e->getExpected()));
 
         $this->assertFalse($x->parse('(34b'));
-        $e = $x->getError();
-        $this->assertEquals(3, $e['index']);
-        $this->assertEquals('"," | ")"', implode(' | ', $e['expected']));
+        $e = $x->getException('(34b');
+        $this->assertEquals(3, $e->getIndex());
+        $this->assertEquals('"," | ")"', implode(' | ', $e->getExpected()));
     }
 
     public function testComments()
@@ -671,7 +671,7 @@ class ParserTest extends TestCase
                           **/
                           b    :=> "b".');
         $this->assertArrayElementsEquals(['Branch[start]', 'Branch[b]', 'Text["a"]', 'Text["b"]'], $nodeDump($x));
-
+        
         $x = new Parser('/* comment here */
                          start /* comment here */ :=> "a" /* comment here */. /* comment here */');
         $this->assertArrayElementsEquals(['Branch[start]', 'Text["a"]'], $nodeDump($x));

@@ -26,6 +26,7 @@ use ParserGenerator\GrammarNode\ErrorTrackDecorator;
 use ParserGenerator\GrammarNode\ItemRestrictions as GrammarItemRestrictions;
 use ParserGenerator\GrammarNode\Regex as GrammarRegex;
 use ParserGenerator\GrammarNode\TextS;
+use ParserGenerator\Util\Error;
 
 class GrammarParser
 {
@@ -99,7 +100,12 @@ class GrammarParser
         $parsedGrammar = $this->getParser()->parse($grammarStr);
 
         if ($parsedGrammar === false) {
-            throw new Exception("Given grammar is incorrect:\n" . $this->getParser()->getErrorString($grammarStr));
+            throw $this->getParser()->getException($grammarStr, new class extends Error {
+                protected function getErrorString(string $string, int $index, array $expected): string
+                {
+                    return "Given grammar is incorrect:\n" . parent::getErrorString($string, $index, $expected);
+                }
+            });
         }
         $parsedGrammar->refreshOwners();
 

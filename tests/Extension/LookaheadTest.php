@@ -149,25 +149,25 @@ class LookaheadTest extends TestCase
         $x = new Parser('start :=> "q" ?/.b/ "a".');
 
         $this->assertFalse($x->parse('qa'));
-        $e = $x->getError();
-        $this->assertEquals(1, $e['index']);
-        $this->assertEquals('?/.b/ "a"', implode(' ', $e['expected']));
+        $e = $x->getException('qa');
+        $this->assertEquals(1, $e->getIndex());
+        $this->assertEquals('?/.b/ "a"', implode(' ', $e->getExpected()));
 
         $this->assertFalse($x->parse('qcb'));
-        $e = $x->getError();
-        $this->assertEquals(1, $e['index']);
-        $this->assertEquals('?/.b/ "a"', implode(' ', $e['expected']));
+        $e = $x->getException('qcb');
+        $this->assertEquals(1, $e->getIndex());
+        $this->assertEquals('?/.b/ "a"', implode(' ', $e->getExpected()));
 
         $x = new Parser('start :=> "q" !/[ab]/ /[bc]/.');
 
         $this->assertFalse($x->parse('qa'));
-        $e = $x->getError();
-        $this->assertEquals(1, $e['index']);
-        $this->assertEquals('!/[ab]/ /[bc]/', implode(' ', $e['expected']));
+        $e = $x->getException('qa');
+        $this->assertEquals(1, $e->getIndex());
+        $this->assertEquals('!/[ab]/ /[bc]/', implode(' ', $e->getExpected()));
 
         $this->assertFalse($x->parse('qb'));
-        $e = $x->getError();
-        $this->assertEquals(1, $e['index']);
-        $this->assertEquals('!/[ab]/ /[bc]/', implode(' ', $e['expected']));
+        $e = $x->getException('qb');
+        $this->assertEquals(1, $e->getIndex());
+        $this->assertEquals('!/[ab]/ /[bc]/', implode(' ', $e->getExpected()));
     }
 }

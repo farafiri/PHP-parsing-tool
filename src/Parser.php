@@ -12,6 +12,7 @@ use ParserGenerator\GrammarNode\PredefinedString;
 use ParserGenerator\GrammarNode\Regex;
 use ParserGenerator\GrammarNode\TextS;
 use ParserGenerator\SyntaxTreeNode\Root;
+use ParserGenerator\Util\Error;
 
 class Parser
 {
@@ -132,13 +133,15 @@ class Parser
     }
 
     /**
-     * @param string $string
-     * @param string $nodeToParseName
+     * @param string               $string
+     * @param string|NodeInterface $nodeToParse node to parse or its name
      * @return Root|bool When successfully parsed, returns a Root node, otherwise false
      *                   In such a case, use getErrorString() to get more details.
      */
-    public function parse(string $string, string $nodeToParseName = 'start')
+    public function parse(string $string, $nodeToParse = 'start')
     {
+        $nodeToParse = is_string($nodeToParse) ? $this->grammar[$nodeToParse] : $nodeToParse;
+        
         $this->iterateOverNodes(function (NodeInterface $node) {
             if ($node instanceof ErrorTrackDecorator) {
                 $node->reset();
@@ -160,7 +163,7 @@ class Parser
         for ($i = strlen($string) - 1; $i > -1; $i--) {
             $restrictedEnd[$i] = $i;
         }
-        $rparseResult = $this->grammar[$nodeToParseName]->rparse($string, 0, $restrictedEnd);
+        $rparseResult = $nodeToParse->rparse($string, 0, $restrictedEnd);
 
         if ($rparseResult) {
             $result = Root::createFromPrototype($rparseResult['node']);
@@ -172,104 +175,9 @@ class Parser
         return false;
     }
 
-    public function getError(): array
+    public function getException($string, Error $errorUtil = null): ParsingException
     {
-        $maxMatch = -1;
-        $match = [];
-        $this->iterateOverNodes(function (NodeInterface $node) use (&$maxMatch, &$match) {
-            if ($node instanceof ErrorTrackDecorator) {
-                if ($maxMatch < $node->getMaxCheck()) {
-                    $maxMatch = $node->getMaxCheck();
-                    $match = [];
-                }
-
-                if ($maxMatch === $node->getMaxCheck()) {
-                    $node = $node->getDecoratedNode();
-
-                    if ($node instanceof GrammarNode\Series) {
-                        $node = $node->getMainNode();
-                    }
-
-                    $match[] = $node;
-                };
-            } /*elseif (isset($node->lastMatch)) {
-                if ($maxMatch < $node->lastMatch) {
-                    $maxMatch = $node->lastMatch;
-                    $match = array();
-                }
-
-                if ($maxMatch === $node->lastMatch) {
-                    if ($node instanceof GrammarNode\Series) {
-                        $node = $node->getMainNode();
-                    }
-
-                    $match[] = $node;
-                };
-            }*/
-        });
-
-        if ($maxMatch === -1) {
-            return [
-                'index' => 0,
-                'expected' => [$this->grammar['start']],
-            ];
-        }
-
-        return [
-            'index' => $maxMatch,
-            'expected' => $match,
-        ];
-    }
-
-    protected static function getLineAndCharacterFromOffset(string $str, int $offset): array
-    {
-        $lines = preg_split('/(\r\n|\n\r|\r|\n)/', substr($str, 0, $offset));
-        return [
-            'line' => count($lines),
-            'char' => strlen($lines[count($lines) - 1]) + 1,
-        ];
-    }
-
-    /**
-     * @param string $str The same input used for parse()
-     * @return string
-     */
-    public function getErrorString(string $str): string
-    {
-        $error = $this->getError();
-
-        $posData = self::getLineAndCharacterFromOffset($str, $error['index']);
-
-        $expected = implode(' or ', $this->generalizeErrors($error['expected']));
-        $foundLength = 20;
-        $found = substr($str, $error['index']);
-        if (strlen($found) > $foundLength) {
-            $found = substr($found, 0, $foundLength) . '...';
-        }
-
-        return "line: " . $posData['line'] . ', character: ' . $posData['char'] . "\nexpected: " . $expected . "\nfound: " . $found;
-    }
-
-    protected function generalizeErrors(array $errors)
-    {
-        $errorsByHash = [];
-        foreach ($errors as $error) {
-            $errorsByHash[spl_object_hash($error)] = $error;
-        }
-
-        foreach ($errorsByHash as $hash => $error) {
-            if (isset($errorsByHash[$hash]) && $error instanceof BranchInterface) {
-                $this->parse('', $error->getNodeName());
-                $errorData = $this->getError();
-                foreach ($errorData['expected'] as $errorToRemove) {
-                    if ($errorToRemove !== $error) {
-                        unset($errorsByHash[spl_object_hash($errorToRemove)]);
-                    }
-                }
-            }
-        }
-
-        return array_values($errorsByHash);
+        return ($errorUtil ?: new Error())->getError($this, $string);
     }
 
     public function getDefaultOptions(): array

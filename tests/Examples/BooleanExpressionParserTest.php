@@ -62,7 +62,7 @@ class BooleanExpressionParserTest extends TestCase
 
         $this->assertFalse($result);
 
-        $this->assertSame($expectedError, $this->parser->getErrorString($input));
+        $this->assertSame($expectedError, $this->parser->getException($input)->getMessage());
     }
 
     public function dataForParseFail(): array
