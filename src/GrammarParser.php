@@ -100,7 +100,7 @@ class GrammarParser
         $parsedGrammar = $this->getParser()->parse($grammarStr);
 
         if ($parsedGrammar === false) {
-            throw $this->getParser()->getException($grammarStr, new class extends Error {
+            throw $this->getParser()->getException(new class extends Error {
                 protected function getErrorString(string $string, int $index, array $expected): string
                 {
                     return "Given grammar is incorrect:\n" . parent::getErrorString($string, $index, $expected);

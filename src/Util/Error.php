@@ -8,6 +8,11 @@ use ParserGenerator\GrammarNode\BranchInterface;
 use ParserGenerator\GrammarNode\ErrorTrackDecorator;
 use ParserGenerator\GrammarNode\Series;
 use ParserGenerator\GrammarNode\BaseNode;
+use ParserGenerator\GrammarNode\WhitespaceContextCheck;
+use ParserGenerator\GrammarNode\WhitespaceNegativeContextCheck;
+use ParserGenerator\GrammarNode\Lookahead;
+use ParserGenerator\GrammarNode\Choice;
+use ParserGenerator\GrammarNode\Regex as RegexNode;
 use ParserGenerator\ParsingException;
 
 class Error
@@ -33,7 +38,10 @@ class Error
      */
     protected function mapExpected(array $expected, Parser $parser, int $index)
     {
-        return $this->generalizeErrors($expected, $parser);
+        return $this->order(
+                   $this->removeLookaround(
+                       $this->degeneralizeChoice(
+                           $this->generalizeErrors($expected, $parser))));
     }
     
     /**
@@ -42,15 +50,26 @@ class Error
      */
     protected function getErrorString(string $string, int $index, array $expected): string
     {
-        $posData  = $this->getLineAndCharacterFromOffset($string, $index);
-        $expected = implode(' or ', $expected);
-        $found    = substr($string, $index);
+        $posData     = $this->getLineAndCharacterFromOffset($string, $index);
+        $expected    = implode(' or ', array_unique(array_map([$this, 'getNodeName'], $expected)));
+        $foundPhrase = $this->getFoundPhrase($string, $index);
+
+        return "line: " . $posData['line'] . ', character: ' . $posData['char'] . "\nexpected: " . $expected . "\n" . $foundPhrase;
+    }
+    
+    protected function getFoundPhrase(string $string, int $index)
+    {
+        if ($index === strlen($string)) {
+            return 'End of string found.';
+        };
+        
+        $found = substr($string, $index);
         
         if (strlen($found) > $this->foundLength) {
             $found = substr($found, 0, $this->foundLength) . '...';
         }
-
-        return "line: " . $posData['line'] . ', character: ' . $posData['char'] . "\nexpected: " . $expected . "\nfound: " . $found;
+        
+        return "found: $found";
     }
     
     protected function getLineAndCharacterFromOffset(string $str, int $offset): array
@@ -60,6 +79,77 @@ class Error
             'line' => count($lines),
             'char' => strlen($lines[count($lines) - 1]) + 1,
         ];
+    }
+    
+    protected function getNodeName(NodeInterface $node): string
+    {
+        if ($node instanceof RegexNode) {
+            $str = Regex::buildStringFromRegex((string) $node);
+            if ($str) {
+                return '"' . addslashes($str) . '"';
+            }
+        }
+        
+        return (string) $node;
+    }
+    
+    protected function degeneralizeChoice(array $expected)
+    {
+        $result = [];
+        
+        foreach($expected as $expectedNode) {
+            if ($expectedNode instanceof Choice) {
+                foreach($expectedNode->getNode() as $option) {
+                    $result[] = $option[0];
+                }
+            } else {
+                $result[] = $expectedNode;
+            }
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Reorder nodes to show "most important" as first.
+     * For example in case: "functionCall($a + $b, $c;"
+     * we have unexpected ";" where we would expect: "+" "-" "," "->" ")"
+     * note that ")" is probably most informative for reader
+     * 
+     * @param NodeInterface[] $expected
+     * @return NodeInterface[]
+     */
+    protected function order(array $expected)
+    {
+        $passes = [['"]"', '")"', '">"', '"}"'],
+                   ['","', '"."', '";"', '":"', '"|"'],
+                   ['"("']];
+        $result = [];
+        
+        foreach($passes as $pass) {
+            foreach($expected as $index => $expectedNode) {
+                if (in_array($this->getNodeName($expectedNode), $pass)) {
+                    $result[] = $expectedNode;
+                    unset($expected[$index]);
+                }
+            }
+        }
+        
+        return array_merge($result, $expected);
+    }
+    
+    /**
+     * @param NodeInterface[] $expected
+     * @param bool            $removeLooahead
+     * @return NodeInterface[]
+     */
+    protected function removeLookaround(array $expected, $removeLooahead = false)
+    {
+        return array_filter($expected, function(NodeInterface $node) use($removeLooahead) {
+            return !($node instanceof WhitespaceContextCheck)
+                && !($node instanceof WhitespaceNegativeContextCheck)
+                && !($node instanceof Lookahead && $removeLooahead);
+        });
     }
     
     protected function generalizeErrors(array $errors, Parser $parser)

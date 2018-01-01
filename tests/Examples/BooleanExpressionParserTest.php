@@ -62,7 +62,7 @@ class BooleanExpressionParserTest extends TestCase
 
         $this->assertFalse($result);
 
-        $this->assertSame($expectedError, $this->parser->getException($input)->getMessage());
+        $this->assertSame($expectedError, $this->parser->getException()->getMessage());
     }
 
     public function dataForParseFail(): array
@@ -70,19 +70,19 @@ class BooleanExpressionParserTest extends TestCase
         return [
             [
                 'input' => 'foo or',
-                'error' => "line: 1, character: 7\nexpected: (tokenKeyword|string) or /\(/\nfound: ",
+                'error' => "line: 1, character: 7\nexpected: \"(\" or tokenKeyword or string\nEnd of string found.",
             ],
             [
                 'input' => '"foo or',
-                'error' => "line: 1, character: 1\nexpected: (tokenKeyword|string) or /\(/\nfound: \"foo or",
+                'error' => "line: 1, character: 1\nexpected: \"(\" or tokenKeyword or string\nfound: \"foo or",
             ],
             [
                 'input' => 'foo and (bar or baz',
-                'error' => "line: 1, character: 20\nexpected: /\)/ or (tokenAnd expr)\nfound: ",
+                'error' => "line: 1, character: 20\nexpected: \")\" or tokenAnd\nEnd of string found.",
             ],
             [
                 'input' => 'foo not bar',
-                'error' => "line: 1, character: 5\nexpected: (tokenAnd expr) or (tokenOr exprAnd)\nfound: not bar",
+                'error' => "line: 1, character: 5\nexpected: tokenAnd or tokenOr\nfound: not bar",
             ],
         ];
     }

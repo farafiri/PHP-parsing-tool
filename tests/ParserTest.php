@@ -623,19 +623,19 @@ class ParserTest extends TestCase
         $this->assertObject($x->parse('(23,45,6)b'));
 
         $this->assertFalse($x->parse('23,34)b'));
-        $e = $x->getException('23,34)b');
+        $e = $x->getException();
         $this->assertEquals(0, $e->getIndex());
         $this->assertEquals('start', implode(' | ', $e->getExpected()));
 
         $this->assertFalse($x->parse('(,34)b'));
-        $e = $x->getException('(,34)b');
+        $e = $x->getException();
         $this->assertEquals(1, $e->getIndex());
         $this->assertEquals('num', implode(' | ', $e->getExpected()));
 
         $this->assertFalse($x->parse('(34b'));
-        $e = $x->getException('(34b');
+        $e = $x->getException();
         $this->assertEquals(3, $e->getIndex());
-        $this->assertEquals('"," | ")"', implode(' | ', $e->getExpected()));
+        $this->assertEquals('")" | ","', implode(' | ', $e->getExpected()));
     }
 
     public function testComments()

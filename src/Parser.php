@@ -22,6 +22,8 @@ class Parser
     public $grammar = [];
     /** @var array */
     public $options;
+    /** @var string */
+    public $lastParsed;
 
     protected function buildFromArray(array $grammar, array $options)
     {
@@ -140,6 +142,7 @@ class Parser
      */
     public function parse(string $string, $nodeToParse = 'start')
     {
+        $this->lastParsed = $string;
         $nodeToParse = is_string($nodeToParse) ? $this->grammar[$nodeToParse] : $nodeToParse;
         
         $this->iterateOverNodes(function (NodeInterface $node) {
@@ -175,9 +178,9 @@ class Parser
         return false;
     }
 
-    public function getException($string, Error $errorUtil = null): ParsingException
+    public function getException(Error $errorUtil = null): ParsingException
     {
-        return ($errorUtil ?: new Error())->getError($this, $string);
+        return ($errorUtil ?: new Error())->getError($this, $this->lastParsed);
     }
 
     public function getDefaultOptions(): array

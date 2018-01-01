@@ -123,4 +123,12 @@ class RegexTest extends TestCase
         $this->checkStringGenerate('/[a-dz]/', ['a', 'b', 'c', 'd', 'z']);
         $this->checkStringGenerate('/\d/', ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']);
     }
+    
+    public function testBuildStringFromRegex()
+    {
+        $this->assertEquals('abc', Regex::buildStringFromRegex('/abc/'));
+        $this->assertEquals('qwe', Regex::buildStringFromRegex('/qwe/im'));
+        $this->assertEquals('a/bc[de(fg', Regex::buildStringFromRegex('/a\\/bc\\[de\\(fg/'));
+        $this->assertEquals(null, Regex::buildStringFromRegex('/a\\/bc[de]fg/'));
+    }
 }

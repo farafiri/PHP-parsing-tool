@@ -149,24 +149,24 @@ class LookaheadTest extends TestCase
         $x = new Parser('start :=> "q" ?/.b/ "a".');
 
         $this->assertFalse($x->parse('qa'));
-        $e = $x->getException('qa');
+        $e = $x->getException();
         $this->assertEquals(1, $e->getIndex());
         $this->assertEquals('?/.b/ "a"', implode(' ', $e->getExpected()));
 
         $this->assertFalse($x->parse('qcb'));
-        $e = $x->getException('qcb');
+        $e = $x->getException();
         $this->assertEquals(1, $e->getIndex());
         $this->assertEquals('?/.b/ "a"', implode(' ', $e->getExpected()));
 
         $x = new Parser('start :=> "q" !/[ab]/ /[bc]/.');
 
         $this->assertFalse($x->parse('qa'));
-        $e = $x->getException('qa');
+        $e = $x->getException();
         $this->assertEquals(1, $e->getIndex());
         $this->assertEquals('!/[ab]/ /[bc]/', implode(' ', $e->getExpected()));
 
         $this->assertFalse($x->parse('qb'));
-        $e = $x->getException('qb');
+        $e = $x->getException();
         $this->assertEquals(1, $e->getIndex());
         $this->assertEquals('!/[ab]/ /[bc]/', implode(' ', $e->getExpected()));
     }

@@ -26,6 +26,30 @@ class Regex
         $regex = '/' . str_replace(static::$specialChars, $translateTo, $str) . '/';
         return $regex;
     }
+    
+    /**
+     * Reverts buildRegexFromString
+     * i.e. buildStringFromRegex(buildRegexFromString($str)) == $str
+     * 
+     * @param string $regex
+     * @return string|null
+     */
+    public static function buildStringFromRegex(string $regex)
+    {
+        $result = '';
+        
+        for($i = 1; isset($regex[$i]); $i++) {
+            if ($regex[$i] == '\\') {
+                $result .= $regex[++$i];
+            } elseif ($regex[$i] == '/') {
+                return $result;
+            } elseif(in_array($regex[$i], static::$specialChars)) {
+                return null;
+            } else {
+                $result .= $regex[$i];
+            }
+        }
+    }
 
     public static function getGrammarArray()
     {
