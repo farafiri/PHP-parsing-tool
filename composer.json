@@ -10,8 +10,12 @@
     },
     "autoload": {
         "psr-4": {
-            "ParserGenerator\\Tests\\": "tests/",
             "ParserGenerator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ParserGenerator\\Tests\\": "tests/"
         }
     },
     "authors": [
