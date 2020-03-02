@@ -231,7 +231,7 @@ class GrammarParser
 
             foreach ($rule->findAll('sequenceItem') as $sequenceItem) {
                 $sequenceItemNode = $this->buildSequenceItem($grammar, $sequenceItem, $options);
-                if (count($sequence)) {
+                if (count($sequence) && $options['trackError'] && !($sequenceItemNode instanceof GrammarNode\Series)) {
                     $sequenceItemNode = new ErrorTrackDecorator($sequenceItemNode);
                 }
                 $sequence[] = $sequenceItemNode;

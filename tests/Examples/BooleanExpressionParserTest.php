@@ -70,15 +70,15 @@ class BooleanExpressionParserTest extends TestCase
         return [
             [
                 'input' => 'foo or',
-                'error' => "line: 1, character: 7\nexpected: \"(\" or tokenKeyword or string\nEnd of string found.",
+                'error' => "line: 1, character: 7\nexpected: \"(\" or tokenNot or tokenKeyword or string\nEnd of string found.",
             ],
             [
                 'input' => '"foo or',
-                'error' => "line: 1, character: 1\nexpected: \"(\" or tokenKeyword or string\nfound: \"foo or",
+                'error' => "line: 1, character: 1\nexpected: \"(\" or tokenNot or tokenKeyword or string\nfound: \"foo or",
             ],
             [
                 'input' => 'foo and (bar or baz',
-                'error' => "line: 1, character: 20\nexpected: \")\" or tokenAnd\nEnd of string found.",
+                'error' => "line: 1, character: 20\nexpected: \")\" or tokenAnd or tokenOr\nEnd of string found.",
             ],
             [
                 'input' => 'foo not bar',

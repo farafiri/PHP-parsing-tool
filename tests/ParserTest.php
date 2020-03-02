@@ -636,6 +636,11 @@ class ParserTest extends TestCase
         $e = $x->getException();
         $this->assertEquals(3, $e->getIndex());
         $this->assertEquals('")" | ","', implode(' | ', $e->getExpected()));
+        
+        $this->assertFalse($x->parse('(3,x)b'));
+        $e = $x->getException();
+        $this->assertEquals(3, $e->getIndex());
+        $this->assertEquals('num', implode(' | ', $e->getExpected()));
     }
 
     public function testComments()

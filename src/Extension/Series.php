@@ -20,6 +20,10 @@ class Series extends \ParserGenerator\Extension\SequenceItem
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)
     {
         $main = $grammarParser->buildSequenceItem($grammar, $sequenceItem->getSubnode(0), $options);
+        if ($options['trackError']) {
+            $main = new \ParserGenerator\GrammarNode\ErrorTrackDecorator($main);
+        }
+        
         if ($sequenceItem->getSubnode(4)) {
             $separator = $grammarParser->buildSequenceItem($grammar, $sequenceItem->getSubnode(4), $options);
             if ($options['trackError']) {
@@ -28,6 +32,7 @@ class Series extends \ParserGenerator\Extension\SequenceItem
         } else {
             $separator = null;
         }
+        
         $forceGreedy = $options['defaultBranchType'] === BranchFactory::PEG;
         $operator = (string)$sequenceItem->getSubnode(2);
         switch ($operator) {

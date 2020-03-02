@@ -19,14 +19,16 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
         $this->from0 = $from0;
         $this->greedy = $greedy;
         $this->tmpNodeName = '&series/' . spl_object_hash($this);
+        
+        $undecorated = $mainNode instanceof \ParserGenerator\GrammarNode\ErrorTrackDecorator ? $mainNode->getDecoratedNode() : $mainNode;
 
-        if ($mainNode instanceof \ParserGenerator\GrammarNode\BranchInterface) {
-            $this->resultDetailType = $mainNode->getNodeName();
-        } elseif ($mainNode instanceof \ParserGenerator\GrammarNode\Text) {
-            $this->resultDetailType = $mainNode->getString();
-        } elseif ($mainNode instanceof \ParserGenerator\GrammarNode\Regex) {
-            $this->resultDetailType = $mainNode->getRegex();
-        } elseif ($mainNode instanceof \ParserGenerator\GrammarNode\AnyText) {
+        if ($undecorated instanceof \ParserGenerator\GrammarNode\BranchInterface) {
+            $this->resultDetailType = $undecorated->getNodeName();
+        } elseif ($undecorated instanceof \ParserGenerator\GrammarNode\Text) {
+            $this->resultDetailType = $undecorated->getString();
+        } elseif ($undecorated instanceof \ParserGenerator\GrammarNode\Regex) {
+            $this->resultDetailType = $undecorated->getRegex();
+        } elseif ($undecorated instanceof \ParserGenerator\GrammarNode\AnyText) {
             $this->resultDetailType = 'text';
         } else {
             $this->resultDetailType = '';
