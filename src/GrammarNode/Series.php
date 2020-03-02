@@ -11,16 +11,18 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
     protected $separator;
     protected $from0;
     protected $greedy;
+    protected $type;
 
-    public function __construct($mainNode, $separator, $from0, $greedy)
+    public function __construct($mainNode, $separator, $from0, $greedy, $type)
     {
         $this->mainNode = $mainNode;
         $this->separator = $separator;
         $this->from0 = $from0;
         $this->greedy = $greedy;
         $this->tmpNodeName = '&series/' . spl_object_hash($this);
+        $this->type = $type;
         
-        $undecorated = $mainNode instanceof \ParserGenerator\GrammarNode\ErrorTrackDecorator ? $mainNode->getDecoratedNode() : $mainNode;
+        $undecorated = \ParserGenerator\GrammarNode\Decorator::undecorate($mainNode); //$mainNode instanceof \ParserGenerator\GrammarNode\ErrorTrackDecorator ? $mainNode->getDecoratedNode() : $mainNode;
 
         if ($undecorated instanceof \ParserGenerator\GrammarNode\BranchInterface) {
             $this->resultDetailType = $undecorated->getNodeName();
@@ -34,7 +36,7 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
             $this->resultDetailType = '';
         }
 
-        $this->node = new \ParserGenerator\GrammarNode\Branch($this->tmpNodeName);
+        $this->node = BranchFactory::createBranch($this->type, $this->tmpNodeName);
 
         $ruleGo = $separator ? [$mainNode, $separator, $this->node] : [$mainNode, $this->node];
         $ruleStop = [$mainNode];
@@ -115,7 +117,7 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
     public function copy($copyCallback)
     {
         $copy = new static($copyCallback($this->mainNode), $copyCallback($this->separator), $this->from0,
-            $this->greedy);
+            $this->greedy, $this->type);
         $copy->setParser($this->getParser());
         return $copy;
     }

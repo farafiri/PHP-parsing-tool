@@ -42,7 +42,7 @@ class Series extends \ParserGenerator\Extension\SequenceItem
             case '*':
                 $greedy = in_array($operator, ['**', '++']) || $forceGreedy;
                 $node = new \ParserGenerator\GrammarNode\Series($main, $separator,
-                    in_array($operator, ['*', '**']), $greedy);
+                    in_array($operator, ['*', '**']), $greedy, $options['defaultBranchType']);
                 $node->setParser($options['parser']);
 
                 return $node;
