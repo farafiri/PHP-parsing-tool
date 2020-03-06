@@ -24,6 +24,8 @@ class Parser
     public $options;
     /** @var string */
     public $lastParsed;
+    /** @var array|string */
+    public $grammarSource;
 
     protected function buildFromArray(array $grammar, array $options)
     {
@@ -119,6 +121,7 @@ class Parser
 
         // TODO: don't missuse $options to pass around the parser
         $options['parser'] = $this;
+        $this->grammarSource = $grammar;
 
         if (is_array($grammar)) {
             $this->buildFromArray($grammar, $options);
@@ -190,6 +193,7 @@ class Parser
             'defaultBranchType' => BranchFactory::FULL,
             'ignoreWhitespaces' => false,
             'trackError' => true,
+            'backtracer' => null,
         ];
     }
 }

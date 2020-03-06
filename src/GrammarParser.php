@@ -231,6 +231,7 @@ class GrammarParser
 
             foreach ($rule->findAll('sequenceItem') as $sequenceItem) {
                 $sequenceItemNode = $this->buildSequenceItem($grammar, $sequenceItem, $options);
+                
                 if (count($sequence) && $options['trackError'] && !($sequenceItemNode instanceof GrammarNode\Series)) {
                     $sequenceItemNode = new ErrorTrackDecorator($sequenceItemNode);
                 }
@@ -257,6 +258,10 @@ class GrammarParser
 
         foreach ($this->plugins as $plugin) {
             if ($newSequenceItem = $plugin->buildSequenceItem($grammar, $sequenceItem, $this, $options)) {
+                if ($newSequenceItem instanceof GrammarNode\LeafInterface && $options['backtracer']) {
+                    $newSequenceItem = new GrammarNode\BacktraceNode($newSequenceItem, $options['backtracer']);
+                }
+                
                 return $newSequenceItem;
             }
         }

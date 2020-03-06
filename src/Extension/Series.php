@@ -48,9 +48,11 @@ class Series extends \ParserGenerator\Extension\SequenceItem
                 return $node;
             case '??':
             case '?':
+                $toStringCallback = function($_, $choices) use ($operator) { return $choices[$operator == '??' ? 0 : 1] . $operator; };
+                
                 $empty = new \ParserGenerator\GrammarNode\Text('');
                 $choices = ($operator == '??' || $forceGreedy) ? [$main, $empty] : [$empty, $main];
-                $node = new \ParserGenerator\GrammarNode\Choice($choices);
+                $node = new \ParserGenerator\GrammarNode\Choice($choices, $toStringCallback);
 
                 $node->setParser($options['parser']);
 

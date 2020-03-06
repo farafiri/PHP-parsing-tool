@@ -87,4 +87,14 @@ class Lookahead extends \ParserGenerator\GrammarNode\BaseNode
         $copy->mainNode = $copyCallback($this->mainNode);
         return $copy;
     }
+    
+    public function isPositive()
+    {
+        return $this->positive;
+    }
+    
+    public function getLookaheadNode()
+    {
+        return $this->lookaheadNode;
+    }
 }

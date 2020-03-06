@@ -7,8 +7,9 @@ class Choice extends \ParserGenerator\GrammarNode\BaseNode
     protected $choices;
     protected $tmpNodeName;
     protected $reduce = [];
+    protected $toStringCallback;
 
-    public function __construct($choices)
+    public function __construct($choices, $toStringCallback = null)
     {
         $this->choices = $choices;
         $this->tmpNodeName = '&choices/' . spl_object_hash($this);
@@ -27,6 +28,7 @@ class Choice extends \ParserGenerator\GrammarNode\BaseNode
         };
 
         $this->grammarNode->setNode($node);
+        $this->toStringCallback = $toStringCallback;
     }
 
     public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
@@ -60,6 +62,11 @@ class Choice extends \ParserGenerator\GrammarNode\BaseNode
 
     public function __toString()
     {
+        if ($this->toStringCallback) {
+            $callback = $this->toStringCallback;
+            return $callback($this, $this->choices);
+        }
+        
         $result = '';
         foreach ($this->choices as $choice) {
             $result .= ($result ? '|' : '') . (is_array($choice) ? implode(" ", $choice) : $choice);

@@ -49,4 +49,8 @@ class AnyText extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
 
         return $i;
     }
+    
+    public function __toString() {
+        return 'text';
+    }
 }

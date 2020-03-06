@@ -159,6 +159,7 @@ class Error
             $errorsByHash[spl_object_hash($error)] = $error;
         }
 
+        $lastParsed = $parser->lastParsed;
         foreach ($errorsByHash as $hash => $error) {
             if (isset($errorsByHash[$hash]) && $error instanceof BranchInterface) {
                 $parser->parse('', $error);
@@ -170,6 +171,7 @@ class Error
                 }
             }
         }
+        $parser->lastParsed = $lastParsed;
 
         return array_values($errorsByHash);
     }
