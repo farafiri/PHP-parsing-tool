@@ -642,6 +642,20 @@ class ParserTest extends TestCase
         $this->assertEquals(3, $e->getIndex());
         $this->assertEquals('num', implode(' | ', $e->getExpected()));
     }
+    
+    public function testBugCallingGetException2ndTimeGivesWrongResults()
+    {
+        $x = new \ParserGenerator\Parser('start :=> "(" num+"," ")" ab.
+                         num   :=> /\d+/.
+                         ab    :=> ("a" | "b").');
+
+        $this->assertFalse($x->parse('(23,45,6)x'));
+        
+        $e1 = $x->getException();$e2 = $x->getException(); //getError merged into one line to avoid diff in line number
+        
+        $this->assertEquals($e1->getIndex(), $e2->getIndex());
+        $this->assertEquals((string) $e1, (string) $e2);
+    }
 
     public function testComments()
     {

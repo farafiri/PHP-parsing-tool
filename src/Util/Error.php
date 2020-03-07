@@ -158,6 +158,13 @@ class Error
         foreach ($errors as $error) {
             $errorsByHash[spl_object_hash($error)] = $error;
         }
+        
+        $states = [];
+        $parser->iterateOverNodes(function (NodeInterface $node) use (&$states) {
+            if ($node instanceof ErrorTrackDecorator) {
+                $states[spl_object_hash($node)] = $node->getMaxCheck();
+            }
+        });
 
         $lastParsed = $parser->lastParsed;
         foreach ($errorsByHash as $hash => $error) {
@@ -172,6 +179,11 @@ class Error
             }
         }
         $parser->lastParsed = $lastParsed;
+        $parser->iterateOverNodes(function (NodeInterface $node) use (&$states) {
+            if ($node instanceof ErrorTrackDecorator) {                
+                $node->setMaxCheck($states[spl_object_hash($node)]);
+            }
+        });
 
         return array_values($errorsByHash);
     }

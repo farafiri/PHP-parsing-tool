@@ -28,6 +28,11 @@ class ErrorTrackDecorator extends Decorator
     {
         return $this->maxCheck === -1 ? null : $this->maxCheck;
     }
+    
+    public function setMaxCheck($maxCheck)
+    {
+        $this->maxCheck = $maxCheck;
+    }
 
     public function reset()
     {
