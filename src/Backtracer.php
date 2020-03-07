@@ -97,7 +97,7 @@ class Backtracer
             
             $result[] = $trace + ['prevIndex' => isset($prevTrace) ? $prevTrace['index'] : 0];
             $resultStr .= chr(1) . $trace['node'] . chr(2) . str_pad($trace['index'], 10, "0", STR_PAD_LEFT);
-            echo $resultStr . " " . $node . " class: " . get_class($node). "\n" ;
+            //echo $resultStr . " " . $node . " class: " . get_class($node). "\n" ;
             $prevTrace = $trace;
         }
         
