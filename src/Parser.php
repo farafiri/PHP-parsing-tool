@@ -71,7 +71,9 @@ class Parser
     {
         $visitedNodes = [];
         foreach ($this->grammar as $node) {
-            $this->_iterateOverNodes($node, $callback, $visitedNodes);
+            if (!($node instanceof NodeFactory)) {
+                $this->_iterateOverNodes($node, $callback, $visitedNodes);
+            }
         }
     }
 
@@ -84,13 +86,14 @@ class Parser
         }
 
         $visitedNodes[$hash] = true;
+        
         $callback($node);
 
         if ($node instanceof ErrorTrackDecorator) {
             return $this->_iterateOverNodes($node->getDecoratedNode(), $callback, $visitedNodes);
         }
 
-        if (method_exists($node, 'getNode')) {
+        if (method_exists($node, 'getNode') && !($node instanceof GrammarNode\ParametrizedNode)) {
             /** @var BranchInterface $node */
             foreach ($node->getNode() as $sequence) {
                 foreach ($sequence as $subnode) {
@@ -118,6 +121,7 @@ class Parser
     public function __construct($grammar, array $options = [])
     {
         $options += $this->getDefaultOptions();
+        $options['nodes'] += $this->getDefaultOptions()['nodes'];
 
         // TODO: don't missuse $options to pass around the parser
         $options['parser'] = $this;
@@ -194,6 +198,7 @@ class Parser
             'ignoreWhitespaces' => false,
             'trackError' => true,
             'backtracer' => null,
+            'nodes' => [],
         ];
     }
 }

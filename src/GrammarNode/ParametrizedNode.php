@@ -9,7 +9,7 @@ class ParametrizedNode extends BaseNode implements \ParserGenerator\ParserAwareI
 {
     protected $abstractNode;
     protected $params;
-    protected $node;
+    protected $subnode;
     protected $parser;
 
     public function __construct($abstractNode, $params)
@@ -20,17 +20,22 @@ class ParametrizedNode extends BaseNode implements \ParserGenerator\ParserAwareI
 
     public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
     {
-        if (!$this->node) {
-            $this->node = $this->createNode();
+        if (!$this->subnode) {
+            $this->subnode = $this->createNode();
         }
 
-        return $this->node->rparse($string, $fromIndex, $restrictedEnd);
+        return $this->subnode->rparse($string, $fromIndex, $restrictedEnd);
     }
 
     protected function createNode()
     {
         $params = $this->params;
         $parser = $this->parser;
+        
+        if ($this->abstractNode instanceof \ParserGenerator\NodeFactory) {
+            return $this->abstractNode->getNode($params, $parser);    
+        }
+        
         return GrammarNodeCopier::copy($this->abstractNode, function ($node) use ($params, $parser) {
             if ($node instanceof ErrorTrackDecorator) {
                 $node = $node->getDecoratedNode();
@@ -71,6 +76,20 @@ class ParametrizedNode extends BaseNode implements \ParserGenerator\ParserAwareI
     public function getParser()
     {
         return $this->parser;
+    }
+    
+    public function getNode()
+    {
+        if (!$this->subnode) {
+            $this->subnode = $this->createNode();
+        }
+        
+        $subnode = Decorator::undecorate($this->subnode);
+        if ($subnode instanceof Branch || $subnode instanceof Choice) {
+            return $subnode->getNode();
+        } else {
+            return [[$this->subnode]];
+        }
     }
 
     public function copy($callback)

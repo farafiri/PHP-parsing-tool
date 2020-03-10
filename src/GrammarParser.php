@@ -96,7 +96,6 @@ class GrammarParser
      */
     public function buildGrammar(string $grammarStr, array $options = []): array
     {
-        $grammar = [];
         $parsedGrammar = $this->getParser()->parse($grammarStr);
 
         if ($parsedGrammar === false) {
@@ -110,6 +109,15 @@ class GrammarParser
         $parsedGrammar->refreshOwners();
 
         $grammarBranches = $parsedGrammar->findAll('grammarBranch');
+        
+        $grammar = [];
+        foreach ($options['nodes'] as $name => $optionsBranch) {
+            if ($optionsBranch instanceof NodeFactory) {
+                $optionsBranch->setName($name);
+            }
+            $useRaw = $optionsBranch instanceof GrammarNode\BaseNode || $optionsBranch instanceof NodeFactory;
+            $grammar[$name] = $useRaw ? $optionsBranch : new GrammarNode\ClosureDecorator($optionsBranch, $name);
+        }
 
         foreach ($grammarBranches as $grammarBranch) {
             if ($grammarBranch->getDetailType() === 'standard') {
