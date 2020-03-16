@@ -12,6 +12,7 @@ use ParserGenerator\GrammarNode\PredefinedString;
 use ParserGenerator\GrammarNode\Regex;
 use ParserGenerator\GrammarNode\TextS;
 use ParserGenerator\SyntaxTreeNode\Root;
+use ParserGenerator\Extension\Factory;
 use ParserGenerator\Util\Error;
 
 class Parser
@@ -198,7 +199,9 @@ class Parser
             'ignoreWhitespaces' => false,
             'trackError' => true,
             'backtracer' => null,
-            'nodes' => [],
+            'nodes' => [
+                'textNode' => new Factory\TextNode(),
+            ],
         ];
     }
 }

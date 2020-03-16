@@ -9,13 +9,16 @@ class Regex extends \ParserGenerator\GrammarNode\BaseNode Implements \ParserGene
     public $lastMatch = -1;
     public $lastNMatch = -1;
 
+    //$giveText is for nodes created from string node
+    protected $givenText;
     protected $givenRegex;
     protected $regex;
     protected $eatWhiteChars;
     protected $caseInsensitive;
 
-    public function __construct($regex, $eatWhiteChars = false, $caseInsensitive = false)
+    public function __construct($regex, $eatWhiteChars = false, $caseInsensitive = false, $givenText = null) 
     {
+        $this->givenText = $givenText;
         $this->eatWhiteChars = $eatWhiteChars;
         $this->caseInsensitive = $caseInsensitive;
         $this->givenRegex = $regex;
@@ -59,9 +62,18 @@ class Regex extends \ParserGenerator\GrammarNode\BaseNode Implements \ParserGene
     {
         return $this->givenRegex;
     }
+    
+    public function getText()
+    {
+        return $this->givenText;
+    }
 
     public function __toString()
     {
-        return $this->givenRegex;
+        if ($this->givenText === null) {
+            return $this->givenRegex;
+        } else {
+            return '"' . addslashes($this->givenText) . '"';
+        }
     }
 }

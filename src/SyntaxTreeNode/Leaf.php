@@ -17,6 +17,11 @@ class Leaf extends \ParserGenerator\SyntaxTreeNode\Base
     {
         return $this->content;
     }
+    
+    public function getAfterContent()
+    {
+        return $this->afterContent;
+    }
 
     public function setContent($newValue)
     {

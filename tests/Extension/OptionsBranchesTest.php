@@ -98,8 +98,6 @@ class OptionsBranchesTest extends TestCase
     
     public function testParametric2()
     {
-        
-        
         $x = new Parser('start :=> "a" upper<"bx">.', ['nodes' => ['upper' => $this->getUpperFactory()]]);
 
         $this->assertFalse($x->parse("abx"));
@@ -132,6 +130,21 @@ class OptionsBranchesTest extends TestCase
                 . '      cx    :=> "c" bx.', ['nodes' => ['upper' => $this->getUpperFactory()]]);
         
         $x->parse("ax");
+    }
+    
+    public function testTextNode()
+    {
+        $x = new Parser('start :=> "a" textNode<(b "c")>.'
+                . '      b     :=> "b".');
+        
+        $this->assertObject($x->parse('abc'));
+        
+        $x = new Parser('start :=> "a" textNode<(b "c")>.'
+                . '      b     :=> "b".', ['caseInsensitive' => true]);
+        
+        $this->assertObject($x->parse('abc'));
+        $this->assertObject($x->parse('Abc'));
+        $this->assertFalse($x->parse('ABc'));
     }
     
     public function testWithParametricNodeAsParam()

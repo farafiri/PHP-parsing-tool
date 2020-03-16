@@ -2,6 +2,8 @@
 
 namespace ParserGenerator\Util;
 
+use ParserGenerator\Exception;
+
 class Regex
 {
     protected static $specialChars = ['\\', '/', '+', '*', '?', '[', ']', '(', ')', '|', '.', '$', '^', '{', '}'];
@@ -48,6 +50,21 @@ class Regex
             } else {
                 $result .= $regex[$i];
             }
+        }
+    }
+    
+    /**
+     * 
+     * @param type $regex
+     * @return type
+     * @throws Exception
+     */
+    public static function getRegexBody($regex)
+    {
+        if (preg_match('/\/(.*)\/([A-Za-z]*)/s', $regex, $match)) {
+            return $match[1];
+        } else {
+            throw new Exception("Wrong regex format [$regex]");
         }
     }
 
