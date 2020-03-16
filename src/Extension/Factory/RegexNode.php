@@ -6,7 +6,7 @@ use ParserGenerator\NodeFactory;
 use ParserGenerator\Parser;
 use ParserGenerator\GrammarNode;
 
-class TextNode extends NodeFactory 
+class RegexNode extends NodeFactory 
 {
     /**
      * @param GrammarNode\NodeInterface[] $params
@@ -14,7 +14,7 @@ class TextNode extends NodeFactory
      */
     function getNode($params, Parser $parser): GrammarNode\NodeInterface
     {
-        $str = $this->getStringFromNode($params[0]);
-        return new GrammarNode\Text($str);
+        $regex = $this->getRegexBodyFromNode($params[0]);
+        return new GrammarNode\Regex('/' . $regex . '/');
     }
 }

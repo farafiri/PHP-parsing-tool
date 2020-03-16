@@ -58,7 +58,7 @@ class LeafNodeConverter
     
     public static function getRegexFromNode(GrammarNode\NodeInterface $node)
     {
-        return static::_getStringFromNode($node, []);
+        return static::_getRegexFromNode($node, []);
     }
     
     protected static function _getRegexFromNode(GrammarNode\NodeInterface $node, $visited)
@@ -71,6 +71,16 @@ class LeafNodeConverter
             return Regex::getRegexBody($node->getRegex());
         }
         
+        if ($node instanceof GrammarNode\Series) {
+            $mainNodeStr = static::_getRegexFromNode($node->getMainNode(), $visited);
+            if ($node->getSeparator()) {
+                 $str = $mainNodeStr . '(' . static::_getRegexFromNode($node->getSeparator(), $visited) . $mainNodeStr . ')*';
+                 return $node->getFrom0() ? '(' . $str . ')?' : $str;
+            } else {
+                return '(' . $mainNodeStr . ')' . ($node->getFrom0() ? '*' : '+');
+            }
+        }
+        
         if ($node instanceof GrammarNode\Decorator) {
             return static::_getRegexFromNode($node->getDecoratedNode(), $visited);
         }
@@ -78,6 +88,7 @@ class LeafNodeConverter
         if ($node instanceof GrammarNode\Branch || $node instanceof GrammarNode\Choice || $node instanceof GrammarNode\ParametrizedNode) {
             $hash = spl_object_hash($node);
             if (isset($visited[$hash])) {
+                var_dump((string) $node);
                 throw new Exception("Cannot use regexNode<> with nested branches");
             }
             $visited += [$hash => true];
@@ -87,7 +98,7 @@ class LeafNodeConverter
                 $result = '';
                 
                 foreach($rule as $subnode) {
-                    $result .= static::_getRegexFromNode($subnode, $visited);
+                    $result .= '(' . static::_getRegexFromNode($subnode, $visited) . ')';
                 }
                 
                 $branches[] = $result ? ('(' . $result . ')') : '';
@@ -96,6 +107,6 @@ class LeafNodeConverter
             return implode('|', $branches);
         }
         
-        throw new Exception('Cannot get string from non string node');
+        throw new Exception('Cannot get regex from $node node');
     }
 }

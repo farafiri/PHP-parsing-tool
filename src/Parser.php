@@ -201,6 +201,7 @@ class Parser
             'backtracer' => null,
             'nodes' => [
                 'textNode' => new Factory\TextNode(),
+                'regexNode' => new Factory\RegexNode(),
             ],
         ];
     }

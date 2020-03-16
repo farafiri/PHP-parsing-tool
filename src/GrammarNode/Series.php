@@ -107,6 +107,16 @@ class Series extends \ParserGenerator\GrammarNode\BranchDecorator
     {
         return $this->mainNode;
     }
+    
+    public function getSeparator()
+    {
+        return $this->separator;
+    }
+    
+    public function getFrom0()
+    {
+        return $this->from0;
+    }
 
     public function __toString()
     {
