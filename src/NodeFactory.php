@@ -29,13 +29,24 @@ abstract class NodeFactory
         return $this->getName();
     }
     
-    protected function getStringFromNode(GrammarNode\NodeInterface $node)
+    protected function getStringFromNode(GrammarNode\NodeInterface $node):string
     {
         return Util\LeafNodeConverter::getStringFromNode($node);
     }
     
-    protected function getRegexBodyFromNode(GrammarNode\NodeInterface $node)
+    protected function getRegexBodyFromNode(GrammarNode\NodeInterface $node):string
     {
         return Util\LeafNodeConverter::getRegexFromNode($node);
+    }
+    
+    protected function getBoolFromNode(GrammarNode\NodeInterface $node):bool
+    {
+        $bool = Util\LeafNodeConverter::getBoolOrNullFromNode($node);
+        
+        if ($bool === null) {
+            throw new Exception("cannot convert $node to boolean");
+        }
+        
+        return $bool;
     }
 }

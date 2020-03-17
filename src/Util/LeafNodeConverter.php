@@ -44,6 +44,13 @@ class LeafNodeConverter
                 $result = '';
                 
                 foreach($rule as $subnode) {
+                    $subnodeBool = static::getBoolOrNullFromNode($subnode);
+                    if ($subnodeBool === true) {
+                        continue 1; //continue with this rule and go to next subnode
+                    }
+                    if ($subnodeBool === false) {
+                        continue 2; //current rule always fail, go to next
+                    }
                     $result .= static::_getStringFromNode($subnode, $visited);
                 }
                 
@@ -88,7 +95,6 @@ class LeafNodeConverter
         if ($node instanceof GrammarNode\Branch || $node instanceof GrammarNode\Choice || $node instanceof GrammarNode\ParametrizedNode) {
             $hash = spl_object_hash($node);
             if (isset($visited[$hash])) {
-                var_dump((string) $node);
                 throw new Exception("Cannot use regexNode<> with nested branches");
             }
             $visited += [$hash => true];
@@ -98,6 +104,13 @@ class LeafNodeConverter
                 $result = '';
                 
                 foreach($rule as $subnode) {
+                    $subnodeBool = static::getBoolOrNullFromNode($subnode);
+                    if ($subnodeBool === true) {
+                        continue 1; //continue with this rule and go to next subnode
+                    }
+                    if ($subnodeBool === false) {
+                        continue 2; //current rule always fail, go to next
+                    }
                     $result .= '(' . static::_getRegexFromNode($subnode, $visited) . ')';
                 }
                 
@@ -108,5 +121,18 @@ class LeafNodeConverter
         }
         
         throw new Exception('Cannot get regex from $node node');
+    }
+    
+    public static function getBoolOrNullFromNode(GrammarNode\NodeInterface $node)
+    {
+        if ($node instanceof GrammarNode\Decorator) {
+            return static::getBoolOrNullFromNode($node->getDecoratedNode());
+        }
+        
+        if ($node instanceof GrammarNode\BooleanNode) {
+            return $node->getValue();
+        }
+        
+        return null;
     }
 }

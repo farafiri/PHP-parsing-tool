@@ -47,6 +47,20 @@ class Lookahead extends \ParserGenerator\Extension\SequenceItem
             default:
                 throw new Exception('that was unexpected');
         }
+        
+        $lookacheadBool = \ParserGenerator\Util\LeafNodeConverter::getBoolOrNullFromNode($lookaheadNode);
+        
+        if ($lookacheadBool !== null) {
+            if ($operator == '!') {
+                $lookacheadBool = !$lookacheadBool;
+            }
+            
+            if ($lookacheadBool === false) {
+                return new \ParserGenerator\GrammarNode\BooleanNode(false);
+            }
+            
+            return $mainNode ?? new \ParserGenerator\GrammarNode\BooleanNode(true);
+        }
 
         return new \ParserGenerator\GrammarNode\Lookahead($lookaheadNode, $mainNode, $before, $operator == '?');
     }

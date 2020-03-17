@@ -202,6 +202,8 @@ class Parser
             'nodes' => [
                 'textNode' => new Factory\TextNode(),
                 'regexNode' => new Factory\RegexNode(),
+                'true' => new GrammarNode\BooleanNode(true),
+                'false' => new GrammarNode\BooleanNode(false),
             ],
         ];
     }
