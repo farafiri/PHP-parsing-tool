@@ -14,7 +14,9 @@ class RegexNode extends NodeFactory
      */
     function getNode($params, Parser $parser): GrammarNode\NodeInterface
     {
-        $regex = $this->getRegexBodyFromNode($params[0]);
-        return new GrammarNode\Regex('/' . $regex . '/');
+        $ignoreWhitespaces = isset($params[1]) ? $this->getBoolFromNode($params[1]) : $parser->options['ignoreWhitespaces'];
+        $caseInsensitive = isset($params[2]) ? $this->getBoolFromNode($params[2]) : $parser->options['caseInsensitive'];
+        $regex = $this->getRegexBodyFromNode($params[0], $ignoreWhitespaces);
+        return new GrammarNode\Regex('/' . $regex . '/', $ignoreWhitespaces, $caseInsensitive);
     }
 }

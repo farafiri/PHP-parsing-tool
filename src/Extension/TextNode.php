@@ -11,16 +11,20 @@ class TextNode extends \ParserGenerator\Extension\SequenceItem
 
     protected function _buildSequenceItem(&$grammar, $sequenceItem, $grammarParser, $options)
     {
-        if ($options['caseInsensitive']) {
-            $str = (string)$sequenceItem->getSubnode(0)->getValue();
+        return static::getGrammarNode((string)$sequenceItem->getSubnode(0)->getValue(), $options['ignoreWhitespaces'], $options['caseInsensitive']);
+    }
+    
+    public static function getGrammarNode($str, $ignoreWhitespaces, $caseInsensitive)
+    {
+        if ($caseInsensitive) {
             $regex = \ParserGenerator\Util\Regex::buildRegexFromString($str);
-            return new \ParserGenerator\GrammarNode\Regex($regex, $options['ignoreWhitespaces'], $options['caseInsensitive'], $str);
+            return new \ParserGenerator\GrammarNode\Regex($regex, $ignoreWhitespaces, $caseInsensitive, $str);
         }
 
-        if (!$options['ignoreWhitespaces']) {
-            return new \ParserGenerator\GrammarNode\Text($sequenceItem->getSubnode(0)->getValue());
+        if ($ignoreWhitespaces) {
+            return new \ParserGenerator\GrammarNode\TextS($str);
         }
 
-        return new \ParserGenerator\GrammarNode\TextS($sequenceItem->getSubnode(0)->getValue());
+        return new \ParserGenerator\GrammarNode\Text($str);
     }
 }

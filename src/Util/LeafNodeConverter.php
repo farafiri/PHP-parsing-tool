@@ -37,11 +37,9 @@ class LeafNodeConverter
             $visited += [$hash => true];
             
             $first = true;
+            $result = '';
             foreach($node->getNode() as $rule) {
-                if ($first === false) {
-                    throw new Exception('Cannot get string from branch node with several branches');
-                }
-                $result = '';
+                $branchResult = '';
                 
                 foreach($rule as $subnode) {
                     $subnodeBool = static::getBoolOrNullFromNode($subnode);
@@ -51,10 +49,14 @@ class LeafNodeConverter
                     if ($subnodeBool === false) {
                         continue 2; //current rule always fail, go to next
                     }
-                    $result .= static::_getStringFromNode($subnode, $visited);
+                    $branchResult .= static::_getStringFromNode($subnode, $visited);
                 }
                 
+                if ($first === false) {
+                    throw new Exception('Cannot get string from branch node with several branches');
+                }
                 $first = false;
+                $result = $branchResult;
             }
             
             return $result;
@@ -63,25 +65,25 @@ class LeafNodeConverter
         throw new Exception('Cannot get string from non string node');
     }
     
-    public static function getRegexFromNode(GrammarNode\NodeInterface $node)
+    public static function getRegexFromNode(GrammarNode\NodeInterface $node, $ignoreWhitespaces = false)
     {
-        return static::_getRegexFromNode($node, []);
+        return static::_getRegexFromNode($node, $ignoreWhitespaces ? '\s*' : '' ,[]);
     }
     
-    protected static function _getRegexFromNode(GrammarNode\NodeInterface $node, $visited)
+    protected static function _getRegexFromNode(GrammarNode\NodeInterface $node, $whitespacesRegex, $visited)
     {
         if ($node instanceof GrammarNode\Text) {
-            return Regex::getRegexBody(Regex::buildRegexFromString($node->getString()));
+            return Regex::getRegexBody(Regex::buildRegexFromString($node->getString())) . $whitespacesRegex;
         }
         
         if ($node instanceof GrammarNode\Regex) {
-            return Regex::getRegexBody($node->getRegex());
+            return Regex::getRegexBody($node->getRegex()) . $whitespacesRegex;
         }
         
         if ($node instanceof GrammarNode\Series) {
-            $mainNodeStr = static::_getRegexFromNode($node->getMainNode(), $visited);
+            $mainNodeStr = static::_getRegexFromNode($node->getMainNode(), $whitespacesRegex, $visited);
             if ($node->getSeparator()) {
-                 $str = $mainNodeStr . '(' . static::_getRegexFromNode($node->getSeparator(), $visited) . $mainNodeStr . ')*';
+                 $str = $mainNodeStr . '(' . static::_getRegexFromNode($node->getSeparator(), $whitespacesRegex, $visited) . $mainNodeStr . ')*';
                  return $node->getFrom0() ? '(' . $str . ')?' : $str;
             } else {
                 return '(' . $mainNodeStr . ')' . ($node->getFrom0() ? '*' : '+');
@@ -89,7 +91,7 @@ class LeafNodeConverter
         }
         
         if ($node instanceof GrammarNode\Decorator) {
-            return static::_getRegexFromNode($node->getDecoratedNode(), $visited);
+            return static::_getRegexFromNode($node->getDecoratedNode(), $whitespacesRegex, $visited);
         }
         
         if ($node instanceof GrammarNode\Branch || $node instanceof GrammarNode\Choice || $node instanceof GrammarNode\ParametrizedNode) {
@@ -111,7 +113,7 @@ class LeafNodeConverter
                     if ($subnodeBool === false) {
                         continue 2; //current rule always fail, go to next
                     }
-                    $result .= '(' . static::_getRegexFromNode($subnode, $visited) . ')';
+                    $result .= '(' . static::_getRegexFromNode($subnode, $whitespacesRegex, $visited) . ')';
                 }
                 
                 $branches[] = $result ? ('(' . $result . ')') : '';

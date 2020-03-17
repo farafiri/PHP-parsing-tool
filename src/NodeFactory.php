@@ -34,9 +34,9 @@ abstract class NodeFactory
         return Util\LeafNodeConverter::getStringFromNode($node);
     }
     
-    protected function getRegexBodyFromNode(GrammarNode\NodeInterface $node):string
+    protected function getRegexBodyFromNode(GrammarNode\NodeInterface $node, $ignoreWhitespaces = false):string
     {
-        return Util\LeafNodeConverter::getRegexFromNode($node);
+        return Util\LeafNodeConverter::getRegexFromNode($node, $ignoreWhitespaces);
     }
     
     protected function getBoolFromNode(GrammarNode\NodeInterface $node):bool
