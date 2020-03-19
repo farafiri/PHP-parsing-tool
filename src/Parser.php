@@ -204,6 +204,7 @@ class Parser
                 'regexNode' => new Factory\RegexNode(),
                 'true' => new GrammarNode\BooleanNode(true),
                 'false' => new GrammarNode\BooleanNode(false),
+                'separatedCache' => new Factory\SeparatedCache(),
             ],
         ];
     }
