@@ -204,7 +204,7 @@ class GrammarParser
                 'last' => [':grammarBranch', ':comments', ':/\.?/', ":comments"],
             ],
             'grammarBranch' => ['standard' => [':comments', ':branchName', ':branchType', ':rules']],
-            'branchType' => [[''], ['(full)'], ['(naive)'], ['(PEG)']],
+            'branchType' => [[''], ['(full)'], ['(naive)'], ['(PEG)'], ['(PEGNC)']],
             'rules' => [
                 'last' => [':rule'],
                 'notLast' => [':rule', ':rules'],

@@ -708,4 +708,25 @@ class ParserTest extends TestCase
         new Parser('start :=> "a" (a "b".
                     a     :=> "c" start.');
     }
+    
+    public function testPEGNoCache()
+    {
+        $x = new Parser('start:=>x "a".
+                         x    :=>"b"', ['defaultBranchType' => \ParserGenerator\GrammarNode\BranchFactory::PEG_NO_CACHE]);
+
+        $this->assertFalse($x->parse('b'));
+        $this->assertFalse($x->parse('a'));
+        $this->assertObject($x->parse('ba'));
+        $this->assertFalse($x->parse('baa'));
+        $this->assertFalse($x->parse('bba'));
+        
+        $x = new Parser('start    :=>x "a".
+                         x(PEGNC) :=>"b"');
+
+        $this->assertFalse($x->parse('b'));
+        $this->assertFalse($x->parse('a'));
+        $this->assertObject($x->parse('ba'));
+        $this->assertFalse($x->parse('baa'));
+        $this->assertFalse($x->parse('bba'));
+    }
 }

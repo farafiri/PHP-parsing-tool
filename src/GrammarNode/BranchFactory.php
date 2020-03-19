@@ -9,6 +9,7 @@ class BranchFactory
     const NAIVE = 'naive';
     const FULL = 'full';
     const PEG = 'PEG';
+    const PEG_NO_CACHE = 'PEGNC';
 
     public static function createBranch($branchType, $name): Branch
     {
@@ -19,6 +20,8 @@ class BranchFactory
                 return new Branch($name);
             case self::PEG:
                 return new PEGBranch($name);
+            case self::PEG_NO_CACHE:
+                return new PEGNoCacheBranch($name);
             default:
                 throw new Exception("Unknown branch type: $branchType");
         }
@@ -30,6 +33,8 @@ class BranchFactory
             return self::NAIVE;
         } elseif ($branch instanceof PEGBranch) {
             return self::PEG;
+        } elseif ($branch instanceof PEGNoCacheBranch) {
+            return self::PEG_NO_CACHE;
         } else {
             return self::FULL;
         }
