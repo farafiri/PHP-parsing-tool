@@ -15,6 +15,11 @@ use ParserGenerator\GrammarNode\Choice;
 use ParserGenerator\GrammarNode\Regex as RegexNode;
 use ParserGenerator\ParsingException;
 
+/**
+ * get error data from parser
+ * generates proper message for user
+ * build ParsingExpected with message and error data
+ */
 class Error
 {
     protected $foundLength = 20;
@@ -30,6 +35,17 @@ class Error
     }
     
     /**
+     * return improved version of expected
+     * improved means: 
+     * ordering, 
+     * removing positive and negative lookarounds, 
+     * spliting ("a"|"b") into "a" or "b",
+     * ang generalizing errors.
+     * Generalizing error is:
+     * in following grammar
+     * start :=> "a"
+     *       :=> "b".
+     * instead of "a" or "b" we get start
      * 
      * @param BaseNode[] $expected
      * @param Parser     $parser

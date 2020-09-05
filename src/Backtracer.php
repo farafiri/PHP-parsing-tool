@@ -5,6 +5,35 @@ namespace ParserGenerator;
 use ParserGenerator\GrammarNode\NodeInterface;
 use ParserGenerator\GrammarNode\ErrorTrackDecorator;
 
+/**
+ * Class for debuging parsing process, it shows how parsing looked like around given point in string
+ * Example:
+   $parser = new \ParserGenerator\Parser('
+        start:       => value.
+        value:bool   => ("true"|"false")
+             :string => string
+             :number => /[+-]?\d+(\.\d+)?/
+             :array  => "[" value**"," "]"
+             :object => "{" objValue**"," "}".
+        objValue:    => key ":" value.
+        key:         => string.
+        ', ['ignoreWhitespaces' => true,'defaultBranchType' => \ParserGenerator\GrammarNode\BranchFactory::PEG,'trackError' => true]); 
+  
+   $str = '{"_id": "a","index": {"b":eeee,       ';
+   $parser->parse($str);
+   echo \ParserGenerator\Backtracer::get($parser)->toString($str, 80, 20);
+   
+   will print:
+   {"_id": "a","index": {"b":eeee,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+ 0 ^ start                                                                                                                                                                                                                                                                                                               
+ 0 ^ value                                                                                                                                                                                                                                                                                                               
+ 1 -^ objValue**","                                                                                                                                                                                                                                                                                                      
+12  -          ^ objValue                                                                                                                                                                                                                                                                                                
+21             -        ^ value                                                                                                                                                                                                                                                                                          
+22                      -^ objValue**","                                                                                                                                                                                                                                                                                 
+22                       ^ objValue                                                                                                                                                                                                                                                                                      
+26                       -   ^ value     
+ */
 class Backtracer
 {
     public $index;
@@ -14,6 +43,12 @@ class Backtracer
         $this->index = $index;
     }
     
+    /**
+     * method for easy retriving backtrace from parser
+     * 
+     * @param \ParserGenerator\Parser $parser
+     * @return \ParserGenerator\Backtracer
+     */
     public static function get(Parser $parser): Backtracer
     {
         $error      = $parser->getException();
@@ -24,6 +59,11 @@ class Backtracer
         return $backtracer;
     }
     
+    /**
+     * method collecting backtraces
+     * 
+     * @param array $backtrace
+     */
     public function addBacktrace($backtrace)
     {
         $traces = [];

@@ -15,8 +15,15 @@ use ParserGenerator\SyntaxTreeNode\Root;
 use ParserGenerator\Extension\Factory;
 use ParserGenerator\Util\Error;
 
+/**
+ * Genaral class for managing pasing ang parser creation process
+ * Main interface to comunicate with whole library
+ */
 class Parser
 {
+    /**
+     * all fields in this class are internal and should not be used outside this lib implementation
+     */
     /** @var array */
     public $cache;
     /** @var array */
@@ -28,6 +35,35 @@ class Parser
     /** @var array|string */
     public $grammarSource;
 
+    /**
+     * this builds parser from $grammar array
+     * this is used mainly for parsing provided grammar in string format
+     * however it may be used to build target grammar
+     * 
+     * $grammar format:
+     * each entry in $grammar array is a branchNode (key is a branch name)
+     * branchNode has one or more options / production rules - those production rules may be named - key in array is a name)
+     * production rules is a sequence of termial or non-termial represented by string or NodeInterface
+     * 
+     * for example following grammar:
+     *   start :=> start b
+     *         :=> "c".
+     *   b     :=> /abc/.
+     * 
+     * can be passed as:
+     * ['start' => [[':start', ':b'], 
+     *              ['c']], 
+     *  'b'     => [['/abc/']]]
+     * note that:
+     *   - branch references starts with :
+     *   - regular expressions starts with /
+     *   - all other strings are converted into text nodes
+     * we may also pass NodeInterface object instead of string
+     * 
+     * @param (string|NodeInterface)[][][] $grammar
+     * @param array $options
+     * @throws Exception
+     */
     protected function buildFromArray(array $grammar, array $options)
     {
         $this->grammar = $grammar;
@@ -68,6 +104,11 @@ class Parser
         }
     }
 
+    /**
+     * internal - iterate over parser nodes to call callback on each node
+     * 
+     * @param \ParserGenerator\callable $callback
+     */
     public function iterateOverNodes(callable $callback)
     {
         $visitedNodes = [];
@@ -108,7 +149,7 @@ class Parser
             }
         }
     }
-
+    
     protected function buildFromString(string $grammar, array $options)
     {
         $this->options = $options;
@@ -116,6 +157,8 @@ class Parser
     }
 
     /**
+     * fill options with default values and builds parser using proper way (from array or from string)
+     * 
      * @param array|string $grammar
      * @param array $options
      */
@@ -143,6 +186,8 @@ class Parser
     }
 
     /**
+     * method for initalising, running and finalising parsing process on a provided string
+     * 
      * @param string               $string
      * @param string|NodeInterface $nodeToParse node to parse or its name
      * @return Root|bool When successfully parsed, returns a Root node, otherwise false
@@ -186,6 +231,12 @@ class Parser
         return false;
     }
 
+    /**
+     * this method returns ParsingException - object which represents informations about where and how parsing process failed
+     * this method should be called only if parsing process failed (parse($string) retured false) and only if 'trackError' option is set to true (default option value)
+     * 
+     * @param Error|null $errorUtil
+     */
     public function getException(Error $errorUtil = null): ParsingException
     {
         return ($errorUtil ?: new Error())->getError($this, $this->lastParsed);

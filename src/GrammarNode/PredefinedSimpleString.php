@@ -9,7 +9,7 @@ class PredefinedSimpleString extends \ParserGenerator\GrammarNode\BaseNode Imple
 
     protected $eatWhiteChars;
     protected $startCharacters;
-    protected $regex = '/("([^"]|"")*")?/';
+    protected $regex = '/("([^"]|"")*")?\s*/';
 
     public function __construct($eatWhiteChars = false)
     {

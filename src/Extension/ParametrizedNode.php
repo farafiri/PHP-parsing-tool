@@ -40,12 +40,15 @@ class ParametrizedNode extends Base
 
         return $grammarGrammar;
     }
-
+    
     public function modifyBranches($grammar, $parsedGrammar, $grammarParser, $options)
     {
         foreach ($parsedGrammar->findAll('grammarBranch:standard') as $grammarBranch) {
             $name = (string)$grammarBranch->findFirst('branchName');
             $i = 0;
+            /* Note that in $nodeParams[$branchName] is set only for parametrized branch because 
+             * branchParamsDef/branchName exists only for parametrized branches
+             */
             foreach ($grammarBranch->findFirst('branchParamsDef')->findAll('branchName') as $branchName) {
                 $this->nodeParams[$name][(string)$branchName] = new ParameterNode($i++, $name, (string)$branchName);
             }
