@@ -46,4 +46,11 @@ class PredefinedStringTest extends TestCase
         $parsingResult = $x->parse('"\t\n"');
         $this->assertEquals('\t\n', $parsingResult->getSubnode(0)->getValue());
     }
+    
+    public function testBugNoWhitespacesEatenBySimple()
+    {
+        $x = new Parser('start :=> string/simple "b".', ['ignoreWhitespaces' => true]);
+        $this->assertObject($x->parse('"abb"b'));
+        $this->assertObject($x->parse('"abb" b'));
+    }
 }
