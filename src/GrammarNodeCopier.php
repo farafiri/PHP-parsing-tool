@@ -1,16 +1,21 @@
 <?php declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: Rafał
- * Date: 17.02.17
- * Time: 22:29
- */
 
 namespace ParserGenerator;
 
-
+/**
+ * class for recursive copying nodes 
+ */
 class GrammarNodeCopier
 {
+    /**
+     * 
+     * @param NodeInterface $node
+     * @param callable $callback this function gets node being copied as param and should return following values:
+     *                            - false|null if we don't want to copy given node
+     *                            - true       if we want to copy given node
+     *                            - NodeIterface object to replace provided node                              
+     * @return NodeInterface
+     */
     public static function copy($node, $callback)
     {
         $_copy = function ($node) use ($callback, &$_copy) {

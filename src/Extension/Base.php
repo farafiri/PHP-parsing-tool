@@ -2,6 +2,9 @@
 
 namespace ParserGenerator\Extension;
 
+/**
+ * check ExtensionInterface for method descriptions
+ */
 class Base implements \ParserGenerator\Extension\ExtensionInterface
 {
     function extendGrammar($grammarGrammar)

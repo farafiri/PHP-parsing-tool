@@ -28,6 +28,9 @@ use ParserGenerator\GrammarNode\Regex as GrammarRegex;
 use ParserGenerator\GrammarNode\TextS;
 use ParserGenerator\Util\Error;
 
+/**
+ * class for generating parser from string format (to be strict - it generates parser->grammar content)
+ */
 class GrammarParser
 {
     /** @var ExtensionInterface[] */
@@ -90,12 +93,15 @@ class GrammarParser
     }
 
     /**
+     * generate parser from string format (to be strict - it generates parser->grammar content) 
+     * 
      * @param string $grammarStr
      * @param array $options
      * @return Branch[]
      */
     public function buildGrammar(string $grammarStr, array $options = []): array
     {
+        //step 1: parsing $grammarStr
         $grammar = [];
         $parsedGrammar = $this->getParser()->parse($grammarStr);
 
@@ -108,6 +114,8 @@ class GrammarParser
             });
         }
         $parsedGrammar->refreshOwners();
+        
+        //step 2: fills $grammar with empty branches
 
         $grammarBranches = $parsedGrammar->findAll('grammarBranch');
 
@@ -123,10 +131,14 @@ class GrammarParser
                 }
             }
         }
+        
+        //step 2b: now plugins may alter branches
 
         foreach ($this->plugins as $plugin) {
             $grammar = $plugin->modifyBranches($grammar, $parsedGrammar, $this, $options);
         }
+        
+        //step 3: filling branches with rules
 
         foreach ($grammarBranches as $grammarBranch) {
             if ($grammarBranch->getDetailType() === 'standard') {
@@ -150,6 +162,8 @@ class GrammarParser
                 }
             }
         }
+        
+        //step 4: some nodes (implementing ParserAwareInterface) needs reference to parser - here we provide them this reference
 
         foreach ($grammar as $node) {
             if ($node instanceof ParserAwareInterface) {
@@ -160,7 +174,7 @@ class GrammarParser
         return $grammar;
     }
 
-    public function getParser(): Parser
+    protected function getParser(): Parser
     {
         if ($this->parserSchouldBeRefreshed) {
             $this->parser = $this->generateNewParser();
@@ -170,6 +184,13 @@ class GrammarParser
         return $this->parser;
     }
 
+    /**
+     * returns NodeInterface object for parsing branch name 
+     * its pretty complex because simple [A-Za-z_][0-9A-Za-z_]* regex is not enough
+     * - some restricted words shoud not be parsed as branch name
+     * 
+     * @return GrammarItemRestrictions
+     */
     protected function buildBranchNameNode(): GrammarItemRestrictions
     {
         $restrictedWords = ['or', 'and', 'contain', 'is', 'text', 'string'];
@@ -187,6 +208,11 @@ class GrammarParser
             ));
     }
 
+    /**
+     * generate parser for parsing grammar string
+     * 
+     * @return \ParserGenerator\Parser
+     */
     protected function generateNewParser(): Parser
     {
         $stdGrammarGrammar = [
@@ -224,6 +250,17 @@ class GrammarParser
         return new Parser($grammarGrammar);
     }
 
+    /**
+     * internal function - it is public but should not be used outside of this lib
+     * 
+     * builds sequence of SequenceItem
+     * 
+     * @param NodeIterface[]      $grammar      grammar under construction
+     * @param SyntaxTreeNode\Base $sequenceItem syntax tree representing sigle sequence item
+     * @param array               $options      options provided to Parser costructor
+     * 
+     * @return NodeInterface[]
+     */
     public function buildRule($grammar, $rule, $options)
     {
         if ($rule->getDetailType() === 'standard') {
@@ -252,6 +289,16 @@ class GrammarParser
         throw new Exception('Rule type [' . $rule->getDetailType() . '] added but not supported');
     }
 
+    /**
+     * internal function - it is public but should not be used outside of this lib
+     * 
+     * builds single NodeIterface object from given data
+     * @param NodeIterface[]      $grammar      grammar under construction
+     * @param SyntaxTreeNode\Base $sequenceItem syntax tree representing sigle sequence item
+     * @param array               $options      options provided to Parser costructor
+     * 
+     * @return NodeInterface
+     */
     public function buildSequenceItem($grammar, $sequenceItem, $options)
     {
         $newSequenceItem = null;
