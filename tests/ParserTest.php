@@ -657,7 +657,7 @@ class ParserTest extends TestCase
         $this->assertEquals((string) $e1, (string) $e2);
     }
     
-    public function testG222rt()
+    public function testBugWrongGetExceptionContentsInIgnoreWhitespacesMode()
     {
         $x = new Parser('start :=> "a" "b".', ['ignoreWhitespaces' => true]);
         
