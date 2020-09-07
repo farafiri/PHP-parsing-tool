@@ -706,6 +706,17 @@ class ParserTest extends TestCase
         $this->assertEquals($e1->getIndex(), $e2->getIndex());
         $this->assertEquals((string) $e1, (string) $e2);
     }
+    
+    public function testG222rt()
+    {
+        $x = new Parser('start :=> "a" "b".', ['ignoreWhitespaces' => true]);
+        
+        $this->assertFalse($x->parse("     a c")); //"{5 x spaces}a{1 x space}c
+        $exception = $x->getException();
+        $this->assertEquals(7, $exception->getIndex());
+        $this->assertTrue(strpos((string) $exception, "line: 1, character: 8") !== false);
+        $this->assertTrue(strpos((string) $exception, "found: c") !== false);
+    }
 
     public function testComments()
     {
