@@ -204,17 +204,18 @@ class Parser
         $this->cache = [];
         $restrictedEnd = [];
         if (!empty($this->options['ignoreWhitespaces'])) {
-            $trimmedString = ltrim($string);
-            $beforeContent = substr($string, 0, strlen($string) - strlen($trimmedString));
-            $string = $trimmedString;
+            preg_match('/\s*/', $string, $match, 0, 0);
+            $beforeContent = $match[0];
+            $startPos      = strlen($beforeContent);
         } else {
             $beforeContent = '';
+            $startPos      = 0;
         }
 
         for ($i = strlen($string) - 1; $i > -1; $i--) {
             $restrictedEnd[$i] = $i;
         }
-        $rparseResult = $nodeToParse->rparse($string, 0, $restrictedEnd);
+        $rparseResult = $nodeToParse->rparse($string, $startPos, $restrictedEnd);
 
         if ($rparseResult) {
             $result = Root::createFromPrototype($rparseResult['node']);
