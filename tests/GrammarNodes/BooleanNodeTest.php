@@ -43,7 +43,7 @@ class BooleanNodeTest extends TestCase
     public function getBoolFactory()
     {
         return new class extends \ParserGenerator\NodeFactory {
-            function getNode($params, $parser): GrammarNode\NodeInterface {
+            function getNode($params, \ParserGenerator\Parser $parser): GrammarNode\NodeInterface {
                 $str = $this->getBoolFromNode($params[0]) ? "true" : "false";
                 return new GrammarNode\Text($str);
             }
