@@ -209,7 +209,8 @@ class Parser
         $this->cache = [];
         $restrictedEnd = [];
         if (!empty($this->options['ignoreWhitespaces'])) {
-            preg_match('/\s*/', $string, $match, 0, 0);
+            $regex = '/' . GrammarNode\WhiteCharsHelper::getRegex($this->options['ignoreWhitespaces']) . '/';
+            preg_match($regex, $string, $match, 0, 0);
             $beforeContent = $match[0];
             $startPos      = strlen($beforeContent);
         } else {

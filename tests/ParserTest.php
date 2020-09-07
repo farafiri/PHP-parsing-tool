@@ -599,7 +599,7 @@ class ParserTest extends TestCase
                 . '          :=> 1..100 "z"'
                 . '          :=> time(Y-m-d) "z".';
         
-        $cc = '(\s|\/\*.*\*\/)*';
+        $cc = '(\s|\/\*(.|\s)*?\*\/)*';
         $d = [
             [false, '', true],
             [true,  '', true],
@@ -638,6 +638,24 @@ class ParserTest extends TestCase
             $this->assertEquals($expected, (bool) $x->parse("34{$wsString}z"), $message);
             $this->assertEquals($expected, (bool) $x->parse("2020-05-06{$wsString}z"), $message);
         }
+    }
+    
+    public function testCustomWhitespacesString2()
+    {
+        //this is simmilar case as last block in testStringGrammarIgnoreWhitespacesOption but with ['ignoreWhitespaces' => '_*']
+        //instead of ['ignoreWhitespaces' => true]
+        $x = new Parser('start :=> "abc" x y /z/. x :=> "c". y :=> /y/ .', ['ignoreWhitespaces' => '_*']);
+        $this->assertObject($x->parse('abccyz'));
+        $this->assertObject($x->parse('_abc_c_y_z_'));
+        $this->assertFalse($x->parse('_ab_c_c_y_z_'));
+        $this->assertObject($x->parse('abc___cy_z__'));
+        
+        $x = new Parser('start :=> "abc" x y /z/. x :=> "c". y :=> /y/ .', ['ignoreWhitespaces' => '(\s|\/\*(.|\s)*?\*\/)*']);
+        $this->assertObject($x->parse('abccyz'));
+        $this->assertObject($x->parse(' abc c y z'));
+        $this->assertObject($x->parse('/* comment 1 */abc c/*comment*/y z /* comment */'));
+        $this->assertObject($x->parse("/*comment line 1\ncomment line 2\r\ncomment line 3*/abc /*another \r multiline comment*/ cy/* comment */ /* comment */ /* cm*/ z"));
+        $this->assertFalse($x->parse(' ab/*comment*/c c y z'));
     }
 
     public function testCaseInsesitivity()
