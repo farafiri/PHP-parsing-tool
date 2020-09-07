@@ -9,11 +9,10 @@ class PredefinedSimpleString extends \ParserGenerator\GrammarNode\BaseNode Imple
 
     protected $eatWhiteChars;
     protected $startCharacters;
-    protected $regex = '/("([^"]|"")*")?\s*/';
 
     public function __construct($eatWhiteChars = false)
     {
-        $this->eatWhiteChars = $eatWhiteChars;
+        $this->setEatWhiteChars($eatWhiteChars);
     }
 
     public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
@@ -35,5 +34,11 @@ class PredefinedSimpleString extends \ParserGenerator\GrammarNode\BaseNode Imple
     public function __toString()
     {
         return "string";
+    }
+    
+    public function setEatWhiteChars($eatWhiteChars)
+    {
+        $this->eatWhiteChars = $eatWhiteChars;
+        $this->regex = '/("([^"]|"")*")?' . WhiteCharsHelper::getRegex($eatWhiteChars) . '/';
     }
 }

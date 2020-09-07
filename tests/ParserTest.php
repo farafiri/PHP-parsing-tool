@@ -589,6 +589,56 @@ class ParserTest extends TestCase
         $this->assertFalse($x->parse("a\nb"));
         $this->assertFalse($x->parse("a  \nb"));
     }
+    
+    public function testCustomWhitespacesString()
+    {
+        $grammarStr = 'start :=> "a" "z"'
+                . '          :=> /[bc]+/ "z"'
+                . '          :=> string "z"'
+                . '          :=> string/simple "z"'
+                . '          :=> 1..100 "z"'
+                . '          :=> time(Y-m-d) "z".';
+        
+        $cc = '(\s|\/\*.*\*\/)*';
+        $d = [
+            [false, '', true],
+            [true,  '', true],
+            ['',    '', true],
+            ['\s*', '', true],
+            ['_*',  '', true],
+            [$cc,   '', true],
+            [false, '  ', false],
+            [true,  '  ', true],
+            [true,  " \n ", true],
+            ['',    '  ', false],
+            ['\s*', '  ', true],
+            [$cc,   '  ', true],
+            [false, ' /*comment*/', false],
+            [true,  ' /*comment*/', false],
+            ['_*',  '/*comment*/', false],
+            [$cc,   ' /*comment*/', true],
+            [false, '__', false],
+            [true,  '__', false],
+            ['_*',  '__', true],
+            ['_*',  ' ', false],
+            [$cc,   '__', false],
+            ['[[:blank:]]*', " \t ", true],
+            ['[[:blank:]]*', " \n ", false],
+        ];
+        
+        foreach ($d as list($ignoreWhitespaces, $wsString, $expected)) {  
+            $x       = new Parser($grammarStr, ['ignoreWhitespaces' => $ignoreWhitespaces]);
+            $message = "ignoreWhitespaces:" . print_r($ignoreWhitespaces, true) . " wsString:($wsString) result:" . ($expected ? 'true' : 'false');
+            
+            $this->assertEquals($expected, (bool) $x->parse("{$wsString}az"), $message);
+            $this->assertEquals($expected, (bool) $x->parse("a{$wsString}z"), $message);
+            $this->assertEquals($expected, (bool) $x->parse("bcb{$wsString}z"), $message);
+            $this->assertEquals($expected, (bool) $x->parse("'xyz'{$wsString}z"), $message);
+            $this->assertEquals($expected, (bool) $x->parse("\"xy\"\"z\"{$wsString}z"), $message);
+            $this->assertEquals($expected, (bool) $x->parse("34{$wsString}z"), $message);
+            $this->assertEquals($expected, (bool) $x->parse("2020-05-06{$wsString}z"), $message);
+        }
+    }
 
     public function testCaseInsesitivity()
     {

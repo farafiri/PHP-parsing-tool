@@ -5,18 +5,19 @@ namespace ParserGenerator\GrammarNode;
 
 class LeafTime extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGenerator\GrammarNode\LeafInterface
 {
+    use WhiteCharsTrait;
+    
     public $lastMatch = -1;
     public $lastNMatch = -1;
 
     protected $format;
-    protected $eatWhiteChars;
     protected $maxLength;
 
     public function __construct($format, $eatWhiteChars)
     {
         $this->format = $format;
         $this->maxLength = strlen($this->format) + 14;
-        $this->eatWhiteChars = $eatWhiteChars;
+        $this->setEatWhiteChars($eatWhiteChars);
     }
 
     public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
@@ -37,7 +38,7 @@ class LeafTime extends \ParserGenerator\GrammarNode\BaseNode implements \ParserG
 
         $end = $fromIndex + strlen($s);
         if ($this->eatWhiteChars) {
-            if (preg_match('/\s*/', $string, $match, 0, $end)) {
+            if (preg_match($this->whiteCharsRegex, $string, $match, 0, $end)) {
                 $whiteChars = $match[0];
             }
             $end += strlen($whiteChars);

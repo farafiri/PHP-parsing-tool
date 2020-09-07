@@ -22,7 +22,7 @@ class TextNode extends \ParserGenerator\Extension\SequenceItem
         }
 
         if ($ignoreWhitespaces) {
-            return new \ParserGenerator\GrammarNode\TextS($str);
+            return new \ParserGenerator\GrammarNode\TextS($str, $ignoreWhitespaces);
         }
 
         return new \ParserGenerator\GrammarNode\Text($str);

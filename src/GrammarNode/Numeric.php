@@ -28,12 +28,14 @@ class Numeric extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
                 }
             }
             if (in_array($key,
-                ['formatDec', 'formatHex', 'formatOct', 'formatBin', 'eatWhiteChars', 'allowFixedCharacters'],
+                ['formatDec', 'formatHex', 'formatOct', 'formatBin', 'allowFixedCharacters'],
                 true)) {
                 if (is_bool($value)) {
                     $this->$key = $value;
                 }
             }
+            
+            $this->eatWhiteChars = $options['eatWhiteChars'] ?? '';
         }
 
         if (!$this->formatDec && !$this->formatHex && !$this->formatOct && !$this->formatBin) {
@@ -70,7 +72,7 @@ class Numeric extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
 
     protected function buildRegexForBaseFormat($charSet, $prefix)
     {
-        return '/(' . $this->buildSubRegexForBaseFormat($charSet, $prefix) . ')?\s*/';
+        return '/(' . $this->buildSubRegexForBaseFormat($charSet, $prefix) . ')?' . WhiteCharsHelper::getRegex($this->eatWhiteChars) . '/';
     }
 
     protected function buildSubRegexForBaseFormat($charSet, $prefix)
@@ -121,5 +123,11 @@ class Numeric extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
         $modifiers .= $this->formatDec ? 'd' : '';
         $modifiers = $modifiers == 'd' ? '' : ('/' . $modifiers);
         return (($this->min === null) ? '-inf' : $this->min) . '..' . (($this->max === null) ? 'inf' : $this->max) . $modifiers;
+    }
+    
+    public function setEatWhiteChars($eatWhiteChars)
+    {
+        $this->eatWhiteChars = $eatWhiteChars;
+        $this->buildRegexes();
     }
 }

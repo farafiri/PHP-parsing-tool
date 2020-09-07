@@ -4,15 +4,16 @@ namespace ParserGenerator\GrammarNode;
 
 class PredefinedString extends \ParserGenerator\GrammarNode\BaseNode Implements \ParserGenerator\GrammarNode\LeafInterface
 {
+    use WhiteCharsTrait;
+    
     public $lastMatch = -1;
     public $lastNMatch = -1;
 
-    protected $eatWhiteChars;
     protected $startCharacters;
 
     public function __construct($eatWhiteChars = false, $startCharacters = ["'", '"'])
     {
-        $this->eatWhiteChars = $eatWhiteChars;
+        $this->setEatWhiteChars($eatWhiteChars);
         $this->startCharacters = $startCharacters;
     }
 
@@ -29,7 +30,7 @@ class PredefinedString extends \ParserGenerator\GrammarNode\BaseNode Implements 
                 if ($i % 2 === 0) {
                     $val = substr($string, $fromIndex, $nextPos - $fromIndex + 1);
                     if ($this->eatWhiteChars) {
-                        preg_match('/\s*/', $string, $match, 0, $nextPos + 1);
+                        preg_match($this->whiteCharsRegex, $string, $match, 0, $nextPos + 1);
                         $nextPos += strlen($match[0]);
                     }
                     if (isset($restrictedEnd[$nextPos + 1])) {

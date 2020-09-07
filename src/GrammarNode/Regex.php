@@ -22,16 +22,7 @@ class Regex extends \ParserGenerator\GrammarNode\BaseNode Implements \ParserGene
         $this->eatWhiteChars = $eatWhiteChars;
         $this->caseInsensitive = $caseInsensitive;
         $this->givenRegex = $regex;
-        if (preg_match('/\/(.*)\/([A-Za-z]*)/s', $regex, $match)) {
-            $regexBody = $match[1];
-            $regexModifiers = $match[2];
-            if (strpos($regexModifiers, 'i') === false && $caseInsensitive) {
-                $regexModifiers .= 'i';
-            }
-            $this->regex = '/(' . $regexBody . ')?\s*/' . $regexModifiers;
-        } else {
-            throw new Exception("Wrong regex format [$regex]");
-        }
+        $this->prepare();
     }
 
     public function rparse($string, $fromIndex = 0, $restrictedEnd = [])
@@ -75,5 +66,26 @@ class Regex extends \ParserGenerator\GrammarNode\BaseNode Implements \ParserGene
         } else {
             return '"' . addslashes($this->givenText) . '"';
         }
+    }
+    
+    protected function prepare()
+    {
+        $regex = $this->givenRegex;
+        if (preg_match('/\/(.*)\/([A-Za-z]*)/s', $regex, $match)) {
+            $regexBody = $match[1];
+            $regexModifiers = $match[2];
+            if (strpos($regexModifiers, 'i') === false && $this->caseInsensitive) {
+                $regexModifiers .= 'i';
+            }
+            $this->regex = '/(' . $regexBody . ')?' . WhiteCharsHelper::getRegex($this->eatWhiteChars) . '/' . $regexModifiers;
+        } else {
+            throw new Exception("Wrong regex format [$regex]");
+        }
+    }
+    
+    public function setEatWhiteChars($eatWhiteChars)
+    {
+        $this->eatWhiteChars = $eatWhiteChars;
+        $this->prepare();
     }
 }
