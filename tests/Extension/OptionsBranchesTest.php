@@ -75,7 +75,7 @@ class OptionsBranchesTest extends TestCase
     public function getDouble()
     {
         return new class extends \ParserGenerator\NodeFactory {
-            function getNode($params, $parser): GrammarNode\NodeInterface {
+            function getNode($params, \ParserGenerator\Parser $parser): GrammarNode\NodeInterface {
                 $node = $params[0];
                 $name = $this->getName() . '<' . $node . '>';
                 $branch = new GrammarNode\Branch($name, $name);
@@ -89,7 +89,7 @@ class OptionsBranchesTest extends TestCase
     public function getUpperFactory()
     {
         return new class extends \ParserGenerator\NodeFactory {
-            function getNode($params, $parser): GrammarNode\NodeInterface {
+            function getNode($params, \ParserGenerator\Parser $parser): GrammarNode\NodeInterface {
                 $str = $this->getStringFromNode($params[0]);
                 return new GrammarNode\Text(strtoupper($str));
             }
