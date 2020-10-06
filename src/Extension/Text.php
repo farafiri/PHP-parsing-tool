@@ -10,7 +10,7 @@ class Text extends \ParserGenerator\Extension\SequenceItem
     {
         $grammarGrammar[$this->getNS(null, false)] = [
             [
-                'text',
+                ':/text(?![a-zA-Z0-9_])/',
             ],
         ];
 

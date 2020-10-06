@@ -93,7 +93,7 @@ class Branch extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGen
 
     public function getNodeName()
     {
-        return $this->nodeName;
+        return $this->nodeShortName;
     }
 
     public function __toString()
@@ -101,9 +101,10 @@ class Branch extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGen
         return $this->getNodeName();
     }
 
-    public function copy($copyCallback)
+    public function copy($copyCallback, $collectCallback)
     {
         $copy = clone $this;
+        $collectCallback($this, $copy);
         $copy->setNode($copyCallback($this->node));
         $copy->nodeName = $this->nodeName . '&' . spl_object_hash($copy);
         return $copy;

@@ -31,6 +31,6 @@ class BranchDecorator extends \ParserGenerator\GrammarNode\Decorator implements 
 
     public function __toString()
     {
-        return $this->getNodeName();
+        return $this->node->__toString();
     }
 }

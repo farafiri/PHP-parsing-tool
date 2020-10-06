@@ -258,6 +258,7 @@ class Parser
                 'true' => new GrammarNode\BooleanNode(true),
                 'false' => new GrammarNode\BooleanNode(false),
                 'separatedCache' => new Factory\SeparatedCache(),
+                'setIgnoreWhitespaces' => new Factory\SetIgnoreWhitespaces(),
             ],
         ];
     }

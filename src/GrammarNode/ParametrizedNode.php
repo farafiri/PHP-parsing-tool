@@ -92,9 +92,14 @@ class ParametrizedNode extends BaseNode implements \ParserGenerator\ParserAwareI
         }
     }
 
-    public function copy($callback)
+    public function copy($callback, $collectCallback, $copyAbstractNode)
     {
-        $copy = new static($this->abstractNode, $callback($this->params));
+        $copy = new static($this->abstractNode, $this->params);
+        $collectCallback($this, $copy);
+        if ($copyAbstractNode) {
+            $copy->abstractNode = $callback($this->abstractNode);
+        }
+        $copy->params       = $callback($this->params);
         $copy->setParser($this->getParser());
         return $copy;
     }

@@ -36,4 +36,9 @@ class ParameterNode extends BaseNode
     {
         return $this->parameterName;
     }
+    
+    public function copy()
+    {
+        return $this;
+    }
 }

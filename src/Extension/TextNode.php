@@ -14,6 +14,13 @@ class TextNode extends \ParserGenerator\Extension\SequenceItem
         return static::getGrammarNode((string)$sequenceItem->getSubnode(0)->getValue(), $options['ignoreWhitespaces'], $options['caseInsensitive']);
     }
     
+    /**
+     * 
+     * @param string         $str
+     * @param string|boolean $ignoreWhitespaces
+     * @param boolean        $caseInsensitive
+     * @return \ParserGenerator\GrammarNode\NodeInterface one of \ParserGenerator\GrammarNode\Regex|\ParserGenerator\GrammarNode\TextS|\ParserGenerator\GrammarNode\Text
+     */
     public static function getGrammarNode($str, $ignoreWhitespaces, $caseInsensitive)
     {
         if ($caseInsensitive) {
@@ -26,5 +33,20 @@ class TextNode extends \ParserGenerator\Extension\SequenceItem
         }
 
         return new \ParserGenerator\GrammarNode\Text($str);
+    }
+    
+    /**
+     * @param \ParserGenerator\GrammarNode\NodeInterface $node
+     * @return string|null
+     */
+    public static function getText(\ParserGenerator\GrammarNode\NodeInterface $node)
+    {
+        if ($node instanceof \ParserGenerator\GrammarNode\Text) {
+            return $node->getString();
+        } elseif ($node instanceof \ParserGenerator\GrammarNode\Regex) {
+            return $node->getText();
+        } else {
+            return null;
+        }
     }
 }

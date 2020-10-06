@@ -49,4 +49,9 @@ abstract class NodeFactory
         
         return $bool;
     }
+    
+    public function copy($callback)
+    {
+        return $this;
+    }
 }

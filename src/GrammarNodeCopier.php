@@ -16,9 +16,14 @@ class GrammarNodeCopier
      *                            - NodeIterface object to replace provided node                              
      * @return NodeInterface
      */
-    public static function copy($node, $callback)
+    public static function copy($node, $callback, $copyAbstractNode = false)
     {
-        $_copy = function ($node) use ($callback, &$_copy) {
+        $createdNodes = [];
+        $collectCallback = function ($origin, $copy) use (&$createdNodes) {
+            $createdNodes[spl_object_hash($origin)] = $copy;
+        };
+        
+        $_copy = function ($node) use ($callback, &$_copy, &$createdNodes, $collectCallback, $copyAbstractNode) {
             static $i;
             if ($node === null) {
                 return null;
@@ -29,18 +34,43 @@ class GrammarNodeCopier
                     $result[$index] = $_copy($subnode);
                 }
                 return $result;
+            } elseif (isset($createdNodes[spl_object_hash($node)])) {
+                return $createdNodes[spl_object_hash($node)];
             } else {
-                $x = $callback($node);
+                $x = $callback($node, $_copy);
                 if ($x === false || $x === null) {
-                    return $node;
+                    $result = $node;
                 } elseif ($x === true) {
-                    return $node->copy($_copy);
+                    if ($node instanceof NodeFactory) {
+                        return new class($node, $_copy) extends \ParserGenerator\NodeFactory {
+                            protected $nodeFactory;
+                            protected $copy;
+
+                            public function __construct($nodeFactory, $copy)
+                            {
+                                $this->nodeFactory = $nodeFactory;  
+                                $this->copy        = $copy;
+                            }
+
+                            function getNode($params, \ParserGenerator\Parser $parser): GrammarNode\NodeInterface 
+                            {
+                                $copy = $this->copy;
+                                return $copy($this->nodeFactory->getNode($params, $parser));
+                            }
+                        };
+                    } else {
+                        $result = $node->copy($_copy, $collectCallback, $copyAbstractNode);
+                    }
                 } else {
-                    return $x;
+                    $result = $x;
                 }
+                
+                $createdNodes[spl_object_hash($node)] = $result;
+                
+                return $result;
             }
         };
 
-        return $node->copy($_copy);
+        return $node->copy($_copy, $collectCallback, $copyAbstractNode);
     }
 }
