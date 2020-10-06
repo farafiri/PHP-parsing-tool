@@ -226,3 +226,13 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+#############
+## local dev
+#############
+
+tst*
+test*.*
+RUN
+phpunit.xml
+Autoloader.php
