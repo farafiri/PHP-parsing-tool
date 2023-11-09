@@ -2,13 +2,14 @@
 
 namespace ParserGenerator\Tests\Examples;
 
+use ParserGenerator\Examples\YamlLikeIndentationParser;
 use PHPUnit\Framework\TestCase;
 
 class YamlLikeIndentationParserTest extends TestCase
 {
     public function testBase()
     {
-        $parser = new \ParserGenerator\Examples\YamlLikeIndentationParser();
+        $parser = new YamlLikeIndentationParser();
 
         $this->assertEquals(["a" => "x"], $parser->getValue("a:x"));
         $this->assertEquals([
@@ -21,7 +22,7 @@ class YamlLikeIndentationParserTest extends TestCase
 
     public function testIndentsBase()
     {
-        $parser = new \ParserGenerator\Examples\YamlLikeIndentationParser();
+        $parser = new YamlLikeIndentationParser();
 
         $this->assertEquals([
             "a" => [
@@ -34,7 +35,7 @@ class YamlLikeIndentationParserTest extends TestCase
 
     public function testIndentsCanBeAnyNumberOfSpaces()
     {
-        $parser = new \ParserGenerator\Examples\YamlLikeIndentationParser();
+        $parser = new YamlLikeIndentationParser();
 
         $this->assertEquals([
             "a" => [
@@ -47,7 +48,7 @@ class YamlLikeIndentationParserTest extends TestCase
 
     public function testIndentsMultilevel()
     {
-        $parser = new \ParserGenerator\Examples\YamlLikeIndentationParser();
+        $parser = new YamlLikeIndentationParser();
 
         $this->assertEquals([
             "a" => [
@@ -69,7 +70,7 @@ class YamlLikeIndentationParserTest extends TestCase
 
     public function testIndentsSignificance()
     {
-        $parser = new \ParserGenerator\Examples\YamlLikeIndentationParser();
+        $parser = new YamlLikeIndentationParser();
 
         $this->assertEquals([
             "a" => [
@@ -111,14 +112,14 @@ class YamlLikeIndentationParserTest extends TestCase
             d:y"));
 
         // indentation level doesn't match
-        $this->assertEquals(false, $parser->getValue("
+        $this->assertFalse($parser->getValue("
             a:
               b:
                 c:x
              d:y"));
 
         // indentation level doesn't match
-        $this->assertEquals(false, $parser->getValue("
+        $this->assertFalse($parser->getValue("
             a:
               b:
                 c:x
@@ -127,7 +128,7 @@ class YamlLikeIndentationParserTest extends TestCase
 
     public function testComplexExample()
     {
-        $parser = new \ParserGenerator\Examples\YamlLikeIndentationParser();
+        $parser = new YamlLikeIndentationParser();
 
         $this->assertEquals([
             "a" => [

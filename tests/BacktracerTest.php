@@ -2,16 +2,16 @@
 
 namespace ParserGenerator\Tests;
 
-use ParserGenerator\Parser;
 use ParserGenerator\Backtracer;
+use ParserGenerator\Parser;
 use PHPUnit\Framework\TestCase;
 
 class BacktracerTest extends TestCase {
     
-    protected function getBacktraces($grammar, $string, $index, $onlyFirstAtIndex = true, $foldSamePaths = true)
+    protected function getBacktraces($grammar, $string, $index, $onlyFirstAtIndex = true, $foldSamePaths = true): string
     {
         $backtracer = new Backtracer($index);
-        $parser = new \ParserGenerator\Parser($grammar, ['backtracer' => $backtracer]);
+        $parser = new Parser($grammar, ['backtracer' => $backtracer]);
         $parser->parse($string);
 
         $result = [];
@@ -40,8 +40,8 @@ class BacktracerTest extends TestCase {
         $this->assertEquals('0 start, 2 cd', $this->getBacktraces($grammar, 'aan', 2));
         $this->assertEquals('0 start, 2 cd', $this->getBacktraces($grammar, 'aac', 2, true, false));
         $this->assertEquals('0 start, 2 cd, 0 start, 2 cd', $this->getBacktraces($grammar, 'aad', 2, true, false));
-        $this->assertEquals('0 start, 2 cd, 2 "c"', $this->getBacktraces($grammar, 'aac', 2, false, true));
-        $this->assertEquals('0 start, 2 cd, 2 "c", 2 "d"', $this->getBacktraces($grammar, 'aan', 2, false, true));
+        $this->assertEquals('0 start, 2 cd, 2 "c"', $this->getBacktraces($grammar, 'aac', 2, false));
+        $this->assertEquals('0 start, 2 cd, 2 "c", 2 "d"', $this->getBacktraces($grammar, 'aan', 2, false));
         $this->assertEquals('0 start, 2 cd, 2 "c", 0 start, 2 cd, 2 "d"', $this->getBacktraces($grammar, 'aan', 2, false, false));
 
         $grammar = 'start :=> "aa" xcd'

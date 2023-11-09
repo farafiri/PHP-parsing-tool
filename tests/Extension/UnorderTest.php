@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class UnorderTest extends TestCase
 {
-    protected function assertObject($a)
+    protected function assertObject($a): void
     {
         $this->assertTrue(is_object($a));
     }
@@ -29,7 +29,7 @@ class UnorderTest extends TestCase
         $this->assertFalse($x->parse(''));
         $this->assertFalse($x->parse('aba'));
         $this->assertFalse($x->parse('baba'));
-        $this->assertFalse($x->parse('aa'));;
+        $this->assertFalse($x->parse('aa'));
     }
 
     public function testBaseWithThreeNodes()
@@ -83,7 +83,7 @@ class UnorderTest extends TestCase
 
     public function testQModifier()
     {
-        $x = new Parser('start :=> unorder("", ?"a", ?"b", ?"c").');;
+        $x = new Parser('start :=> unorder("", ?"a", ?"b", ?"c").');
 
         $this->assertObject($x->parse('abc'));
         $this->assertObject($x->parse('cba'));
@@ -98,7 +98,7 @@ class UnorderTest extends TestCase
 
     public function testAModifier()
     {
-        $x = new Parser('start :=> unorder("", +"a", +"b", +"c").');;
+        $x = new Parser('start :=> unorder("", +"a", +"b", +"c").');
 
         $this->assertObject($x->parse('abc'));
         $this->assertObject($x->parse('cba'));
@@ -114,7 +114,7 @@ class UnorderTest extends TestCase
 
     public function testMModifier()
     {
-        $x = new Parser('start :=> unorder("", *"a", *"b", *"c").');;
+        $x = new Parser('start :=> unorder("", *"a", *"b", *"c").');
 
         $this->assertObject($x->parse('abc'));
         $this->assertObject($x->parse('cba'));
@@ -130,7 +130,7 @@ class UnorderTest extends TestCase
 
     public function testMixedModifier()
     {
-        $x = new Parser('start :=> unorder("", *"a", "b", ?"c").');;
+        $x = new Parser('start :=> unorder("", *"a", "b", ?"c").');
 
         $this->assertObject($x->parse('abc'));
         $this->assertObject($x->parse('b'));

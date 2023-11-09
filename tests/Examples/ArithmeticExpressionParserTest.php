@@ -2,13 +2,14 @@
 
 namespace ParserGenerator\Tests\Examples;
 
+use ParserGenerator\Examples\ArithmeticExpressionParser;
 use PHPUnit\Framework\TestCase;
 
 class ArithmeticExpressionParserTest extends TestCase
 {
     public function testBase()
     {
-        $parser = new \ParserGenerator\Examples\ArithmeticExpressionParser();
+        $parser = new ArithmeticExpressionParser();
 
         $this->assertEquals(15, $parser->getValue('10 + 5'));
         $this->assertEquals(5, $parser->getValue('10 - 5'));
@@ -23,7 +24,7 @@ class ArithmeticExpressionParserTest extends TestCase
 
     public function testMixed()
     {
-        $parser = new \ParserGenerator\Examples\ArithmeticExpressionParser();
+        $parser = new ArithmeticExpressionParser();
 
         $this->assertEquals(67, $parser->getValue('100 - 3 - 10 + 30 - 50'));
         $this->assertEquals(56, $parser->getValue('10 * 5 + 3 * 2'));
@@ -32,7 +33,7 @@ class ArithmeticExpressionParserTest extends TestCase
 
     public function testBrackets()
     {
-        $parser = new \ParserGenerator\Examples\ArithmeticExpressionParser();
+        $parser = new ArithmeticExpressionParser();
 
         $this->assertEquals(91, $parser->getValue('100 - (10 - 1)'));
         $this->assertEquals(51, $parser->getValue('10 * 5 + 1'));

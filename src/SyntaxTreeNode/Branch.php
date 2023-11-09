@@ -337,7 +337,7 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
         }
     }
 
-    public function copy()
+    public function copy(): Base
     {
         $copy = clone $this;
         if (isset($this->subnodes[0]->owner)) {

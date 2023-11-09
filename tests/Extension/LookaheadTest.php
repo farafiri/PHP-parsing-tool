@@ -3,11 +3,13 @@
 namespace ParserGenerator\Tests\Extension;
 
 use ParserGenerator\Parser;
+use ParserGenerator\SyntaxTreeNode\Leaf;
+use ParserGenerator\SyntaxTreeNode\Root;
 use PHPUnit\Framework\TestCase;
 
 class LookaheadTest extends TestCase
 {
-    protected function assertObject($a)
+    protected function assertObject($a): void
     {
         $this->assertTrue(is_object($a));
     }
@@ -74,8 +76,8 @@ class LookaheadTest extends TestCase
     {
         $x = new Parser('start :=> ?/[abc]/ /.+/ .');
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
-            new \ParserGenerator\SyntaxTreeNode\Leaf('abc'),
+        $this->assertEquals(new Root('start', 0, [
+            new Leaf('abc'),
         ]), $x->parse("abc"));
 
         $x = new Parser('start :=> ?abc /.+/ .
@@ -84,8 +86,8 @@ class LookaheadTest extends TestCase
                          b     :=> "b".
                          c     :=> "c".');
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
-            new \ParserGenerator\SyntaxTreeNode\Leaf('abc'),
+        $this->assertEquals(new Root('start', 0, [
+            new Leaf('abc'),
         ]), $x->parse("abc"));
     }
 
@@ -96,21 +98,21 @@ class LookaheadTest extends TestCase
         $this->assertFalse($x->parse('acd'));
         $this->assertFalse($x->parse(''));
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
-            new \ParserGenerator\SyntaxTreeNode\Leaf('ab'),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('de'),
+        $this->assertEquals(new Root('start', 0, [
+            new Leaf('ab'),
+            new Leaf('de'),
         ]), $x->parse("abde"));
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
-            new \ParserGenerator\SyntaxTreeNode\Leaf('a'),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('bce'),
+        $this->assertEquals(new Root('start', 0, [
+            new Leaf('a'),
+            new Leaf('bce'),
         ]), $x->parse("abce"));
 
         $x = new Parser('start :=> (?"abc" | "bc")  /.*/ .');
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
-            new \ParserGenerator\SyntaxTreeNode\Leaf(''),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('abce'),
+        $this->assertEquals(new Root('start', 0, [
+            new Leaf(''),
+            new Leaf('abce'),
         ]), $x->parse("abce"));
     }
 

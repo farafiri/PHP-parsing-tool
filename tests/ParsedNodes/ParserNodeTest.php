@@ -2,17 +2,19 @@
 
 namespace ParserGenerator\Tests\ParsedNodes;
 
+use ParserGenerator\SyntaxTreeNode\Branch;
+use ParserGenerator\SyntaxTreeNode\Leaf;
 use PHPUnit\Framework\TestCase;
 
 class ParserNodeTest extends TestCase
 {
     public function testClone()
     {
-        $a = new \ParserGenerator\SyntaxTreeNode\Branch('a', 'b', [
-            new \ParserGenerator\SyntaxTreeNode\Branch('q', 'w', [
-                new \ParserGenerator\SyntaxTreeNode\Leaf('l1'),
+        $a = new Branch('a', 'b', [
+            new Branch('q', 'w', [
+                new Leaf('l1'),
             ]),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('l2'),
+            new Leaf('l2'),
         ]);
 
         $b = clone $a;
@@ -26,22 +28,22 @@ class ParserNodeTest extends TestCase
 
     public function testToString()
     {
-        $a = new \ParserGenerator\SyntaxTreeNode\Branch('a', 'b', [
-            new \ParserGenerator\SyntaxTreeNode\Branch('q', 'w', [
-                new \ParserGenerator\SyntaxTreeNode\Leaf('l1'),
+        $a = new Branch('a', 'b', [
+            new Branch('q', 'w', [
+                new Leaf('l1'),
             ]),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('l2'),
+            new Leaf('l2'),
         ]);
 
         $this->assertEquals('l1l2', (string)$a);
 
-        $a->getSubnode(0)->setSubnode(null, new \ParserGenerator\SyntaxTreeNode\Leaf('l3'));
+        $a->getSubnode(0)->setSubnode(null, new Leaf('l3'));
         $this->assertEquals('l1l3l2', (string)$a);
 
-        $a->setSubnode(null, new \ParserGenerator\SyntaxTreeNode\Leaf('l4'));
+        $a->setSubnode(null, new Leaf('l4'));
         $this->assertEquals('l1l3l2l4', (string)$a);
 
-        $a->setSubnode(1, new \ParserGenerator\SyntaxTreeNode\Leaf('l5'));
+        $a->setSubnode(1, new Leaf('l5'));
         $this->assertEquals('l1l3l5l4', (string)$a);
 
         $a->setSubnode(2, clone $a);
@@ -50,11 +52,11 @@ class ParserNodeTest extends TestCase
 
     public function testCompare()
     {
-        $a = new \ParserGenerator\SyntaxTreeNode\Branch('a', 'b', [
-            new \ParserGenerator\SyntaxTreeNode\Branch('q', 'w', [
-                new \ParserGenerator\SyntaxTreeNode\Leaf('l1'),
+        $a = new Branch('a', 'b', [
+            new Branch('q', 'w', [
+                new Leaf('l1'),
             ]),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('l2'),
+            new Leaf('l2'),
         ]);
 
         $b = clone $a;
@@ -91,24 +93,24 @@ class ParserNodeTest extends TestCase
 
     protected function getTestNode1()
     {
-        return new \ParserGenerator\SyntaxTreeNode\Branch('a', '', [
-            new \ParserGenerator\SyntaxTreeNode\Branch('b', '', [
-                new \ParserGenerator\SyntaxTreeNode\Leaf('l1'),
-                new \ParserGenerator\SyntaxTreeNode\Branch('b', '', [
-                    new \ParserGenerator\SyntaxTreeNode\Branch('c', '', [
-                        new \ParserGenerator\SyntaxTreeNode\Leaf('l2'),
+        return new Branch('a', '', [
+            new Branch('b', '', [
+                new Leaf('l1'),
+                new Branch('b', '', [
+                    new Branch('c', '', [
+                        new Leaf('l2'),
                     ]),
-                    new \ParserGenerator\SyntaxTreeNode\Branch('b', '', [
-                        new \ParserGenerator\SyntaxTreeNode\Leaf('l3'),
-                        new \ParserGenerator\SyntaxTreeNode\Leaf('l4'),
+                    new Branch('b', '', [
+                        new Leaf('l3'),
+                        new Leaf('l4'),
                     ]),
                 ]),
             ]),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('l2'),
-            new \ParserGenerator\SyntaxTreeNode\Branch('c', '', [
-                new \ParserGenerator\SyntaxTreeNode\Branch('b', '', []),
-                new \ParserGenerator\SyntaxTreeNode\Branch('d', '', [
-                    new \ParserGenerator\SyntaxTreeNode\Leaf('l5'),
+            new Leaf('l2'),
+            new Branch('c', '', [
+                new Branch('b', '', []),
+                new Branch('d', '', [
+                    new Leaf('l5'),
                 ]),
             ]),
         ]);

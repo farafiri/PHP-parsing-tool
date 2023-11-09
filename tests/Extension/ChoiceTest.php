@@ -3,11 +3,15 @@
 namespace ParserGenerator\Tests\Extension;
 
 use ParserGenerator\Parser;
+use ParserGenerator\SyntaxTreeNode\Branch;
+use ParserGenerator\SyntaxTreeNode\Leaf;
+use ParserGenerator\SyntaxTreeNode\Root;
+use ParserGenerator\SyntaxTreeNode\Series;
 use PHPUnit\Framework\TestCase;
 
 class ChoiceTest extends TestCase
 {
-    protected function assertObject($a)
+    protected function assertObject($a): void
     {
         $this->assertTrue(is_object($a));
     }
@@ -31,10 +35,10 @@ class ChoiceTest extends TestCase
         $x = new Parser('start :=> (abc | "z" | /[qwe]/) "." .
                          abc   :=> "abc".');
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
-            new \ParserGenerator\SyntaxTreeNode\Branch('abc', 0,
-                [new \ParserGenerator\SyntaxTreeNode\Leaf('abc')]),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('.'),
+        $this->assertEquals(new Root('start', 0, [
+            new Branch('abc', 0,
+                [new Leaf('abc')]),
+            new Leaf('.'),
         ]), $x->parse("abc."));
     }
 
@@ -42,9 +46,9 @@ class ChoiceTest extends TestCase
     {
         $x = new Parser('start :=> ("a" | "b" | "bc") /.*/ .');
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
-            new \ParserGenerator\SyntaxTreeNode\Leaf('b'),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('cd'),
+        $this->assertEquals(new Root('start', 0, [
+            new Leaf('b'),
+            new Leaf('cd'),
         ]), $x->parse('bcd'));
     }
 
@@ -57,17 +61,17 @@ class ChoiceTest extends TestCase
         $this->assertFalse($x->parse(''));
         $this->assertFalse($x->parse('abc'));
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
-            new \ParserGenerator\SyntaxTreeNode\Series('list', '', [
-                new \ParserGenerator\SyntaxTreeNode\Branch('a', 0,
-                    [new \ParserGenerator\SyntaxTreeNode\Leaf('a')]),
-                new \ParserGenerator\SyntaxTreeNode\Branch('b', 0,
-                    [new \ParserGenerator\SyntaxTreeNode\Leaf('b')]),
-                new \ParserGenerator\SyntaxTreeNode\Branch('a', 0,
-                    [new \ParserGenerator\SyntaxTreeNode\Leaf('a')]),
-                new \ParserGenerator\SyntaxTreeNode\Branch('b', 0,
-                    [new \ParserGenerator\SyntaxTreeNode\Leaf('b')]),
-                new \ParserGenerator\SyntaxTreeNode\Branch('b', 0, [new \ParserGenerator\SyntaxTreeNode\Leaf('b')]),
+        $this->assertEquals(new Root('start', 0, [
+            new Series('list', '', [
+                new Branch('a', 0,
+                    [new Leaf('a')]),
+                new Branch('b', 0,
+                    [new Leaf('b')]),
+                new Branch('a', 0,
+                    [new Leaf('a')]),
+                new Branch('b', 0,
+                    [new Leaf('b')]),
+                new Branch('b', 0, [new Leaf('b')]),
             ], false),
         ]), $x->parse('ababb'));
     }
@@ -76,41 +80,41 @@ class ChoiceTest extends TestCase
     {
         $x = new Parser('start :=> ("a" | "b" "c" | "c" ?"d" | "d"++) /.+/.');
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
-            new \ParserGenerator\SyntaxTreeNode\Leaf('a'),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('a'),
+        $this->assertEquals(new Root('start', 0, [
+            new Leaf('a'),
+            new Leaf('a'),
         ]), $x->parse('aa'));
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
-            new \ParserGenerator\SyntaxTreeNode\Leaf('c'),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('de'),
+        $this->assertEquals(new Root('start', 0, [
+            new Leaf('c'),
+            new Leaf('de'),
         ]), $x->parse('cde'));
 
         $parsed = $x->parse('bce');
         $this->assertTrue((bool)$parsed->getSubnode(0)->getType());
         $parsed->getSubnode(0)->setType('');
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
-            new \ParserGenerator\SyntaxTreeNode\Branch('', 1, [
-                new \ParserGenerator\SyntaxTreeNode\Leaf('b'),
-                new \ParserGenerator\SyntaxTreeNode\Leaf('c'),
+        $this->assertEquals(new Root('start', 0, [
+            new Branch('', 1, [
+                new Leaf('b'),
+                new Leaf('c'),
             ]),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('e'),
+            new Leaf('e'),
         ]), $parsed);
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
-            new \ParserGenerator\SyntaxTreeNode\Series('list', 'd', [
-                new \ParserGenerator\SyntaxTreeNode\Leaf('d'),
-                new \ParserGenerator\SyntaxTreeNode\Leaf('d'),
+        $this->assertEquals(new Root('start', 0, [
+            new Series('list', 'd', [
+                new Leaf('d'),
+                new Leaf('d'),
             ]),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('e'),
+            new Leaf('e'),
         ]), $x->parse('dde'));
 
-        $this->assertEquals(new \ParserGenerator\SyntaxTreeNode\Root('start', 0, [
-            new \ParserGenerator\SyntaxTreeNode\Series('list', 'd', [
-                new \ParserGenerator\SyntaxTreeNode\Leaf('d'),
+        $this->assertEquals(new Root('start', 0, [
+            new Series('list', 'd', [
+                new Leaf('d'),
             ]),
-            new \ParserGenerator\SyntaxTreeNode\Leaf('e'),
+            new Leaf('e'),
         ]), $x->parse('de'));
     }
 }

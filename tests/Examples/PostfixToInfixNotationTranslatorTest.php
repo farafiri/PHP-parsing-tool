@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class PostfixToInfixNotationTranslatorTest extends TestCase
 {
-    public function translate($str)
+    public function translate($str): string
     {
         $parser = new Parser('
             start    :=> start start operator

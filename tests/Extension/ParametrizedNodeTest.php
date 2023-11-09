@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class ParametrizedNodeTest extends TestCase
 {
-    protected function assertObject($a)
+    protected function assertObject($a): void
     {
         $this->assertTrue(is_object($a));
     }

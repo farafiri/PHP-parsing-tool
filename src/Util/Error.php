@@ -24,7 +24,7 @@ class Error
 {
     protected $foundLength = 20;
     
-    public function getError(Parser $parser, $string)
+    public function getError(Parser $parser, $string): ParsingException
     {
         $errorData = $this->getIndexAndExpected($parser);
         $index     = $errorData['index'];
@@ -50,16 +50,16 @@ class Error
      * @param BaseNode[] $expected
      * @param Parser     $parser
      * @param int        $index
-     * @return BaseNode[]
+     * @return BaseNode[]|NodeInterface[]
      */
-    protected function mapExpected(array $expected, Parser $parser, int $index)
+    protected function mapExpected(array $expected, Parser $parser, int $index): array
     {
         return $this->order(
                    $this->removeLookaround(
                        $this->degeneralizeChoice(
                            $this->generalizeErrors($expected, $parser))));
     }
-    
+
     /**
      * @param string $str The same input used for parse()
      * @return string
@@ -73,7 +73,7 @@ class Error
         return "line: " . $posData['line'] . ', character: ' . $posData['char'] . "\nexpected: " . $expected . "\n" . $foundPhrase;
     }
     
-    protected function getFoundPhrase(string $string, int $index)
+    protected function getFoundPhrase(string $string, int $index): string
     {
         if ($index === strlen($string)) {
             return 'End of string found.';
@@ -109,7 +109,7 @@ class Error
         return (string) $node;
     }
     
-    protected function degeneralizeChoice(array $expected)
+    protected function degeneralizeChoice(array $expected): array
     {
         $result = [];
         

@@ -2,7 +2,9 @@
 
 namespace ParserGenerator\Tests;
 
+use ParserGenerator\GrammarNode\Decorator;
 use ParserGenerator\Parser;
+use ParserGenerator\SyntaxTreeNode\Base;
 use ParserGenerator\SyntaxTreeNode\Branch;
 use ParserGenerator\SyntaxTreeNode\Leaf;
 use ParserGenerator\SyntaxTreeNode\Root;
@@ -10,12 +12,12 @@ use PHPUnit\Framework\TestCase;
 
 class ParserTest extends TestCase
 {
-    protected function assertObject($a)
+    protected function assertObject($a): void
     {
         $this->assertTrue(is_object($a));
     }
 
-    protected function assertArrayElementsEquals($expected, $actual, $message = '')
+    protected function assertArrayElementsEquals($expected, $actual, $message = ''): void
     {
         //TODO: proper implementation of this function (all below is a hack)
         if ($expected == array_intersect($expected, $actual)) {
@@ -33,13 +35,13 @@ class ParserTest extends TestCase
 
         $this->assertEquals(new Root('start', 0, [new Leaf('cat')]), $x->parse('cat'));
         $this->assertEquals(new Root('start', 1, [new Leaf('dog')]), $x->parse('dog'));
-        $this->assertEquals(false, $x->parse(''));
-        $this->assertEquals(false, $x->parse('totalywrong'));
-        $this->assertEquals(false, $x->parse(' cat'));
-        $this->assertEquals(false, $x->parse('cats'));
-        $this->assertEquals(false, $x->parse(' dog'));
-        $this->assertEquals(false, $x->parse('dogs'));
-        $this->assertEquals(false, $x->parse('dogcat'));
+        $this->assertFalse($x->parse(''));
+        $this->assertFalse($x->parse('totalywrong'));
+        $this->assertFalse($x->parse(' cat'));
+        $this->assertFalse($x->parse('cats'));
+        $this->assertFalse($x->parse(' dog'));
+        $this->assertFalse($x->parse('dogs'));
+        $this->assertFalse($x->parse('dogcat'));
     }
 
     public function testWithEmptyOption()
@@ -73,13 +75,13 @@ class ParserTest extends TestCase
             ]),
         ]), $x->parse('dog'));
 
-        $this->assertEquals(false, $x->parse(''));
-        $this->assertEquals(false, $x->parse('totalywrong'));
-        $this->assertEquals(false, $x->parse(' cat'));
-        $this->assertEquals(false, $x->parse('cats'));
-        $this->assertEquals(false, $x->parse(' dog'));
-        $this->assertEquals(false, $x->parse('dogs'));
-        $this->assertEquals(false, $x->parse('dogcat'));
+        $this->assertFalse($x->parse(''));
+        $this->assertFalse($x->parse('totalywrong'));
+        $this->assertFalse($x->parse(' cat'));
+        $this->assertFalse($x->parse('cats'));
+        $this->assertFalse($x->parse(' dog'));
+        $this->assertFalse($x->parse('dogs'));
+        $this->assertFalse($x->parse('dogcat'));
     }
 
     public function testEndRecursion()
@@ -119,8 +121,8 @@ class ParserTest extends TestCase
             ]),
         ]), $x->parse('bbb'));
 
-        $this->assertEquals(false, $x->parse('bbb-bbb'));
-        $this->assertEquals(false, $x->parse('c'));
+        $this->assertFalse($x->parse('bbb-bbb'));
+        $this->assertFalse($x->parse('c'));
         //$this->assertEquals(false, $x->parse('b '));
     }
 
@@ -161,9 +163,9 @@ class ParserTest extends TestCase
             ]),
         ]), $x->parse('bbb'));
 
-        $this->assertEquals(false, $x->parse('bbb-bbb'));
-        $this->assertEquals(false, $x->parse('c'));
-        $this->assertEquals(false, $x->parse('bx'));
+        $this->assertFalse($x->parse('bbb-bbb'));
+        $this->assertFalse($x->parse('c'));
+        $this->assertFalse($x->parse('bx'));
     }
 
     public function testMultiNodeStartRecursion()
@@ -180,8 +182,8 @@ class ParserTest extends TestCase
             ]),
         ]), $x->parse(''));
 
-        $this->assertEquals(false, $x->parse('b'));
-        $this->assertEquals(false, $x->parse('ab'));
+        $this->assertFalse($x->parse('b'));
+        $this->assertFalse($x->parse('ab'));
 
         $this->assertEquals(new Root('start', 0, [
             new Branch('as', 1, [
@@ -204,9 +206,9 @@ class ParserTest extends TestCase
             ]),
         ]), $x->parse('ba'));
 
-        $this->assertEquals(false, $x->parse('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'));
-        $this->assertEquals(false, $x->parse('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'));
-        $this->assertEquals(false, $x->parse('ababababababababababababababababababab'));
+        $this->assertFalse($x->parse('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'));
+        $this->assertFalse($x->parse('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'));
+        $this->assertFalse($x->parse('ababababababababababababababababababab'));
     }
 
     public function testMultiNodeStartRecursionRec()
@@ -511,47 +513,47 @@ class ParserTest extends TestCase
 
         $this->assertEquals("abcd", $x->parse("ab   cd")->toString());
         $this->assertEquals("ab   cd",
-            $x->parse("ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+            $x->parse("ab   cd")->toString(Base::TO_STRING_ORIGINAL));
         $this->assertEquals("ab cd",
-            $x->parse("ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
+            $x->parse("ab   cd")->toString(Base::TO_STRING_REDUCED_WHITESPACES));
 
         $this->assertEquals("abcd", $x->parse("ab \n cd ")->toString());
         $this->assertEquals("ab \n cd ",
-            $x->parse("ab \n cd ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+            $x->parse("ab \n cd ")->toString(Base::TO_STRING_ORIGINAL));
         $this->assertEquals("ab\ncd",
-            $x->parse("ab \n cd ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
+            $x->parse("ab \n cd ")->toString(Base::TO_STRING_REDUCED_WHITESPACES));
 
         $x = new Parser('start :=> /ab/ /cd/ .', ['ignoreWhitespaces' => true]);
 
         $this->assertEquals("abcd", $x->parse("ab   cd")->toString());
         $this->assertEquals("ab   cd",
-            $x->parse("ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+            $x->parse("ab   cd")->toString(Base::TO_STRING_ORIGINAL));
         $this->assertEquals("ab cd",
-            $x->parse("ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
+            $x->parse("ab   cd")->toString(Base::TO_STRING_REDUCED_WHITESPACES));
 
         $this->assertEquals("abcd", $x->parse("ab \n cd ")->toString());
         $this->assertEquals("ab \n cd ",
-            $x->parse("ab \n cd ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+            $x->parse("ab \n cd ")->toString(Base::TO_STRING_ORIGINAL));
         $this->assertEquals("ab\ncd",
-            $x->parse("ab \n cd ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
+            $x->parse("ab \n cd ")->toString(Base::TO_STRING_REDUCED_WHITESPACES));
 
         $x = new Parser('start :=> /a/ /b/ .', ['ignoreWhitespaces' => true]);
         $this->assertEquals("ab", $x->parse("a   b")->toString());
         $this->assertEquals("a   \nb",
-            $x->parse("a   \nb")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+            $x->parse("a   \nb")->toString(Base::TO_STRING_ORIGINAL));
 
         $x = new Parser('start :=> string .', ['ignoreWhitespaces' => true]);
         $this->assertEquals("'abc'", $x->parse("'abc'  ")->toString());
         $this->assertEquals("'abc'  ",
-            $x->parse("'abc'  ")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+            $x->parse("'abc'  ")->toString(Base::TO_STRING_ORIGINAL));
 
         $x = new Parser('start :=> /ab/ /cd/ .', ['ignoreWhitespaces' => true]);
 
         $this->assertEquals("abcd", $x->parse(" ab   cd")->toString());
         $this->assertEquals(" ab   cd",
-            $x->parse(" ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_ORIGINAL));
+            $x->parse(" ab   cd")->toString(Base::TO_STRING_ORIGINAL));
         $this->assertEquals("ab cd",
-            $x->parse(" ab   cd")->toString(\ParserGenerator\SyntaxTreeNode\Base::TO_STRING_REDUCED_WHITESPACES));
+            $x->parse(" ab   cd")->toString(Base::TO_STRING_REDUCED_WHITESPACES));
     }
 
     public function testStringGrammarWhitespaceCharacters()
@@ -645,7 +647,7 @@ class ParserTest extends TestCase
     
     public function testBugCallingGetException2ndTimeGivesWrongResults()
     {
-        $x = new \ParserGenerator\Parser('start :=> "(" num+"," ")" ab.
+        $x = new Parser('start :=> "(" num+"," ")" ab.
                          num   :=> /\d+/.
                          ab    :=> ("a" | "b").');
 
@@ -664,8 +666,8 @@ class ParserTest extends TestCase
         $this->assertFalse($x->parse("     a c")); //"{5 x spaces}a{1 x space}c
         $exception = $x->getException();
         $this->assertEquals(7, $exception->getIndex());
-        $this->assertTrue(strpos((string) $exception, "line: 1, character: 8") !== false);
-        $this->assertTrue(strpos((string) $exception, "found: c") !== false);
+        $this->assertTrue(str_contains((string)$exception, "line: 1, character: 8"));
+        $this->assertTrue(str_contains((string)$exception, "found: c"));
     }
 
     public function testComments()
@@ -674,7 +676,7 @@ class ParserTest extends TestCase
             $result = [];
             $parser->iterateOverNodes(function ($node) use (&$result) {
                 $explodedClassName = explode('\\',
-                    get_class(\ParserGenerator\GrammarNode\Decorator::undecorate($node)));
+                    get_class(Decorator::undecorate($node)));
                 $className = $explodedClassName[count($explodedClassName) - 1];
                 $result[] = $className . '[' . $node . ']';
             });
@@ -710,12 +712,10 @@ class ParserTest extends TestCase
         $this->assertArrayElementsEquals(['Branch[start]', 'Text["a"]'], $nodeDump($x));
     }
 
-    /**
-     * @expectedException \ParserGenerator\Exception
-     * @expectedExceptionMessageRegExp /line: 1, character: 21.*expected:.*"\)"/s
-     */
     public function testIncorrectGrammarRaisesException()
     {
+        $this->expectException(\ParserGenerator\Exception::class);
+        $this->expectExceptionMessageMatches("/line: 1, character: 21.*expected:.*\"\)\"/s");
         new Parser('start :=> "a" (a "b".
                     a     :=> "c" start.');
     }

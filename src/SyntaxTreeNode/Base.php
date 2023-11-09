@@ -15,6 +15,11 @@ abstract class Base
     const TO_STRING_NO_WHITESPACES = 2;
     const TO_STRING_REDUCED_WHITESPACES = 4;
 
+    public ?self $owner = null;
+
+    public ?self $origin = null;
+
+
     abstract public function getLeftLeaf();
 
     abstract public function getRightLeaf();
