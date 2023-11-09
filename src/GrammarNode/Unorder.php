@@ -6,11 +6,11 @@ class Unorder extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGe
 {
     const MAX = 1000000;
 
-    protected $separator;
-    protected $resultType;
-    protected $tmpNodeName;
-    protected $choices = [];
-    protected $mod = [];
+    protected                         $separator;
+    protected                         $resultType;
+    protected                         $tmpNodeName;
+    protected                         $choices = [];
+    protected                         $mod = [];
 
     public function __construct($separator, $resultType = 'unorder')
     {

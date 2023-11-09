@@ -346,7 +346,7 @@ class Branch extends \ParserGenerator\SyntaxTreeNode\Base
         $copy->owner = null;
 
         $this->iterateWith($copy, function ($that, $copy) {
-            $copy->origin = isset($that->origin) ? $that->origin : $that;
+            $copy->origin = $that->origin ?? $that;
         });
 
         return $copy;

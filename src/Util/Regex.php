@@ -2,6 +2,8 @@
 
 namespace ParserGenerator\Util;
 
+use Exception;
+
 class Regex
 {
     protected static $specialChars = ['\\', '/', '+', '*', '?', '[', ']', '(', ')', '|', '.', '$', '^', '{', '}'];
@@ -108,6 +110,9 @@ class Regex
         $this->parser = $parser;
     }
 
+    /**
+     * @throws Exception
+     */
     public function canBeEmpty($regex)
     {
         if (is_string($regex)) {

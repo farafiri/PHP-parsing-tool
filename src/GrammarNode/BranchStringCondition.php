@@ -4,7 +4,14 @@ namespace ParserGenerator\GrammarNode;
 
 class BranchStringCondition extends \ParserGenerator\GrammarNode\BranchExtraCondition
 {
-    private $conditionStrings;
+    /**
+     * @var array|mixed
+     */
+    protected mixed $_functions;
+    /**
+     * @var array|mixed
+     */
+    private         $conditionStrings;
 
     public function __construct($node, $conditionStrings)
     {
