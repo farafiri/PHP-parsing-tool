@@ -4,10 +4,10 @@ namespace ParserGenerator\GrammarNode;
 
 class Choice extends \ParserGenerator\GrammarNode\BaseNode
 {
-    protected $choices;
-    protected $tmpNodeName;
-    protected $reduce = [];
-    protected $toStringCallback;
+    protected                         $choices;
+    protected                         $tmpNodeName;
+    protected                         $reduce = [];
+    protected                         $toStringCallback;
 
     public function __construct($choices, $toStringCallback = null)
     {

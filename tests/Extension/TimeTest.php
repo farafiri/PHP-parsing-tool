@@ -2,21 +2,22 @@
 
 namespace ParserGenerator\Tests\Extension;
 
+use Exception;
 use ParserGenerator\Parser;
 use PHPUnit\Framework\TestCase;
 
 class TimeTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         try {
             date_default_timezone_get();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             date_default_timezone_set('UTC');
         }
     }
 
-    protected function assertObject($a)
+    protected function assertObject($a): void
     {
         $this->assertTrue(is_object($a));
     }

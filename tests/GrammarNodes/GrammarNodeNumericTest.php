@@ -2,11 +2,12 @@
 
 namespace ParserGenerator\Tests\GrammarNodes;
 
+use ParserGenerator\GrammarNode\Numeric;
 use PHPUnit\Framework\TestCase;
 
 class GrammarNodeNumericTest extends TestCase
 {
-    protected function assertNodeEquals($expected, $node)
+    protected function assertNodeEquals($expected, $node): void
     {
         $this->assertTrue(is_array($node) && isset($node['node']));
         $this->assertEquals($expected, (string)$node['node']);
@@ -14,7 +15,7 @@ class GrammarNodeNumericTest extends TestCase
 
     public function testBasic()
     {
-        $x = new \ParserGenerator\GrammarNode\Numeric();
+        $x = new Numeric();
 
         $this->assertNodeEquals('5', $x->rparse('5b123vb', 0, []));
         $this->assertNodeEquals('123', $x->rparse('5b123vb', 2, []));
@@ -26,7 +27,7 @@ class GrammarNodeNumericTest extends TestCase
 
     public function testBase()
     {
-        $x = new \ParserGenerator\GrammarNode\Numeric(['formatHex' => true]);
+        $x = new Numeric(['formatHex' => true]);
 
         $this->assertNodeEquals('123', $x->rparse('ab123vb', 2, []));
         $this->assertFalse($x->rparse('ab123vb', 2, [5 => 5]));
@@ -37,7 +38,7 @@ class GrammarNodeNumericTest extends TestCase
 
     public function testMinMax()
     {
-        $x = new \ParserGenerator\GrammarNode\Numeric([
+        $x = new Numeric([
             'formatHex' => true,
             'formatBin' => true,
             'min' => 7,

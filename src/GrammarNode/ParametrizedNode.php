@@ -10,7 +10,6 @@ class ParametrizedNode extends BaseNode implements \ParserGenerator\ParserAwareI
     protected $abstractNode;
     protected $params;
     protected $node;
-    protected $parser;
 
     public function __construct($abstractNode, $params)
     {

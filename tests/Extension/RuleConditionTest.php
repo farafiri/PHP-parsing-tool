@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class RuleConditionTest extends TestCase
 {
-    protected function assertObject($a)
+    protected function assertObject($a): void
     {
         $this->assertTrue(is_object($a));
     }
@@ -101,15 +101,15 @@ class RuleConditionTest extends TestCase
 
         $r = $x->parse('abab')->findAll('spectext');
         $this->assertEquals('abab', (string)$r[0]);
-        $this->assertEquals(1, count($r));
+        $this->assertCount(1, $r);
 
         $r = $x->parse('abac')->findAll('spectext');
         $this->assertEquals('aba', (string)$r[0]);
-        $this->assertEquals(1, count($r));
+        $this->assertCount(1, $r);
 
         $r = $x->parse('abababa')->findAll('spectext');
         $this->assertEquals('abababa', (string)$r[0]);
-        $this->assertEquals(1, count($r));
+        $this->assertCount(1, $r);
 
         return 0;
         //this test will fail
@@ -117,6 +117,6 @@ class RuleConditionTest extends TestCase
         $this->assertEquals('abbbaabab', (string)$r[0]);
         $this->assertEquals('bbaab', (string)$r[1]);
         $this->assertEquals('aa', (string)$r[2]);
-        $this->assertEquals(3, count($r));
+        $this->assertCount(3, $r);
     }
 }

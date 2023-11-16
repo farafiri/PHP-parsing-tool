@@ -2,13 +2,14 @@
 
 namespace ParserGenerator\Tests\Examples;
 
+use ParserGenerator\Examples\CSVParser;
 use PHPUnit\Framework\TestCase;
 
 class CSVParserTest extends TestCase
 {
     public function testBase()
     {
-        $parser = new \ParserGenerator\Examples\CSVParser();
+        $parser = new CSVParser();
 
         $expected = [
             ['r1c1', 'r1c2'],
@@ -20,7 +21,7 @@ class CSVParserTest extends TestCase
 
     public function testQuoted()
     {
-        $parser = new \ParserGenerator\Examples\CSVParser();
+        $parser = new CSVParser();
 
         $expected = [
             ['r1c1', 'r1c2'],
@@ -32,7 +33,7 @@ class CSVParserTest extends TestCase
 
     public function testPreserveSpaces()
     {
-        $parser = new \ParserGenerator\Examples\CSVParser();
+        $parser = new CSVParser();
 
         $expected = [
             ['  c1  ', ' c2 '],
@@ -43,7 +44,7 @@ class CSVParserTest extends TestCase
 
     public function testProperEscaping()
     {
-        $parser = new \ParserGenerator\Examples\CSVParser();
+        $parser = new CSVParser();
 
         $expected = [
             ['text "quot"', ", \n"],

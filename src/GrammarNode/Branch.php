@@ -7,7 +7,6 @@ class Branch extends \ParserGenerator\GrammarNode\BaseNode implements \ParserGen
     static $spc = '';
     public $ignoreWhitespaces = false;
 
-    protected $parser;
     protected $nodeName;
     protected $nodeShortName;
     protected $node;

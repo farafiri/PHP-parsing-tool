@@ -2,6 +2,8 @@
 
 namespace ParserGenerator;
 
+use ParserGenerator\GrammarNode\NodeInterface;
+
 /**
  * class for recursive copying nodes 
  */

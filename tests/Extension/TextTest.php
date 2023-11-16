@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class TextTest extends TestCase
 {
-    protected function assertObject($a)
+    protected function assertObject($a): void
     {
         $this->assertTrue(is_object($a));
     }
@@ -53,6 +53,6 @@ class TextTest extends TestCase
 
         $parsed = $x->parse("a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a");
 
-        $this->assertEquals(31, count($parsed->getSubnode(0)->getSubnodes()));
+        $this->assertCount(31, $parsed->getSubnode(0)->getSubnodes());
     }
 }

@@ -24,6 +24,7 @@ use ParserGenerator\GrammarNode\Branch;
 use ParserGenerator\GrammarNode\BranchFactory;
 use ParserGenerator\GrammarNode\ErrorTrackDecorator;
 use ParserGenerator\GrammarNode\ItemRestrictions as GrammarItemRestrictions;
+use ParserGenerator\GrammarNode\NodeInterface;
 use ParserGenerator\GrammarNode\Regex as GrammarRegex;
 use ParserGenerator\GrammarNode\TextS;
 use ParserGenerator\Util\Error;
@@ -255,7 +256,7 @@ class GrammarParser
      * 
      * builds sequence of SequenceItem
      * 
-     * @param NodeIterface[]      $grammar      grammar under construction
+     * @param NodeInterface[]      $grammar      grammar under construction
      * @param SyntaxTreeNode\Base $sequenceItem syntax tree representing sigle sequence item
      * @param array               $options      options provided to Parser costructor
      * 
@@ -293,7 +294,7 @@ class GrammarParser
      * internal function - it is public but should not be used outside of this lib
      * 
      * builds single NodeIterface object from given data
-     * @param NodeIterface[]      $grammar      grammar under construction
+     * @param NodeInterface[]      $grammar      grammar under construction
      * @param SyntaxTreeNode\Base $sequenceItem syntax tree representing sigle sequence item
      * @param array               $options      options provided to Parser costructor
      * 

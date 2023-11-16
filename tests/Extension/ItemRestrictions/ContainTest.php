@@ -2,6 +2,7 @@
 
 namespace ParserGenerator\Tests\Extension\ItemRestrictions;
 
+use ParserGenerator\Extension\ItemRestrictions\Contain;
 use ParserGenerator\Parser;
 use PHPUnit\Framework\TestCase;
 
@@ -12,7 +13,7 @@ class ContainTest extends TestCase
         $x = new Parser("start :=> 'abcd'
                                :=> 'ab'.");
 
-        $contain = new \ParserGenerator\Extension\ItemRestrictions\Contain($x->grammar['start']);
+        $contain = new Contain($x->grammar['start']);
 
         $this->assertFalse($contain->check('qwerty', 0, 3, null));
         $x->cache = [];
@@ -35,7 +36,7 @@ class ContainTest extends TestCase
         $x = new Parser("start :=> 'abcd'
                                :=> 'ab'.", ['ignoreWhitespaces' => true]);
 
-        $contain = new \ParserGenerator\Extension\ItemRestrictions\Contain($x->grammar['start']);
+        $contain = new Contain($x->grammar['start']);
 
         $this->assertTrue($contain->check('ab  ', 0, 4, null));
         $x->cache = [];

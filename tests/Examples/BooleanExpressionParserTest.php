@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ParserGenerator\tests\Examples;
+namespace ParserGenerator\Tests\Examples;
 
 use ParserGenerator\Examples\BooleanExpressionParser;
 use PHPUnit\Framework\TestCase;
@@ -10,7 +10,7 @@ class BooleanExpressionParserTest extends TestCase
     /** @var BooleanExpressionParser */
     protected $parser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +28,7 @@ class BooleanExpressionParserTest extends TestCase
         $this->assertNotFalse($result);
     }
 
-    public function dataForParseSuccessful(): array
+    public static function dataForParseSuccessful(): array
     {
         return [
             ['foo'],
@@ -65,7 +65,7 @@ class BooleanExpressionParserTest extends TestCase
         $this->assertSame($expectedError, $this->parser->getException()->getMessage());
     }
 
-    public function dataForParseFail(): array
+    public static function dataForParseFail(): array
     {
         return [
             [

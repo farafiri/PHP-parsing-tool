@@ -106,7 +106,7 @@ class Parser
     /**
      * internal - iterate over parser nodes to call callback on each node
      * 
-     * @param \ParserGenerator\callable $callback
+     * @param callable $callback
      */
     public function iterateOverNodes(callable $callback)
     {
